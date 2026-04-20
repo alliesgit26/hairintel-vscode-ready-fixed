@@ -1,0 +1,13 @@
+{
+  "name": "hairintel-vscode-ready",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
+    "stripe": "^17.7.0"
+  }
+}
