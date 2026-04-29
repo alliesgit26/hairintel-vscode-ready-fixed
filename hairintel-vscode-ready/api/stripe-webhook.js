@@ -1,4 +1,4 @@
-const Stripe = require("stripe");
+import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -12,7 +12,7 @@ async function readRawBody(req) {
   return Buffer.concat(chunks);
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -31,8 +31,8 @@ module.exports = async function handler(req, res) {
     const signature = req.headers["stripe-signature"];
 
     if (!signature) {
-      console.error("Missing stripe-signature header");
-      return res.status(400).json({ error: "Missing stripe-signature header." });
+      console.error("Missing Stripe signature header");
+      return res.status(400).json({ error: "Missing Stripe signature header." });
     }
 
     const rawBody = await readRawBody(req);
@@ -48,43 +48,76 @@ module.exports = async function handler(req, res) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object;
+
         console.log("Checkout completed:", {
           sessionId: session.id,
           customerId: session.customer,
           subscriptionId: session.subscription,
           email: session.customer_details?.email,
         });
+
         break;
       }
 
       case "customer.subscription.created": {
         const subscription = event.data.object;
-        console.log("Subscription created:", subscription.id);
+
+        console.log("Subscription created:", {
+          subscriptionId: subscription.id,
+          customerId: subscription.customer,
+          status: subscription.status,
+        });
+
         break;
       }
 
       case "customer.subscription.updated": {
         const subscription = event.data.object;
-        console.log("Subscription updated:", subscription.id);
+
+        console.log("Subscription updated:", {
+          subscriptionId: subscription.id,
+          customerId: subscription.customer,
+          status: subscription.status,
+        });
+
         break;
       }
 
       case "customer.subscription.deleted": {
         const subscription = event.data.object;
-        console.log("Subscription deleted:", subscription.id);
+
+        console.log("Subscription deleted:", {
+          subscriptionId: subscription.id,
+          customerId: subscription.customer,
+          status: subscription.status,
+        });
+
         break;
       }
 
       case "invoice.paid":
       case "invoice.payment_succeeded": {
         const invoice = event.data.object;
-        console.log("Invoice paid:", invoice.id);
+
+        console.log("Invoice paid:", {
+          invoiceId: invoice.id,
+          customerId: invoice.customer,
+          subscriptionId: invoice.subscription,
+          amountPaid: invoice.amount_paid,
+        });
+
         break;
       }
 
       case "invoice.payment_failed": {
         const invoice = event.data.object;
-        console.log("Invoice payment failed:", invoice.id);
+
+        console.log("Invoice payment failed:", {
+          invoiceId: invoice.id,
+          customerId: invoice.customer,
+          subscriptionId: invoice.subscription,
+        });
+
         break;
       }
 
@@ -95,9 +128,10 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ received: true });
   } catch (error) {
     console.error("Stripe webhook error:", error.message);
+
     return res.status(500).json({
       error: "Webhook handler failed.",
       message: error.message,
     });
   }
-};
+}
