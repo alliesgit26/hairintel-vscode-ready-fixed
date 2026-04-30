@@ -128,8 +128,9 @@ function initS17Clients() {
    ================================================================ */
 function renderS18Subscription() {
   const sub = HI.getSub();
-  const current = sub.plan;
+  const current = sub.plan || 'free';
   const usage = HI.getUsage();
+  const isPaidPlan = current === 'pro' || current === 'studio';
 
   const aiLimit = typeof HI.getAIPreviewLimit === 'function' ? HI.getAIPreviewLimit() : 0;
   const aiRemaining = typeof HI.remainingAIPreviews === 'function' ? HI.remainingAIPreviews() : 0;
@@ -220,10 +221,13 @@ function renderS18Subscription() {
       ` : `
       <div class="hi-banner" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:12px;display:flex;gap:12px;align-items:center;padding:14px;margin-bottom:20px;">
         <span style="color:var(--success);">${HIcons.check}</span>
-        <div style="font-size:13px;color:var(--text-sub);">
+        <div style="font-size:13px;color:var(--text-sub);flex:1;">
           You're on the <strong style="color:var(--success);">${hiCapitalize(current)}</strong> plan.
           ${aiLimit > 0 ? ` <strong>${aiRemaining}</strong> AI preview credit(s) remaining this month.` : ''}
         </div>
+        <button onclick="manageBilling()" style="font-size:12px;color:var(--success);font-weight:700;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.25);border-radius:8px;padding:7px 10px;cursor:pointer;">
+          Manage Billing
+        </button>
       </div>
       `}
 
@@ -256,10 +260,13 @@ function renderS18Subscription() {
           </div>`).join('')}
         </div>
 
-        ${current === plan.id
+        ${current === plan.id && plan.id !== 'free'
+          ? `<button class="hi-btn" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--success);font-size:13px;margin-bottom:8px;" disabled>Current Plan</button>
+             <button class="hi-btn hi-btn-outline" style="font-size:13px;" onclick="manageBilling()">Manage Billing / Cancel</button>`
+          : current === plan.id
           ? `<button class="hi-btn" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--success);font-size:13px;" disabled>Current Plan</button>`
           : plan.id === 'free'
-          ? `<button class="hi-btn hi-btn-ghost" style="font-size:13px;" onclick="selectPlan('free')">Downgrade to Free</button>`
+          ? `<button class="hi-btn hi-btn-ghost" style="font-size:13px;" onclick="manageBilling()">Manage Billing / Cancel</button>`
           : `<button class="hi-btn ${plan.id === 'pro' ? 'hi-btn-gold' : 'hi-btn-outline'}" id="btn-${plan.id}" onclick="selectPlan('${plan.id}')">
                ${plan.id === 'studio' ? 'Start Studio Trial' : 'Start Pro Trial'}
              </button>`
@@ -278,15 +285,24 @@ function renderS18Subscription() {
           and
           <a href="/terms.html" style="color:var(--gold);text-decoration:none;">Terms & Billing</a>.
         </div>
+
+        ${isPaidPlan ? `
+        <div style="margin-top:12px;">
+          <button class="hi-btn hi-btn-ghost" style="font-size:12px;padding:8px 14px;width:auto;" onclick="manageBilling()">
+            Manage Billing / Cancel Subscription
+          </button>
+        </div>
+        ` : ''}
       </div>
 
       <div class="hi-card hi-mb-4">
         <div class="hi-label hi-mb-3">Frequently Asked</div>
         ${[
-          { q: 'Can I switch plans?', a: 'Yes, you can upgrade or downgrade at any time. Changes take effect immediately.' },
+          { q: 'Can I switch plans?', a: 'Yes. Use Manage Billing to update, cancel, or manage your subscription through Stripe.' },
           { q: 'How do AI previews work?', a: 'Each AI preview generation uses 1 monthly preview credit on Pro or Studio.' },
           { q: 'Is client data stored in the cloud?', a: 'Client records remain local in this version; subscription status is synced through Stripe and Supabase when configured.' },
-          { q: 'What happens after my free consultations?', a: 'After 3 consultations on the Free plan, you will need to upgrade to Pro or Studio to continue.' }
+          { q: 'What happens after my free consultations?', a: 'After 3 consultations on the Free plan, you will need to upgrade to Pro or Studio to continue.' },
+          { q: 'How do I cancel?', a: 'Open Manage Billing to cancel your subscription securely through Stripe.' }
         ].map(faq => `
         <div class="hi-faq-item" style="padding:12px 0;border-bottom:1px solid var(--border-light);">
           <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${faq.q}</div>
@@ -312,8 +328,66 @@ function initS18Subscription() {
       }
     }
 
+    if (plan === 'free') {
+      hiToast('Use Manage Billing to cancel or change an active paid subscription.', 'info');
+      return;
+    }
+
     HI.setSub({ plan, updatedAt: new Date().toISOString() });
     hiToast(`${hiCapitalize(plan)} plan activated!`, 'success');
     setTimeout(() => HIApp.go('welcome'), 1000);
+  };
+
+  window.manageBilling = async () => {
+    try {
+      const sub = HI.getSub ? HI.getSub() : {};
+      const stylist = HI.getStylist ? HI.getStylist() : {};
+
+      let email =
+        sub.customer_email ||
+        sub.email ||
+        stylist.email ||
+        localStorage.getItem('hairintel_customer_email') ||
+        '';
+
+      email = String(email || '').trim().toLowerCase();
+
+      if (!email) {
+        email = prompt('Enter the email used for your HairIntel subscription:');
+        email = String(email || '').trim().toLowerCase();
+      }
+
+      if (!email) {
+        hiToast('Subscription email is required to open billing.', 'error');
+        return;
+      }
+
+      localStorage.setItem('hairintel_customer_email', email);
+
+      hiToast('Opening secure Stripe billing portal...', 'info');
+
+      const response = await fetch('/api/create-billing-portal-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || data.message || 'Could not open billing portal.');
+      }
+
+      if (!data.url) {
+        throw new Error('Stripe billing portal did not return a URL.');
+      }
+
+      window.location.href = data.url;
+    } catch (err) {
+      console.error('[HairIntel] Billing portal error:', err);
+      hiToast(err.message || 'Could not open billing portal.', 'error');
+    }
   };
 }
