@@ -10,14 +10,12 @@ function renderS17Clients(params = {}) {
     ? clients.filter(c => `${c.firstName} ${c.lastName}`.toLowerCase().includes(query.toLowerCase()))
     : clients;
 
-  /* Group consults by client */
   const consultMap = {};
   consults.forEach(c => {
     if (!consultMap[c.clientId]) consultMap[c.clientId] = [];
     consultMap[c.clientId].push(c);
   });
 
-  /* Sort clients by most recent consult */
   const sorted = [...filtered].sort((a, b) => {
     const aLatest = consultMap[a.id]?.[0]?.createdAt || a.createdAt;
     const bLatest = consultMap[b.id]?.[0]?.createdAt || b.createdAt;
@@ -39,7 +37,6 @@ function renderS17Clients(params = {}) {
 
     <div class="hi-content">
 
-      <!-- Search -->
       <div style="position:relative;margin-bottom:16px;">
         <div style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -47,7 +44,6 @@ function renderS17Clients(params = {}) {
         <input type="text" id="client-search" class="hi-input" placeholder="Search clients..." value="${query}" style="padding-left:38px;" oninput="filterClients(this.value)" />
       </div>
 
-      <!-- Client List -->
       ${sorted.length === 0 ? `
       <div style="padding:60px 0;text-align:center;">
         <div style="width:64px;height:64px;border-radius:50%;background:var(--gold-pale);border:1px solid var(--gold-border);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--gold);">${HIcons.clients}</div>
@@ -84,7 +80,6 @@ function renderS17Clients(params = {}) {
         </div>`;
       }).join('')}
 
-      <!-- New Client CTA -->
       ${sorted.length > 0 ? `
       <div style="margin-top:20px;text-align:center;">
         <button class="hi-btn hi-btn-outline" onclick="startNewConsult()" style="width:auto;padding:10px 24px;">
@@ -114,10 +109,14 @@ function initS17Clients() {
   };
 
   window.startNewConsult = () => {
-    if (!HI.canStartConsult()) {
+    const sub = HI.getSub ? HI.getSub() : {};
+    const plan = sub.plan || 'none';
+
+    if (plan !== 'starter' && plan !== 'pro' && plan !== 'studio') {
       HIApp.go('subscription');
       return;
     }
+
     HIConsult.reset();
     HIApp.go('client-info');
   };
@@ -127,43 +126,43 @@ function initS17Clients() {
    S18 — SUBSCRIPTION PLANS
    ================================================================ */
 function renderS18Subscription() {
-  const sub = HI.getSub();
-  const current = sub.plan || 'free';
-  const usage = HI.getUsage();
-  const isPaidPlan = current === 'pro' || current === 'studio';
+  const sub = HI.getSub ? HI.getSub() : {};
+  const current = sub.plan || 'none';
+  const isPaidPlan = current === 'starter' || current === 'pro' || current === 'studio';
 
   const aiLimit = typeof HI.getAIPreviewLimit === 'function' ? HI.getAIPreviewLimit() : 0;
   const aiRemaining = typeof HI.remainingAIPreviews === 'function' ? HI.remainingAIPreviews() : 0;
 
   const plans = [
     {
-      id: 'free',
-      name: 'Free',
-      price: '$0',
-      period: 'forever',
-      desc: 'Try HairIntel AI with limited access.',
-      color: 'var(--text-muted)',
+      id: 'starter',
+      name: 'Starter',
+      price: '$29',
+      period: '/month',
+      desc: 'For individual stylists getting started with HairIntel AI.',
+      color: 'var(--gold)',
+      badge: 'Start Here',
       features: [
-        { label: '3 consultations total', included: true },
+        { label: 'Unlimited consultations', included: true },
+        { label: '5 AI previews / month', included: true },
         { label: 'Hair Readiness Score', included: true },
         { label: 'Basic install plan', included: true },
-        { label: 'AI hair preview', included: false },
+        { label: 'Saved client history', included: true },
+        { label: 'Placement map', included: true },
         { label: 'PDF export', included: false },
-        { label: 'Client sharing', included: false },
-        { label: 'Saved client history', included: false },
-        { label: 'Placement map', included: false }
+        { label: 'Team accounts', included: false }
       ]
     },
     {
       id: 'pro',
       name: 'Pro',
-      price: '$29',
+      price: '$49',
       period: '/month',
-      desc: 'Everything a solo stylist needs.',
+      desc: 'For professional stylists who want full planning and exports.',
       color: 'var(--gold)',
       badge: 'Most Popular',
       features: [
-        { label: 'Unlimited consultations', included: true },
+        { label: 'Everything in Starter', included: true },
         { label: '10 AI previews / month', included: true },
         { label: 'Full PDF export', included: true },
         { label: 'Client version sharing', included: true },
@@ -206,19 +205,11 @@ function renderS18Subscription() {
 
     <div class="hi-content">
       <div style="text-align:center;margin-bottom:28px;">
-        <h2 class="hi-heading hi-mb-2">Upgrade HairIntel AI</h2>
-        <p class="hi-body">Unlock unlimited consultations, AI previews, PDF exports, and advanced analysis features.</p>
+        <h2 class="hi-heading hi-mb-2">Choose HairIntel AI</h2>
+        <p class="hi-body">Start your 7-day trial. Unlock consultations, AI previews, client planning, and advanced extension recommendations.</p>
       </div>
 
-      ${current === 'free' ? `
-      <div class="hi-banner hi-banner-warn hi-mb-4">
-        <span class="hi-banner-icon">${HIcons.info}</span>
-        <div style="font-size:13px;color:var(--text-sub);">
-          You have used <strong style="color:var(--text);">${usage.consultCount}</strong> of <strong style="color:var(--text);">${HI.FREE_LIMIT}</strong> free consultations.
-          ${HI.remainingFree() === 0 ? ' <strong style="color:var(--danger);">Limit reached — upgrade to continue.</strong>' : ''}
-        </div>
-      </div>
-      ` : `
+      ${isPaidPlan ? `
       <div class="hi-banner" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:12px;display:flex;gap:12px;align-items:center;padding:14px;margin-bottom:20px;">
         <span style="color:var(--success);">${HIcons.check}</span>
         <div style="font-size:13px;color:var(--text-sub);flex:1;">
@@ -229,11 +220,18 @@ function renderS18Subscription() {
           Manage Billing
         </button>
       </div>
+      ` : `
+      <div class="hi-banner hi-banner-warn hi-mb-4">
+        <span class="hi-banner-icon">${HIcons.info}</span>
+        <div style="font-size:13px;color:var(--text-sub);">
+          Choose a paid plan to unlock HairIntel AI consultations and client planning tools.
+        </div>
+      </div>
       `}
 
       ${plans.map(plan => `
       <div class="hi-card hi-mb-4" style="position:relative;${plan.id === 'pro' ? 'border-color:var(--gold-border);' : ''}${current === plan.id ? 'border-color:var(--success);' : ''}">
-        ${plan.badge ? `<div style="position:absolute;top:-1px;right:14px;background:var(--gold);color:var(--bg);font-size:10px;font-weight:700;padding:4px 10px;border-radius:0 0 8px 8px;letter-spacing:0.06em;">${plan.badge}</div>` : ''}
+        ${plan.badge ? `<div style="position:absolute;top:-1px;right:14px;background:${plan.id === 'starter' ? 'var(--gold)' : 'var(--gold)'};color:var(--bg);font-size:10px;font-weight:700;padding:4px 10px;border-radius:0 0 8px 8px;letter-spacing:0.06em;">${plan.badge}</div>` : ''}
         ${current === plan.id ? `<div style="position:absolute;top:-1px;left:14px;background:var(--success);color:var(--bg);font-size:10px;font-weight:700;padding:4px 10px;border-radius:0 0 8px 8px;letter-spacing:0.06em;">CURRENT PLAN</div>` : ''}
 
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;">
@@ -260,15 +258,11 @@ function renderS18Subscription() {
           </div>`).join('')}
         </div>
 
-        ${current === plan.id && plan.id !== 'free'
+        ${current === plan.id
           ? `<button class="hi-btn" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--success);font-size:13px;margin-bottom:8px;" disabled>Current Plan</button>
              <button class="hi-btn hi-btn-outline" style="font-size:13px;" onclick="manageBilling()">Manage Billing / Cancel</button>`
-          : current === plan.id
-          ? `<button class="hi-btn" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--success);font-size:13px;" disabled>Current Plan</button>`
-          : plan.id === 'free'
-          ? `<button class="hi-btn hi-btn-ghost" style="font-size:13px;" onclick="manageBilling()">Manage Billing / Cancel</button>`
           : `<button class="hi-btn ${plan.id === 'pro' ? 'hi-btn-gold' : 'hi-btn-outline'}" id="btn-${plan.id}" onclick="selectPlan('${plan.id}')">
-               ${plan.id === 'studio' ? 'Start Studio Trial' : 'Start Pro Trial'}
+               ${plan.id === 'starter' ? 'Start Starter Trial' : plan.id === 'studio' ? 'Start Studio Trial' : 'Start Pro Trial'}
              </button>`
         }
       </div>`).join('')}
@@ -298,10 +292,10 @@ function renderS18Subscription() {
       <div class="hi-card hi-mb-4">
         <div class="hi-label hi-mb-3">Frequently Asked</div>
         ${[
+          { q: 'Is there a free plan?', a: 'HairIntel AI is a paid subscription platform. New users may start with a 7-day trial when available through Stripe checkout.' },
           { q: 'Can I switch plans?', a: 'Yes. Use Manage Billing to update, cancel, or manage your subscription through Stripe.' },
-          { q: 'How do AI previews work?', a: 'Each AI preview generation uses 1 monthly preview credit on Pro or Studio.' },
+          { q: 'How do AI previews work?', a: 'Each AI preview generation uses 1 monthly preview credit according to your active plan.' },
           { q: 'Is client data stored in the cloud?', a: 'Client records remain local in this version; subscription status is synced through Stripe and Supabase when configured.' },
-          { q: 'What happens after my free consultations?', a: 'After 3 consultations on the Free plan, you will need to upgrade to Pro or Studio to continue.' },
           { q: 'How do I cancel?', a: 'Open Manage Billing to cancel your subscription securely through Stripe.' }
         ].map(faq => `
         <div class="hi-faq-item" style="padding:12px 0;border-bottom:1px solid var(--border-light);">
@@ -315,12 +309,14 @@ function renderS18Subscription() {
 
 function initS18Subscription() {
   window.selectPlan = async (plan) => {
-    if (plan === 'pro' || plan === 'studio') {
+    if (plan === 'starter' || plan === 'pro' || plan === 'studio') {
       try {
         if (window.HAIRI && typeof window.HAIRI.startCheckout === 'function') {
           await window.HAIRI.startCheckout(plan);
           return;
         }
+
+        throw new Error('Checkout system is not available.');
       } catch (err) {
         console.error('[HairIntel] Checkout error:', err);
         hiToast(err.message || 'Checkout could not be started.', 'error');
@@ -328,14 +324,7 @@ function initS18Subscription() {
       }
     }
 
-    if (plan === 'free') {
-      hiToast('Use Manage Billing to cancel or change an active paid subscription.', 'info');
-      return;
-    }
-
-    HI.setSub({ plan, updatedAt: new Date().toISOString() });
-    hiToast(`${hiCapitalize(plan)} plan activated!`, 'success');
-    setTimeout(() => HIApp.go('welcome'), 1000);
+    hiToast('Please choose Starter, Pro, or Studio.', 'error');
   };
 
   window.manageBilling = async () => {
