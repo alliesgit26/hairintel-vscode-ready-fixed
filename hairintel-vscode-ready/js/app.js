@@ -15,7 +15,7 @@ function startHIApp() {
     // HI.loadDemo();
     // console.log('[HIApp] Demo loaded');
 
-    if (!window.HIApp) {
+    if (typeof HIApp === 'undefined') {
       throw new Error('HIApp router is not available. Check utils.js loading order.');
     }
 
