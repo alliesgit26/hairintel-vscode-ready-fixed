@@ -1,86 +1,122 @@
-import Stripe from 'stripe';
+import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-const PLAN_PRICE_MAP = {
+const PRICE_MAP = {
   starter: process.env.STRIPE_PRICE_STARTER,
-  basic: process.env.STRIPE_PRICE_STARTER,
-
   pro: process.env.STRIPE_PRICE_PRO,
-  professional: process.env.STRIPE_PRICE_PRO,
-
-  studio: process.env.STRIPE_PRICE_STUDIO || process.env.STRIPE_PRICE_SALON,
-  salon: process.env.STRIPE_PRICE_STUDIO || process.env.STRIPE_PRICE_SALON,
-  team: process.env.STRIPE_PRICE_STUDIO || process.env.STRIPE_PRICE_SALON,
+  studio: process.env.STRIPE_PRICE_SALON,
+  salon: process.env.STRIPE_PRICE_SALON,
 };
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Method not allowed",
+    });
   }
 
   try {
     if (!process.env.STRIPE_SECRET_KEY) {
-      return res.status(500).json({ error: 'STRIPE_SECRET_KEY is missing on the server.' });
-    }
-
-    if (!process.env.STRIPE_PRICE_STARTER) {
-      return res.status(500).json({ error: 'STRIPE_PRICE_STARTER is missing on the server.' });
-    }
-
-    if (!process.env.STRIPE_PRICE_PRO) {
-      return res.status(500).json({ error: 'STRIPE_PRICE_PRO is missing on the server.' });
-    }
-
-    if (!process.env.STRIPE_PRICE_SALON && !process.env.STRIPE_PRICE_STUDIO) {
-      return res.status(500).json({ error: 'STRIPE_PRICE_SALON or STRIPE_PRICE_STUDIO is missing on the server.' });
-    }
-
-    const body = req.body || {};
-    const receivedPlan = body.plan || body.tier || body.package || body.subscriptionPlan;
-    const normalizedPlan = String(receivedPlan || '').trim().toLowerCase();
-    const selectedPrice = PLAN_PRICE_MAP[normalizedPlan];
-    const customerEmail = body.customerEmail || body.email || undefined;
-
-    if (!selectedPrice) {
-      return res.status(400).json({
-        error: 'Invalid plan',
-        receivedPlan,
-        normalizedPlan,
-        acceptedPlans: Object.keys(PLAN_PRICE_MAP),
+      return res.status(500).json({
+        error: "Stripe secret key is missing.",
       });
     }
 
-    const origin = req.headers.origin || process.env.APP_URL || 'https://hairintel-ai.vercel.app';
+    const body = req.body || {};
 
-    const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      line_items: [{ price: selectedPrice, quantity: 1 }],
-      success_url: `${origin}/?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/?checkout=cancelled`,
+    const requestedPlan = String(body.plan || body.tier || "")
+      .trim()
+      .toLowerCase();
+
+    const plan = requestedPlan === "salon" ? "studio" : requestedPlan;
+
+    if (!["starter", "pro", "studio"].includes(plan)) {
+      return res.status(400).json({
+        error: "Invalid plan",
+        received: requestedPlan,
+      });
+    }
+
+    const priceId = PRICE_MAP[plan];
+
+    if (!priceId) {
+      return res.status(500).json({
+        error: `Missing Stripe price ID for ${plan}.`,
+      });
+    }
+
+    const origin =
+      req.headers.origin ||
+      process.env.APP_URL ||
+      "https://hairintel-ai.vercel.app";
+
+    const email = String(
+      body.email ||
+      body.customer_email ||
+      body.customerEmail ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+    const sessionConfig = {
+      mode: "subscription",
+      payment_method_types: ["card"],
+
+      /*
+        This allows the 7-day trial to start without charging today.
+        Stripe may still ask for a card depending on your Stripe Checkout settings,
+        but the subscription will have trial_period_days: 7.
+      */
+      payment_method_collection: "if_required",
+
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+
       allow_promotion_codes: true,
-      billing_address_collection: 'auto',
-      customer_email: customerEmail,
-      client_reference_id: body.userId || customerEmail || undefined,
+
+      success_url: `${origin}/?checkout=success&plan=${encodeURIComponent(
+        plan
+      )}&session_id={CHECKOUT_SESSION_ID}`,
+
+      cancel_url: `${origin}/?checkout=cancelled`,
+
       metadata: {
-        plan: normalizedPlan,
-        receivedPlan: receivedPlan || '',
-        userId: body.userId || '',
-        customerEmail: customerEmail || '',
+        plan,
+        app: "hairintel-ai",
       },
+
       subscription_data: {
+        trial_period_days: 7,
         metadata: {
-          plan: normalizedPlan,
-          receivedPlan: receivedPlan || '',
-          userId: body.userId || '',
-          customerEmail: customerEmail || '',
+          plan,
+          app: "hairintel-ai",
         },
       },
-    });
+    };
 
-    return res.status(200).json({ url: session.url });
+    if (email) {
+      sessionConfig.customer_email = email;
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
+
+    return res.status(200).json({
+      id: session.id,
+      url: session.url,
+      plan,
+    });
   } catch (error) {
-    console.error('Stripe checkout error:', error);
-    return res.status(500).json({ error: 'Stripe checkout failed.', message: error.message });
+    console.error("Stripe checkout error:", error);
+
+    return res.status(500).json({
+      error: "Stripe checkout failed.",
+      message: error.message,
+    });
   }
 }
