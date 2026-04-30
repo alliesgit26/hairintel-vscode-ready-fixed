@@ -1,12 +1,6 @@
 import Stripe from "stripe";
-import { createClient } from "@supabase/supabase-js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -18,18 +12,13 @@ export default async function handler(req, res) {
   try {
     if (!process.env.STRIPE_SECRET_KEY) {
       return res.status(500).json({
-        error: "STRIPE_SECRET_KEY is missing on the server.",
-      });
-    }
-
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return res.status(500).json({
-        error: "Supabase environment variables are missing on the server.",
+        error: "STRIPE_SECRET_KEY is missing in Vercel.",
       });
     }
 
     const body = req.body || {};
-    const email = String(
+
+    let email = String(
       body.email ||
       body.customer_email ||
       body.customerEmail ||
@@ -38,9 +27,11 @@ export default async function handler(req, res) {
       .trim()
       .toLowerCase();
 
-    const directCustomerId = body.stripe_customer_id || body.customerId;
-
-    let stripeCustomerId = directCustomerId || null;
+    let stripeCustomerId = String(
+      body.stripe_customer_id ||
+      body.customerId ||
+      ""
+    ).trim();
 
     if (!stripeCustomerId) {
       if (!email) {
@@ -49,30 +40,18 @@ export default async function handler(req, res) {
         });
       }
 
-      const { data, error } = await supabase
-        .from("subscriptions")
-        .select("stripe_customer_id, status, plan, customer_email")
-        .eq("customer_email", email)
-        .in("status", ["active", "trialing", "past_due"])
-        .order("updated_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      const customers = await stripe.customers.list({
+        email,
+        limit: 1,
+      });
 
-      if (error) {
-        console.error("Supabase subscription lookup error:", error);
-        return res.status(500).json({
-          error: "Could not check subscription status.",
-          message: error.message,
-        });
-      }
-
-      if (!data || !data.stripe_customer_id) {
+      if (!customers.data.length) {
         return res.status(404).json({
-          error: "No active Stripe customer found for this email.",
+          error: "No Stripe customer found for this email.",
         });
       }
 
-      stripeCustomerId = data.stripe_customer_id;
+      stripeCustomerId = customers.data[0].id;
     }
 
     const origin =
@@ -80,19 +59,19 @@ export default async function handler(req, res) {
       process.env.APP_URL ||
       "https://hairintel-ai.vercel.app";
 
-    const session = await stripe.billingPortal.sessions.create({
+    const portalSession = await stripe.billingPortal.sessions.create({
       customer: stripeCustomerId,
       return_url: `${origin}/?billing=returned`,
     });
 
     return res.status(200).json({
-      url: session.url,
+      url: portalSession.url,
     });
   } catch (error) {
     console.error("Stripe billing portal error:", error);
 
     return res.status(500).json({
-      error: "Could not open billing portal.",
+      error: "Could not open Stripe billing portal.",
       message: error.message,
     });
   }
