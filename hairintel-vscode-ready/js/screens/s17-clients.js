@@ -30,7 +30,7 @@ function renderS17Clients(params = {}) {
         <div class="hi-header-title">Clients</div>
         <div class="hi-header-sub">${clients.length} saved</div>
       </div>
-      <button class="hi-header-action-btn" onclick="startNewConsult()" style="color:var(--gold);background:var(--gold-pale);border:1px solid var(--gold-border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;">
+      <button class="hi-header-action-btn" onclick="startNewConsult()" style="color:var(--gold);background:var(--gold-pale);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;">
         + New
       </button>
     </div>
@@ -231,7 +231,7 @@ function renderS18Subscription() {
 
       ${plans.map(plan => `
       <div class="hi-card hi-mb-4" style="position:relative;${plan.id === 'pro' ? 'border-color:var(--gold-border);' : ''}${current === plan.id ? 'border-color:var(--success);' : ''}">
-        ${plan.badge ? `<div style="position:absolute;top:-1px;right:14px;background:${plan.id === 'starter' ? 'var(--gold)' : 'var(--gold)'};color:var(--bg);font-size:10px;font-weight:700;padding:4px 10px;border-radius:0 0 8px 8px;letter-spacing:0.06em;">${plan.badge}</div>` : ''}
+        ${plan.badge ? `<div style="position:absolute;top:-1px;right:14px;background:var(--gold);color:var(--bg);font-size:10px;font-weight:700;padding:4px 10px;border-radius:0 0 8px 8px;letter-spacing:0.06em;">${plan.badge}</div>` : ''}
         ${current === plan.id ? `<div style="position:absolute;top:-1px;left:14px;background:var(--success);color:var(--bg);font-size:10px;font-weight:700;padding:4px 10px;border-radius:0 0 8px 8px;letter-spacing:0.06em;">CURRENT PLAN</div>` : ''}
 
         <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;">
@@ -261,7 +261,9 @@ function renderS18Subscription() {
         ${current === plan.id
           ? `<button class="hi-btn" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--success);font-size:13px;margin-bottom:8px;" disabled>Current Plan</button>
              <button class="hi-btn hi-btn-outline" style="font-size:13px;" onclick="manageBilling()">Manage Billing / Cancel</button>`
-          : `<button class="hi-btn ${plan.id === 'pro' ? 'hi-btn-gold' : 'hi-btn-outline'}" id="btn-${plan.id}" onclick="selectPlan('${plan.id}')">
+          : isPaidPlan
+          ? `<button class="hi-btn hi-btn-outline" style="font-size:13px;" onclick="manageBilling()">Change Plan in Billing Portal</button>`
+          : `<button class="hi-btn ${plan.id === 'starter' ? 'hi-btn-gold' : 'hi-btn-outline'}" id="btn-${plan.id}" onclick="selectPlan('${plan.id}')">
                ${plan.id === 'starter' ? 'Start Starter Trial' : plan.id === 'studio' ? 'Start Studio Trial' : 'Start Pro Trial'}
              </button>`
         }
@@ -280,13 +282,11 @@ function renderS18Subscription() {
           <a href="/terms.html" style="color:var(--gold);text-decoration:none;">Terms & Billing</a>.
         </div>
 
-        ${isPaidPlan ? `
         <div style="margin-top:12px;">
           <button class="hi-btn hi-btn-ghost" style="font-size:12px;padding:8px 14px;width:auto;" onclick="manageBilling()">
-            Manage Billing / Cancel Subscription
+            Already subscribed? Manage Billing
           </button>
         </div>
-        ` : ''}
       </div>
 
       <div class="hi-card hi-mb-4">
@@ -329,22 +329,9 @@ function initS18Subscription() {
 
   window.manageBilling = async () => {
     try {
-      const sub = HI.getSub ? HI.getSub() : {};
-      const stylist = HI.getStylist ? HI.getStylist() : {};
-
-      let email =
-        sub.customer_email ||
-        sub.email ||
-        stylist.email ||
-        localStorage.getItem('hairintel_customer_email') ||
-        '';
+      let email = prompt('Enter the email used for your HairIntel subscription:');
 
       email = String(email || '').trim().toLowerCase();
-
-      if (!email) {
-        email = prompt('Enter the email used for your HairIntel subscription:');
-        email = String(email || '').trim().toLowerCase();
-      }
 
       if (!email) {
         hiToast('Subscription email is required to open billing.', 'error');
@@ -363,7 +350,14 @@ function initS18Subscription() {
         body: JSON.stringify({ email }),
       });
 
-      const data = await response.json();
+      const raw = await response.text();
+
+      let data = {};
+      try {
+        data = raw ? JSON.parse(raw) : {};
+      } catch (parseError) {
+        throw new Error(raw.slice(0, 180) || 'Billing portal returned an invalid server response.');
+      }
 
       if (!response.ok) {
         throw new Error(data.error || data.message || 'Could not open billing portal.');
