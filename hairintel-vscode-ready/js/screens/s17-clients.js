@@ -267,9 +267,16 @@ function renderS18Subscription() {
       </div>`).join('')}
 
       <div style="text-align:center;padding:16px 0;">
-        <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);">
+        <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);margin-bottom:8px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           7-day free trial · Cancel any time
+        </div>
+
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.5;max-width:320px;margin:0 auto;">
+          By subscribing, you agree to HairIntel AI’s
+          <a href="/privacy.html" style="color:var(--gold);text-decoration:none;">Privacy Policy</a>
+          and
+          <a href="/terms.html" style="color:var(--gold);text-decoration:none;">Terms & Billing</a>.
         </div>
       </div>
 
