@@ -164,7 +164,7 @@ function renderS04Goals() {
     <div class="hi-content">
       <div class="hi-mb-5">
         <h2 class="hi-heading hi-mb-2">Client Objectives</h2>
-        <p class="hi-body">Goal selection directly shapes the install recommendation and outcome projection.</p>
+        <p class="hi-body">Goal selection shapes the install recommendation. Length increase means inches added to the current hair, not the final extension length.</p>
       </div>
       <div class="hi-card hi-mb-3">
         <div class="hi-label hi-mb-3">Primary Goal</div>
@@ -193,14 +193,14 @@ function renderS04Goals() {
         </div>
       </div>
       <div class="hi-card hi-mb-5">
-        <div class="hi-label hi-mb-3">Desired Length Increase</div>
+        <div class="hi-label hi-mb-3">Desired Length Increase (Inches Added)</div>
         <div class="hi-options" data-option-group="length" id="length-group">
           ${[
             {val:'maintain',label:'Maintain'},
             {val:'+2',      label:'+2"'},
             {val:'+4',      label:'+4"'},
             {val:'+6',      label:'+6"'},
-            {val:'+8',      label:'+8"+'}
+            {val:'+8',      label:'+8"'}
           ].map(o=>`<div class="hi-option" data-val="${o.val}">${o.label}</div>`).join('')}
         </div>
       </div>

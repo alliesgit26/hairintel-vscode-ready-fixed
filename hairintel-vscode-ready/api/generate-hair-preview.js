@@ -22,6 +22,14 @@ export default async function handler(req, res) {
     const photos = body.photos || {};
     const result = body.result || {};
     const plan = result.plan || {};
+    const sub = body.subscription || {};
+    const activePlan = String(sub.plan || "free").toLowerCase();
+    const activeStatus = String(sub.status || "").toLowerCase();
+    const hasPreviewAccess = ["pro", "professional", "studio", "salon", "team"].includes(activePlan) && ["active", "trialing", "paid", "complete", ""].includes(activeStatus);
+
+    if (!hasPreviewAccess) {
+      return send(403, { error: "AI previews require an active Pro or Studio subscription." });
+    }
 
     const front = photos["photo-front"];
     const back = photos["photo-back"];

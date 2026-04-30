@@ -278,7 +278,7 @@ function renderS18Subscription() {
         ${[
           { q: 'Can I switch plans?', a: 'Yes, you can upgrade or downgrade at any time. Changes take effect immediately.' },
           { q: 'How do AI previews work?', a: 'Each AI preview generation uses 1 monthly preview credit on Pro or Studio.' },
-          { q: 'Is client data stored in the cloud?', a: 'Currently, all data is stored locally in your browser unless cloud sync is configured later.' },
+          { q: 'Is client data stored in the cloud?', a: 'Client records remain local in this version; subscription status is synced through Stripe and Supabase when configured.' },
           { q: 'What happens after my free consultations?', a: 'After 3 consultations on the Free plan, you will need to upgrade to Pro or Studio to continue.' }
         ].map(faq => `
         <div class="hi-faq-item" style="padding:12px 0;border-bottom:1px solid var(--border-light);">

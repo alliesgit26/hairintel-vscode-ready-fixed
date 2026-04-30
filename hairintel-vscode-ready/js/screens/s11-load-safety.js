@@ -9,8 +9,9 @@ function renderS11LoadSafety(params = {}) {
 
   const { capacity, plan, readiness } = result;
   const isSafe = capacity.status === 'SAFE';
-  const statusColor = isSafe ? 'var(--success)' : 'var(--danger)';
-  const statusBg    = isSafe ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)';
+  const isBorderline = capacity.status === 'BORDERLINE';
+  const statusColor = isSafe ? 'var(--success)' : isBorderline ? 'var(--warning)' : 'var(--danger)';
+  const statusBg    = isSafe ? 'rgba(34,197,94,0.08)' : isBorderline ? 'rgba(234,179,8,0.08)' : 'rgba(239,68,68,0.08)';
 
   /* Build bar segments: 0–safeMin(yellow), safeMin–safeMax(green), safeMax+(red) */
   const maxBar = Math.max(capacity.safeMax * 1.5, plan.grams * 1.2);
@@ -43,7 +44,9 @@ function renderS11LoadSafety(params = {}) {
         <p style="font-size:13px;color:var(--text-muted);margin-top:10px;line-height:1.5;">
           ${isSafe
             ? 'Recommended load is within safe capacity range.'
-            : 'Recommended load may exceed safe capacity. Consider reducing grams.'}
+            : isBorderline
+              ? 'Recommended load is close to the safe maximum. Consider reducing grams or increasing placement caution.'
+              : 'Recommended load may exceed safe capacity. Consider reducing grams.'}
         </p>
       </div>
 

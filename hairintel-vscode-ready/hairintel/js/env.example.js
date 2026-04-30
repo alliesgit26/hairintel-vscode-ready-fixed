@@ -1,4 +1,6 @@
+// Browser-safe public Supabase config only.
+// Production loads this through /api/config from Vercel environment variables.
 window.ENV = {
-  SUPABASE_URL: 'https://YOUR-PROJECT.supabase.co',
-  SUPABASE_ANON_KEY: 'YOUR_SUPABASE_ANON_KEY'
+  SUPABASE_URL: '',
+  SUPABASE_ANON_KEY: ''
 };

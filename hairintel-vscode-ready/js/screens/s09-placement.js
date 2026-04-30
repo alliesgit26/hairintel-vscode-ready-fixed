@@ -73,7 +73,7 @@ function renderS09Placement(params = {}) {
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;align-items:center;gap:10px;">
             <div style="width:16px;height:4px;border-radius:2px;background:#22c55e;flex-shrink:0;"></div>
-            <span style="font-size:13px;color:var(--text-sub);">Safe Placement — Standard installation, full tension allowed</span>
+            <span style="font-size:13px;color:var(--text-sub);">Suitable Placement — standard placement may be appropriate after tension check</span>
           </div>
           <div style="display:flex;align-items:center;gap:10px;">
             <div style="width:16px;height:4px;border-radius:2px;background:#f59e0b;flex-shrink:0;"></div>
@@ -99,15 +99,25 @@ function renderS09Placement(params = {}) {
           <span class="hi-banner-icon">${HIcons.warning}</span>
           <div style="font-size:13px;color:var(--text-sub);line-height:1.5;"><strong style="color:var(--warning);">Nape row restricted.</strong> Client-reported nape sensitivity requires removal of the lowest row.</div>
         </div>` : ''}
+        ${placementMap.avoidPerimeter ? `
+        <div class="hi-banner hi-banner-warn hi-mb-2">
+          <span class="hi-banner-icon">${HIcons.warning}</span>
+          <div style="font-size:13px;color:var(--text-sub);line-height:1.5;"><strong style="color:var(--warning);">Perimeter restricted.</strong> Avoid edge tension and do not fill fragile hairline zones.</div>
+        </div>` : ''}
+        ${placementMap.cautionShortBlend ? `
+        <div class="hi-banner hi-banner-warn hi-mb-2">
+          <span class="hi-banner-icon">${HIcons.warning}</span>
+          <div style="font-size:13px;color:var(--text-sub);line-height:1.5;"><strong style="color:var(--warning);">Short-hair blend caution.</strong> Advanced layering and density matching are required to avoid a shelf line.</div>
+        </div>` : ''}
         ${placementMap.cautionCrown ? `
         <div class="hi-banner hi-banner-warn hi-mb-2">
           <span class="hi-banner-icon">${HIcons.warning}</span>
           <div style="font-size:13px;color:var(--text-sub);line-height:1.5;"><strong style="color:var(--warning);">Crown area — caution.</strong> Reduce weft density in upper rows to protect crown thinning zones.</div>
         </div>` : ''}
-        ${!placementMap.avoidTemples && !placementMap.avoidNape && !placementMap.cautionCrown ? `
+        ${!placementMap.avoidTemples && !placementMap.avoidNape && !placementMap.avoidPerimeter && !placementMap.cautionCrown && !placementMap.cautionShortBlend ? `
         <div style="display:flex;align-items:center;gap:10px;">
           <span style="color:var(--success);">${HIcons.check}</span>
-          <span style="font-size:13px;color:var(--text-sub);">No restricted zones identified. Standard placement approved across all rows.</span>
+          <span style="font-size:13px;color:var(--text-sub);">No restricted zones identified from the selected inputs. Confirm final placement and tension in person.</span>
         </div>` : ''}
       </div>
 
