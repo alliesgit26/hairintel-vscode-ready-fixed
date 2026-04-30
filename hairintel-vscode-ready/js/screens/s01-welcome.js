@@ -43,6 +43,7 @@ function renderS01Welcome() {
       <button class="hi-btn hi-btn-gold" id="start-consult-btn" style="margin-bottom:12px;">
         ${HIcons.sparkle} &nbsp;Start New Consultation
       </button>
+
       <button class="hi-btn hi-btn-ghost" onclick="HIApp.go('clients')">
         ${HIcons.clients} &nbsp;Saved Clients
       </button>
@@ -50,6 +51,12 @@ function renderS01Welcome() {
       ${isPaidPlan ? `
       <div style="text-align:center;margin-top:12px;">
         <span class="hi-label" style="color:var(--success);">${HIcons.check} ${hiCapitalize(currentPlan)} Plan Active</span>
+
+        <div style="margin-top:10px;">
+          <button onclick="HIApp.go('subscription')" style="font-size:12px;color:var(--gold);font-weight:700;background:rgba(198,167,105,0.12);border:1px solid var(--gold-border);border-radius:999px;padding:8px 16px;cursor:pointer;">
+            Manage Plan
+          </button>
+        </div>
       </div>
       ` : `
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;">
@@ -79,11 +86,13 @@ function renderS01Welcome() {
         <span class="hi-label">Recent Consultations</span>
         <button onclick="HIApp.go('clients')" style="font-size:12px;color:var(--gold);font-weight:500;background:none;border:none;cursor:pointer;">View All</button>
       </div>
+
       ${recent.map(c => {
         const client = HI.getClients().find(cl => cl.id === c.clientId) || {};
         const r = c.result;
         const rColor = r?.readiness === 'green' ? 'var(--success)' : r?.readiness === 'yellow' ? 'var(--warning)' : 'var(--danger)';
         const rDot = r ? `<span style="width:8px;height:8px;border-radius:50%;background:${rColor};display:inline-block;flex-shrink:0;"></span>` : '';
+
         return `
         <div class="hi-consult-card" onclick="HIApp.go('readiness', { consultId: '${c.id}' })">
           <div style="display:flex;align-items:center;gap:12px;">
