@@ -5,7 +5,7 @@ function renderS01Welcome() {
   const stylist = HI.getStylist() || {};
   const clients = HI.getClients();
   const consults = HI.getConsults();
-  const recent = [...consults].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,3);
+  const recent = [...consults].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
   const sub = HI.getSub();
   const remaining = HI.remainingFree();
   const name = stylist.name ? stylist.name.split(' ')[0] : null;
@@ -129,6 +129,13 @@ function renderS01Welcome() {
       <!-- Disclaimer -->
       <div class="hi-disclaimer">
         HairIntel AI provides consultation support and planning guidance for licensed or professional stylists. Final service decisions should always rely on professional in-person judgment.
+      </div>
+
+      <!-- Legal Links -->
+      <div style="margin-top:14px;text-align:center;font-size:13px;">
+        <a href="/privacy.html" style="color:#9b6b4f;text-decoration:none;">Privacy Policy</a>
+        <span style="margin:0 8px;color:#9ca3af;">|</span>
+        <a href="/terms.html" style="color:#9b6b4f;text-decoration:none;">Terms & Billing</a>
       </div>
     </div>
   </div>`;
