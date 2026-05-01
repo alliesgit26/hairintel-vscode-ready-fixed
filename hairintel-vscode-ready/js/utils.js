@@ -6,38 +6,72 @@
 function hiToast(msg, type = 'info', ms = 3000) {
   const c = document.getElementById('hi-toast-container');
   if (!c) return;
+
   const icons = {
     success: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>`,
     warning: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
     error:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
     info:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`
   };
+
   const t = document.createElement('div');
   t.className = `hi-toast ${type}`;
-  t.innerHTML = `<span style="flex-shrink:0;">${icons[type]||icons.info}</span><span>${msg}</span>`;
+  t.innerHTML = `<span style="flex-shrink:0;">${icons[type] || icons.info}</span><span>${msg}</span>`;
+
   c.appendChild(t);
-  setTimeout(() => { t.classList.add('hiding'); setTimeout(() => t.remove(), 240); }, ms);
+
+  setTimeout(() => {
+    t.classList.add('hiding');
+    setTimeout(() => t.remove(), 240);
+  }, ms);
 }
 
 /* ---- DOM ---- */
-const hEl  = id  => document.getElementById(id);
-const hQs  = (s,c=document) => c.querySelector(s);
-const hQsa = (s,c=document) => [...c.querySelectorAll(s)];
+const hEl  = id => document.getElementById(id);
+const hQs  = (s, c = document) => c.querySelector(s);
+const hQsa = (s, c = document) => [...c.querySelectorAll(s)];
 
 /* ---- Format ---- */
-function hiCurrency(n) { return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n||0); }
-function hiDate(str)   { if (!str) return '—'; try { return new Date(str).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); } catch { return str; } }
-function hiInitials(f='',l='') { return ((f[0]||'')+(l[0]||'')).toUpperCase(); }
-function hiCapitalize(s) { return s ? s.charAt(0).toUpperCase()+s.slice(1) : ''; }
+function hiCurrency(n) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(n || 0);
+}
+
+function hiDate(str) {
+  if (!str) return '—';
+
+  try {
+    return new Date(str).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  } catch {
+    return str;
+  }
+}
+
+function hiInitials(f = '', l = '') {
+  return ((f[0] || '') + (l[0] || '')).toUpperCase();
+}
+
+function hiCapitalize(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+}
 
 /* ---- Option Toggle Init ---- */
 function hiInitOptions(container, multi = false) {
   hQsa('.hi-option, .hi-tag', container || document).forEach(opt => {
-    opt.addEventListener('click', function() {
+    opt.addEventListener('click', function () {
       if (!multi) {
         const grp = this.closest('[data-option-group]');
-        if (grp) hQsa('.hi-option.selected, .hi-tag.selected', grp).forEach(o => o.classList.remove('selected'));
+        if (grp) {
+          hQsa('.hi-option.selected, .hi-tag.selected', grp).forEach(o => o.classList.remove('selected'));
+        }
       }
+
       this.classList.toggle('selected');
     });
   });
@@ -47,6 +81,7 @@ function hiInitOptions(container, multi = false) {
 function hiGetSelected(groupEl) {
   return hQsa('.hi-option.selected, .hi-tag.selected', groupEl).map(o => o.dataset.val || o.textContent.trim());
 }
+
 function hiGetSingle(groupEl) {
   return hQsa('.hi-option.selected, .hi-tag.selected', groupEl).map(o => o.dataset.val)[0] || '';
 }
@@ -78,7 +113,7 @@ const HIcons = {
 /* ---- Step Progress Bar HTML ---- */
 function hiProgressBar(current, total) {
   return `<div class="hi-progress-bar">
-    ${Array.from({length: total}, (_,i) => `
+    ${Array.from({ length: total }, (_, i) => `
       <div class="hi-step-seg ${i < current ? 'done' : i === current ? 'active' : ''}"></div>
     `).join('')}
   </div>`;
@@ -86,8 +121,10 @@ function hiProgressBar(current, total) {
 
 /* ---- Score Ring SVG ---- */
 function hiScoreRing(score, color, size = 120) {
-  const r = 48; const circ = 2 * Math.PI * r;
+  const r = 48;
+  const circ = 2 * Math.PI * r;
   const dash = (score / 100) * circ;
+
   return `
   <div class="hi-score-ring" style="width:${size}px;height:${size}px;">
     <svg width="${size}" height="${size}" viewBox="0 0 120 120">
@@ -115,38 +152,61 @@ const HIApp = {
     'client-info':  { render: p => renderS02ClientInfo(p),   init: p => initS02ClientInfo(p)   },
     'photos':       { render: p => renderS03Photos(p),        init: p => initS03Photos(p)       },
     'goals':        { render: p => renderS04Goals(p),         init: p => initS04Goals(p)        },
-    'hair-profile': { render: p => renderS05HairProfile(p),  init: p => initS05HairProfile(p)  },
-    'concerns':     { render: p => renderS06Concerns(p),     init: p => initS06Concerns(p)     },
-    'analysis':     { render: p => renderS07Analysis(p),     init: p => initS07Analysis(p)     },
-    'readiness':    { render: p => renderS08Readiness(p),    init: p => initS08Readiness(p)    },
-    'placement':    { render: p => renderS09Placement(p),    init: p => initS09Placement(p)    },
-    'install-plan': { render: p => renderS10InstallPlan(p),  init: p => initS10InstallPlan(p)  },
-    'load-safety':  { render: p => renderS11LoadSafety(p),   init: p => initS11LoadSafety(p)   },
-    'outcome':      { render: p => renderS12Outcome(p),      init: p => initS12Outcome(p)      },
-    'summary':      { render: p => renderS13Summary(p),      init: p => initS13Summary(p)      },
-    'estimate':     { render: p => renderS14Estimate(p),     init: p => initS14Estimate(p)     },
-    'alternatives': { render: p => renderS15Alternatives(p), init: p => initS15Alternatives(p) },
-    'export':       { render: p => renderS16Export(p),       init: p => initS16Export(p)       },
-    'ai-preview':   {render:  p => renderS19AIPreview(p),    init: p => initS19AIPreview(p)    },
-    'clients':      { render: p => renderS17Clients(p),      init: p => initS17Clients(p)      },
-    'subscription': { render: p => renderS18Subscription(p), init: p => initS18Subscription(p) }
+    'hair-profile': { render: p => renderS05HairProfile(p),   init: p => initS05HairProfile(p)  },
+    'concerns':     { render: p => renderS06Concerns(p),      init: p => initS06Concerns(p)     },
+    'analysis':     { render: p => renderS07Analysis(p),      init: p => initS07Analysis(p)     },
+    'readiness':    { render: p => renderS08Readiness(p),     init: p => initS08Readiness(p)    },
+    'placement':    { render: p => renderS09Placement(p),     init: p => initS09Placement(p)    },
+    'install-plan': { render: p => renderS10InstallPlan(p),   init: p => initS10InstallPlan(p)  },
+    'load-safety':  { render: p => renderS11LoadSafety(p),    init: p => initS11LoadSafety(p)   },
+    'outcome':      { render: p => renderS12Outcome(p),       init: p => initS12Outcome(p)      },
+    'summary':      { render: p => renderS13Summary(p),       init: p => initS13Summary(p)      },
+    'estimate':     { render: p => renderS14Estimate(p),      init: p => initS14Estimate(p)     },
+    'alternatives': { render: p => renderS15Alternatives(p),  init: p => initS15Alternatives(p) },
+    'export':       { render: p => renderS16Export(p),        init: p => initS16Export(p)       },
+    'ai-preview':   { render: p => renderS19AIPreview(p),     init: p => initS19AIPreview(p)    },
+    'clients':      { render: p => renderS17Clients(p),       init: p => initS17Clients(p)      },
+    'subscription': { render: p => renderS18Subscription(p),  init: p => initS18Subscription(p) }
   },
 
   go(name, params = {}, push = true) {
     const def = this.SCREENS[name];
-    if (!def) { console.warn('[HIApp] Unknown screen:', name); return; }
+
+    if (!def) {
+      console.warn('[HIApp] Unknown screen:', name);
+      return;
+    }
+
     if (push && this.current && this.current !== name) {
-      this.stack.push({ screen: this.current, params: this.params });
+      this.stack.push({
+        screen: this.current,
+        params: this.params
+      });
+
       if (this.stack.length > 30) this.stack.shift();
     }
+
     this.current = name;
     this.params = params;
+
     const container = hEl('hi-screen-container');
     if (!container) return;
-    try { container.innerHTML = def.render(params); } catch(e) { console.error('[HIApp] Render error', name, e); container.innerHTML = `<div class="hi-screen" style="padding:40px;color:var(--danger);">Render error: ${e.message}</div>`; }
+
+    try {
+      container.innerHTML = def.render(params);
+    } catch (e) {
+      console.error('[HIApp] Render error', name, e);
+      container.innerHTML = `<div class="hi-screen" style="padding:40px;color:var(--danger);">Render error: ${e.message}</div>`;
+    }
+
     const screen = container.querySelector('.hi-screen');
     if (screen) screen.scrollTop = 0;
-    try { if (def.init) def.init(params); } catch(e) { console.error('[HIApp] Init error', name, e); }
+
+    try {
+      if (def.init) def.init(params);
+    } catch (e) {
+      console.error('[HIApp] Init error', name, e);
+    }
   },
 
   back() {
@@ -159,7 +219,45 @@ const HIApp = {
   },
 
   init() {
-    HI.loadDemo();
+    /*
+      LIVE MODE:
+      Demo data is disabled.
+      Do not call HI.loadDemo() in production.
+    */
+
+    // HI.loadDemo();
+
     this.go('welcome');
   }
 };
+
+/* ================================================================
+   CLEAR THIS DEVICE / LOCAL RESET
+   ================================================================ */
+function hiClearThisDevice() {
+  const ok = confirm(
+    "Clear HairIntel AI data from this browser? This removes saved local clients, local consultation data, saved billing email, and local subscription display status. It does NOT cancel your Stripe subscription."
+  );
+
+  if (!ok) return;
+
+  const keysToRemove = [];
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+
+    if (
+      key &&
+      (
+        key.startsWith("hi_") ||
+        key.startsWith("hairintel_")
+      )
+    ) {
+      keysToRemove.push(key);
+    }
+  }
+
+  keysToRemove.forEach(key => localStorage.removeItem(key));
+
+  window.location.href = "/";
+}
