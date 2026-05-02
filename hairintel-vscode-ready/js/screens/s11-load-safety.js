@@ -1,5 +1,5 @@
-/* ================================================================
-   S11 — HAIR LOAD SAFETY SCORE
+﻿/* ================================================================
+   S11 â€” HAIR LOAD SAFETY SCORE
    ================================================================ */
 function renderS11LoadSafety(params = {}) {
   const consultId = params.consultId || HIConsult.get('consultId');
@@ -13,7 +13,7 @@ function renderS11LoadSafety(params = {}) {
   const statusColor = isSafe ? 'var(--success)' : isBorderline ? 'var(--warning)' : 'var(--danger)';
   const statusBg    = isSafe ? 'rgba(34,197,94,0.08)' : isBorderline ? 'rgba(234,179,8,0.08)' : 'rgba(239,68,68,0.08)';
 
-  /* Build bar segments: 0–safeMin(yellow), safeMin–safeMax(green), safeMax+(red) */
+  /* Build bar segments: 0â€“safeMin(yellow), safeMinâ€“safeMax(green), safeMax+(red) */
   const maxBar = Math.max(capacity.safeMax * 1.5, plan.grams * 1.2);
   const safeMinPct  = (capacity.safeMin / maxBar * 100).toFixed(1);
   const safeMaxPct  = (capacity.safeMax / maxBar * 100).toFixed(1);
@@ -68,7 +68,7 @@ function renderS11LoadSafety(params = {}) {
           <!-- Labels below -->
           <div style="display:flex;justify-content:space-between;margin-top:6px;">
             <span style="font-size:11px;color:var(--text-muted);">0g</span>
-            <span style="font-size:11px;color:var(--success);">${capacity.safeMin}g–${capacity.safeMax}g safe</span>
+            <span style="font-size:11px;color:var(--success);">${capacity.safeMin}gâ€“${capacity.safeMax}g safe</span>
             <span style="font-size:11px;color:var(--text-muted);">${Math.round(maxBar)}g</span>
           </div>
         </div>
@@ -112,7 +112,7 @@ function renderS11LoadSafety(params = {}) {
       <!-- Navigation -->
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button class="hi-btn hi-btn-gold" onclick="HIApp.go('outcome', { consultId: '${consultId}' })">
-          View Projected Outcome →
+          View Projected Outcome â†’
         </button>
         <button class="hi-btn hi-btn-ghost" onclick="HIApp.go('install-plan', { consultId: '${consultId}' })">Back to Install Plan</button>
       </div>
@@ -133,7 +133,7 @@ function initS11LoadSafety() {
 }
 
 /* ================================================================
-   S12 — PROJECTED OUTCOME
+   S12 â€” PROJECTED OUTCOME
    ================================================================ */
 function renderS12Outcome(params = {}) {
   const consultId = params.consultId || HIConsult.get('consultId');
@@ -146,8 +146,8 @@ function renderS12Outcome(params = {}) {
   const goals = consult?.goals || {};
 
   const currentLengthMap = {
-    'pixie':'~2–3"', 'chin':'~10–11"', 'shoulder':'~14–16"',
-    'chest':'~18–20"', 'mid-back':'~22–24"', 'waist':'~26–28"'
+    'pixie':'~2â€“3"', 'chin':'~10â€“11"', 'shoulder':'~14â€“16"',
+    'chest':'~18â€“20"', 'mid-back':'~22â€“24"', 'waist':'~26â€“28"'
   };
   const densityLabelMap = { low:'Sparse', medium:'Normal', high:'Full' };
   const addInches = goals.desiredLength === 'maintain' ? 0
@@ -159,7 +159,11 @@ function renderS12Outcome(params = {}) {
     medium: { subtle:'Full',     noticeable:'Very Full',dramatic:'Ultra Full' },
     high:   { subtle:'Full',     noticeable:'Ultra Full',dramatic:'Max Full'  }
   };
-  const fullnessLabel = projectedFullness[hp.density || 'medium']?.[goals.transformLevel || 'noticeable'] || 'Full';
+  const hasLoadOverride = !!plan.safetyOverride || !!capacity.safetyOverride || capacity.status === 'OVERLOAD RISK';
+
+  const fullnessLabel = hasLoadOverride
+    ? 'Staged / Conservative'
+    : projectedFullness[hp.density || 'medium']?.[goals.transformLevel || 'noticeable'] || 'Full';
 
   const isRed = readiness === 'red';
 
@@ -208,7 +212,7 @@ function renderS12Outcome(params = {}) {
           </div>
           <div style="margin-top:10px;">
             <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${hp.length ? hiCapitalize(hp.length) : 'Current'} Length</div>
-            <div style="font-size:11px;color:var(--text-muted);">${currentLengthMap[hp.length] || ''} · ${densityLabelMap[hp.density] || ''} density</div>
+            <div style="font-size:11px;color:var(--text-muted);">${currentLengthMap[hp.length] || ''} Â· ${densityLabelMap[hp.density] || ''} density</div>
           </div>
         </div>
 
@@ -230,7 +234,7 @@ function renderS12Outcome(params = {}) {
           </div>
           <div style="margin-top:10px;">
             <div style="font-size:13px;font-weight:600;color:var(--gold);margin-bottom:4px;">${fullnessLabel} Volume</div>
-            <div style="font-size:11px;color:var(--text-muted);">${addInches > 0 ? `+${addInches}" added · ` : ''}${extLen} extensions</div>
+            <div style="font-size:11px;color:var(--text-muted);">${addInches > 0 ? `+${addInches}" added Â· ` : ''}${extLen} extensions</div>
           </div>
         </div>
       </div>
@@ -245,7 +249,7 @@ function renderS12Outcome(params = {}) {
             { label:'Extension Method',         val: plan.method },
             { label:'Extension Length',         val: extLen },
             { label:'First Maintenance',        val: plan.maintenance ? `In ${plan.maintenance}` : 'Per plan' },
-            { label:'Blend Quality',            val: hp.density === 'high' ? 'Excellent' : hp.density === 'medium' ? 'Very Good' : 'Good with care' }
+            { label:'Blend Quality',            val: hasLoadOverride ? 'High-risk blend - advanced cutting required' : hp.density === 'high' ? 'Excellent' : hp.density === 'medium' ? 'Very Good' : 'Good with care' }
           ].map((r, i, arr) => `
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;${i < arr.length-1 ? 'border-bottom:1px solid var(--border-light);' : ''}">
             <span style="font-size:13px;color:var(--text-muted);">${r.label}</span>
@@ -258,7 +262,7 @@ function renderS12Outcome(params = {}) {
       <!-- Navigation -->
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button class="hi-btn hi-btn-gold" onclick="HIApp.go('summary', { consultId: '${consultId}' })">
-          View Consultation Summary →
+          View Consultation Summary â†’
         </button>
         <button class="hi-btn hi-btn-ghost" onclick="HIApp.go('load-safety', { consultId: '${consultId}' })">Back to Load Safety</button>
       </div>
@@ -267,3 +271,4 @@ function renderS12Outcome(params = {}) {
 }
 
 function initS12Outcome() {}
+

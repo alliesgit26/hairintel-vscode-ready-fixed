@@ -1,6 +1,6 @@
-/* ================================================================
-   HAIRINTEL AI — Core Engine
-   Data models · Professional Decision Logic · localStorage · State
+﻿/* ================================================================
+   HAIRINTEL AI â€” Core Engine
+   Data models Â· Professional Decision Logic Â· localStorage Â· State
    ================================================================ */
 
 /* ---- Namespace ---- */
@@ -203,7 +203,7 @@ const HI = {
     /* --- Stylist flags --- */
     if (stylistFlags.includes('temple_thinning')) {
       integrity -= 12; avoidZones.push('temples'); modifications.push('avoid_temples');
-      warnings.push('Temple thinning detected — side tension zones must be avoided.');
+      warnings.push('Temple thinning detected â€” side tension zones must be avoided.');
     }
     if (stylistFlags.includes('crown_thinning')) {
       integrity -= 12; cautionZones.push('crown'); modifications.push('lighten_crown');
@@ -211,7 +211,7 @@ const HI = {
     }
     if (stylistFlags.includes('traction_alopecia')) {
       integrity -= 25; avoidZones.push('perimeter', 'temples', 'nape'); modifications.push('avoid_perimeter_fill', 'avoid_temples', 'avoid_nape', 'reduce_rows', 'reduce_grams', 'lower_tension');
-      warnings.push('Traction alopecia present — avoid perimeter, temples, nape tension, and heavy installs.');
+      warnings.push('Traction alopecia present â€” avoid perimeter, temples, nape tension, and heavy installs.');
     }
     if (stylistFlags.includes('postpartum_hair_loss')) {
       integrity -= 14; modifications.push('reduce_grams', 'reduce_rows');
@@ -219,7 +219,7 @@ const HI = {
     }
     if (stylistFlags.includes('fragile_perimeter')) {
       integrity -= 14; avoidZones.push('perimeter'); modifications.push('avoid_perimeter_fill', 'lower_tension');
-      warnings.push('Fragile perimeter — avoid placement near hairline and reduce edge tension.');
+      warnings.push('Fragile perimeter â€” avoid placement near hairline and reduce edge tension.');
     }
     if (stylistFlags.includes('breakage_zones')) {
       integrity -= 12; cautionZones.push('breakage'); modifications.push('reduce_grams', 'strategic_placement');
@@ -231,7 +231,7 @@ const HI = {
     }
     if (stylistFlags.includes('prior_extension_damage')) {
       integrity -= 14; modifications.push('reduce_rows', 'lower_tension', 'reduce_grams');
-      warnings.push('Previous extension damage — reduce aggression of this install and document tension tolerance.');
+      warnings.push('Previous extension damage â€” reduce aggression of this install and document tension tolerance.');
     }
     if (stylistFlags.includes('scalp_irritation')) {
       integrity -= 10; modifications.push('lower_tension');
@@ -239,11 +239,11 @@ const HI = {
     }
     if (stylistFlags.includes('scalp_condition')) {
       integrity -= 16; modifications.push('lower_tension');
-      warnings.push('Scalp condition present — consult a dermatologist or defer if active irritation, lesions, or inflammation are present.');
+      warnings.push('Scalp condition present â€” consult a dermatologist or defer if active irritation, lesions, or inflammation are present.');
     }
     if (stylistFlags.includes('uneven_density')) {
       integrity -= 10; cautionZones.push('sparse_areas'); modifications.push('strategic_placement');
-      warnings.push('Uneven density — row placement must follow the density map, not a standard pattern.');
+      warnings.push('Uneven density â€” row placement must follow the density map, not a standard pattern.');
     }
     if (stylistFlags.includes('short_crown_layers')) {
       integrity -= 8; cautionZones.push('crown'); modifications.push('blend_required');
@@ -253,11 +253,11 @@ const HI = {
     /* --- Client flags --- */
     if (clientFlags.scalp_sensitivity === 'severe') {
       integrity -= 22; modifications.push('lower_tension', 'reduce_rows', 'reduce_grams', 'lightweight_method');
-      warnings.push('Severe scalp sensitivity — avoid heavy or high-tension methods and require a conservative trial approach.');
+      warnings.push('Severe scalp sensitivity â€” avoid heavy or high-tension methods and require a conservative trial approach.');
     }
     if (clientFlags.scalp_sensitivity === 'moderate') {
       integrity -= 9; modifications.push('lower_tension');
-      warnings.push('Moderate scalp sensitivity — tension reduction and early follow-up recommended.');
+      warnings.push('Moderate scalp sensitivity â€” tension reduction and early follow-up recommended.');
     }
     if (clientFlags.prior_extension_issues?.includes('tension')) {
       integrity -= 6; modifications.push('lower_tension', 'reduce_rows');
@@ -268,12 +268,12 @@ const HI = {
       warnings.push('Client previously experienced breakage from extensions.');
     }
     if (clientFlags.prior_extension_issues?.includes('slipping')) {
-      warnings.push('Prior slipping reported — attachment method and maintenance interval should be reassessed.');
+      warnings.push('Prior slipping reported â€” attachment method and maintenance interval should be reassessed.');
       modifications.push('method_review');
     }
     if (clientFlags.shedding === 'heavy') {
       integrity -= 14; modifications.push('reduce_grams', 'reduce_rows');
-      warnings.push('Heavy shedding reported — install weight must be carefully managed or deferred if shedding is active.');
+      warnings.push('Heavy shedding reported â€” install weight must be carefully managed or deferred if shedding is active.');
     }
     if (clientFlags.shedding === 'increased') {
       integrity -= 7; modifications.push('reduce_grams');
@@ -281,11 +281,11 @@ const HI = {
     }
     if (clientFlags.sensitivity_location?.includes('nape')) {
       avoidZones.push('nape'); modifications.push('avoid_nape');
-      warnings.push('Nape sensitivity — lowest row must be adjusted or removed.');
+      warnings.push('Nape sensitivity â€” lowest row must be adjusted or removed.');
     }
     if (clientFlags.sensitivity_location?.includes('temples')) {
       avoidZones.push('temples'); modifications.push('avoid_temples');
-      warnings.push('Temple sensitivity — avoid side tension and perimeter fill.');
+      warnings.push('Temple sensitivity â€” avoid side tension and perimeter fill.');
     }
 
     /* --- Block and readiness thresholds --- */
@@ -348,13 +348,13 @@ const HI = {
         wefts: 0,
         extensionLength: 'N/A',
         complexity: 'N/A',
-        maintenance: 'Reassess in 6–12 weeks',
+        maintenance: 'Reassess in 6â€“12 weeks',
         appointmentDuration: 'N/A',
         rationale: 'Hair or scalp conditions are too compromised for a safe extension install at this time.'
       };
     }
 
-    /* Method selection — safety overrides win before texture preferences. */
+    /* Method selection â€” safety overrides win before texture preferences. */
     let method = 'Hand-Tied Wefts';
     if (density === 'low' || mods.includes('lightweight_method')) method = 'Tape-Ins';
     if (mods.includes('lower_tension') && density !== 'low' && scalp !== 'severe') method = 'I-Tips';
@@ -385,11 +385,11 @@ const HI = {
     if (currentLength === 'chin') grams = Math.min(grams, density === 'high' ? 110 : density === 'medium' ? 85 : 55);
     if (currentLength === 'pixie') grams = 0;
 
-    /* Extension length. These are recommended finished extension lengths, not “inches added.” */
+    /* Extension length. These are recommended finished extension lengths, not â€œinches added.â€ */
     const lengthMap = {
-      maintain: { pixie: 'Consult only', chin: '10–12"', shoulder: '14"', chest: '16"', 'mid-back': '20"', waist: '24"' },
+      maintain: { pixie: 'Consult only', chin: '10â€“12"', shoulder: '14"', chest: '16"', 'mid-back': '20"', waist: '24"' },
       '+2':     { pixie: 'Consult only', chin: '12"',    shoulder: '16"', chest: '18"', 'mid-back': '22"', waist: '26"' },
-      '+4':     { pixie: 'Consult only', chin: '14–16"', shoulder: '18"', chest: '20"', 'mid-back': '24"', waist: '28"' },
+      '+4':     { pixie: 'Consult only', chin: '14â€“16"', shoulder: '18"', chest: '20"', 'mid-back': '24"', waist: '28"' },
       '+6':     { pixie: 'Consult only', chin: '16"',    shoulder: '20"', chest: '22"', 'mid-back': '26"', waist: '30"' },
       '+8':     { pixie: 'Consult only', chin: '18"',    shoulder: '22"', chest: '24"', 'mid-back': '28"', waist: '30"' }
     };
@@ -406,25 +406,25 @@ const HI = {
 
     /* Maintenance */
     const maintMap = {
-      'Tape-Ins': '5–7 weeks',
-      'Hand-Tied Wefts': '7–9 weeks',
-      'I-Tips': '10–14 weeks',
-      'K-Tips': '10–14 weeks',
-      'Hybrid': '6–8 weeks',
+      'Tape-Ins': '5â€“7 weeks',
+      'Hand-Tied Wefts': '7â€“9 weeks',
+      'I-Tips': '10â€“14 weeks',
+      'K-Tips': '10â€“14 weeks',
+      'Hybrid': '6â€“8 weeks',
       'Consultation/Staged Transition': 'Reassess after grow-out or transitional service'
     };
-    const maintenance = maintMap[method] || '6–8 weeks';
+    const maintenance = maintMap[method] || '6â€“8 weeks';
 
     /* Duration */
     const durMap = {
-      'Tape-Ins': '2–3 hours',
-      'Hand-Tied Wefts': '4–6 hours',
-      'I-Tips': '3–5 hours',
-      'K-Tips': '3–5 hours',
-      'Hybrid': '4–6 hours',
+      'Tape-Ins': '2â€“3 hours',
+      'Hand-Tied Wefts': '4â€“6 hours',
+      'I-Tips': '3â€“5 hours',
+      'K-Tips': '3â€“5 hours',
+      'Hybrid': '4â€“6 hours',
       'Consultation/Staged Transition': 'Consultation only'
     };
-    const duration = durMap[method] || '3–4 hours';
+    const duration = durMap[method] || '3â€“4 hours';
     const wefts = rows === 0 ? 0 : method === 'Tape-Ins' ? Math.round(grams / 2.5) : method.includes('Tips') ? Math.round(grams / 1.2) : rows * 2;
 
     const rationaleBits = [];
@@ -470,11 +470,69 @@ const HI = {
 
     safeMax = Math.max(0, Math.round(safeMax));
     const safeMin = safeMax === 0 ? 0 : Math.max(30, Math.round(safeMax * 0.45));
-    const recommended = plan.grams;
-    const status = recommended > safeMax ? 'OVERLOAD RISK' : recommended > safeMax * 0.9 ? 'BORDERLINE' : 'SAFE';
+    const requested = Math.max(0, Math.round(plan.grams || 0));
+    const status = requested > safeMax ? 'OVERLOAD RISK' : requested > safeMax * 0.9 ? 'BORDERLINE' : 'SAFE';
     const score = Math.max(0, Math.min(100, Math.round((safeMax / baseMax) * 100)));
 
-    return { score, safeMin, safeMax, recommended, status };
+    /*
+      LOAD-SAFETY OVERRIDE:
+      If the original plan exceeds the calculated safe capacity,
+      do not allow the unsafe grams to remain as the final plan.
+      The original number is preserved as plan.originalGrams.
+    */
+    if (safeMax > 0 && requested > safeMax) {
+      const capped = Math.max(safeMin, Math.min(requested, safeMax));
+
+      plan.originalGrams = requested;
+      plan.grams = capped;
+      plan.safetyOverride = true;
+      plan.safetyOverrideReason = `Original ${requested}g plan exceeds the calculated safe capacity of ${safeMax}g. Final plan was capped for load safety.`;
+
+      if (plan.method && plan.method !== 'Not recommended') {
+        plan.method = plan.method.includes('Lightweight')
+          ? plan.method
+          : `Modified ${plan.method} / Lightweight Trial Install`;
+      }
+
+      if (plan.rows && plan.rows > 1 && safeMax < 60) {
+        plan.rows = 1;
+      }
+
+      if (plan.wefts && plan.rows) {
+        plan.wefts = Math.min(plan.wefts, Math.max(1, plan.rows * 2));
+      }
+
+      if (plan.extensionLength && plan.extensionLength !== 'N/A') {
+        plan.originalExtensionLength = plan.extensionLength;
+        plan.extensionLength = '14-16 inch staged goal';
+      }
+
+      plan.complexity = 'Advanced';
+
+      plan.outcomeOverride = {
+        fullness: 'Staged / Conservative',
+        blendQuality: 'High-risk blend - advanced cutting required',
+        addedLength: 'Staged goal; not guaranteed in one appointment'
+      };
+
+      if (plan.rationale) {
+        plan.rationale += ` ${plan.safetyOverrideReason}`;
+      } else {
+        plan.rationale = plan.safetyOverrideReason;
+      }
+    }
+
+    const recommended = plan.grams;
+
+    return {
+      score,
+      safeMin,
+      safeMax,
+      recommended,
+      requested,
+      status,
+      safetyOverride: requested > safeMax
+    };
   },
 
   /* ---- Build Placement Map Data ---- */
@@ -525,13 +583,13 @@ const HI = {
 
     if (readiness === 'red') {
       clientSummary = 'Based on the current hair and scalp assessment, extensions are not recommended at this time. A recovery or transitional plan is safer before adding extension weight or attachment tension.';
-      stylistSummary = `Install not advised. Integrity/capacity score: ${capacity.score}/100. Recommend treatment, trim or grow-out strategy, and reassessment in 6–12 weeks.`;
+      stylistSummary = `Install not advised. Integrity/capacity score: ${capacity.score}/100. Recommend treatment, trim or grow-out strategy, and reassessment in 6â€“12 weeks.`;
     } else if (readiness === 'yellow') {
       clientSummary = `Your hair may support extensions with a modified, conservative approach. The current recommendation is ${method} with ${rows} ${rows === 1 ? 'row' : 'rows'} and ${grams}g. ${shortBlend ? 'Because your current length or layers create blending risk, the final result needs advanced shaping and density matching.' : 'The install should be kept lighter and monitored closely.'}`;
-      stylistSummary = `Modified install: ${method}, ${rows} ${rows === 1 ? 'row' : 'rows'}, ${grams}g, ${plan.extensionLength}. Capacity: ${capacity.safeMin}g–${capacity.safeMax}g, status ${capacity.status}. Modifications: ${mods.map(m => m.replace(/_/g, ' ')).join(', ') || 'none'}. Avoid zones: ${avoidZones.join(', ') || 'none'}. First check-in recommended at 3–4 weeks.`;
+      stylistSummary = `Modified install: ${method}, ${rows} ${rows === 1 ? 'row' : 'rows'}, ${grams}g, ${plan.extensionLength}. Capacity: ${capacity.safeMin}gâ€“${capacity.safeMax}g, status ${capacity.status}. Modifications: ${mods.map(m => m.replace(/_/g, ' ')).join(', ') || 'none'}. Avoid zones: ${avoidZones.join(', ') || 'none'}. First check-in recommended at 3â€“4 weeks.`;
     } else {
       clientSummary = `Your hair appears suitable for a ${rows}-row ${method} install using approximately ${grams}g at ${plan.extensionLength}. This is a professional recommendation based on the selected goals and hair profile, with final placement confirmed in person.`;
-      stylistSummary = `Install appears suitable: ${method}, ${rows} ${rows === 1 ? 'row' : 'rows'}, ${grams}g at ${plan.extensionLength}. Hair capacity: ${capacity.safeMin}g–${capacity.safeMax}g, status ${capacity.status}. Maintain professional tension checks and adjust placement to observed density.`;
+      stylistSummary = `Install appears suitable: ${method}, ${rows} ${rows === 1 ? 'row' : 'rows'}, ${grams}g at ${plan.extensionLength}. Hair capacity: ${capacity.safeMin}gâ€“${capacity.safeMax}g, status ${capacity.status}. Maintain professional tension checks and adjust placement to observed density.`;
     }
 
     if (warnings.length) {
@@ -550,7 +608,7 @@ const HI = {
           method: 'No install',
           description: 'Focus on scalp/hair recovery, density improvement, trim strategy, and reassessment before adding extension weight or tension.',
           grams: 0,
-          maintenance: 'Reassess in 6–12 weeks',
+          maintenance: 'Reassess in 6â€“12 weeks',
           priceNote: 'Safer than forcing an install'
         }
       ];
@@ -566,7 +624,7 @@ const HI = {
         method: 'Tape-Ins',
         description: 'Tape-ins can provide a flatter, lighter application when lower density or sensitivity makes heavier row work less desirable. Placement must still avoid fragile zones.',
         grams: Math.max(30, Math.round(plan.grams * 0.75)),
-        maintenance: '5–7 weeks',
+        maintenance: '5â€“7 weeks',
         priceNote: 'Lower chair time, more frequent maintenance'
       });
     }
@@ -590,7 +648,7 @@ const HI = {
         method: 'I-Tips',
         description: 'Individual I-tip strands allow more precise placement around density changes. This is useful when standard row placement needs more customization.',
         grams: plan.grams,
-        maintenance: '10–14 weeks',
+        maintenance: '10â€“14 weeks',
         priceNote: 'Higher labor, more placement control'
       });
     }
@@ -647,3 +705,4 @@ const HIConsult = {
   merge(k, v) { this.data[k] = { ...(this.data[k] || {}), ...v }; },
   full()      { return this.data; }
 };
+
