@@ -1,70 +1,1006 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HairIntel AI â€” AI Consultation System for Extension Stylists</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-\n
-\n  <link rel="stylesheet" href="css/hairintel-dashboard-real.css">\n    <link rel="stylesheet" href="css/luxe-overrides.css">
+  <title>HairIntel AI Dashboard</title>
+
+  <style>
+    :root {
+      --smoky: #120B06;
+      --black: #090705;
+      --panel: #16110f;
+      --panel2: #211917;
+      --umber: #64504A;
+      --gray: #7B7985;
+      --vanilla: #CEB7AB;
+      --cream: #F7EFE9;
+      --gold: #F4C95D;
+      --gold2: #B9852B;
+      --line: rgba(206,183,171,.18);
+      --line2: rgba(244,201,93,.32);
+      --muted: rgba(247,239,233,.68);
+      --green: #7EF29B;
+      --danger: #C25757;
+      --shadow: 0 26px 80px rgba(0,0,0,.48);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(244,201,93,.14), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(206,183,171,.12), transparent 24%),
+        linear-gradient(135deg, #060403 0%, #120B06 45%, #231813 100%);
+      color: var(--cream);
+      font-family: Inter, Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size: 74px 74px;
+      opacity: .35;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,.42) 78%);
+      z-index: 0;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 255px 1fr;
+      min-height: 100vh;
+      border: 1px solid rgba(206,183,171,.22);
+      border-radius: 0;
+      overflow: hidden;
+    }
+
+    aside {
+      min-height: 100vh;
+      padding: 34px 20px;
+      background: linear-gradient(180deg, rgba(7,5,4,.98), rgba(18,11,6,.92));
+      border-right: 1px solid var(--line);
+      box-shadow: 20px 0 70px rgba(0,0,0,.35);
+      position: sticky;
+      top: 0;
+      align-self: start;
+    }
+
+    .brand {
+      margin-bottom: 54px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 37px;
+      line-height: .9;
+      letter-spacing: -1.8px;
+      color: var(--gold);
+    }
+
+    .brand h1 span {
+      color: var(--cream);
+    }
+
+    .brand p {
+      margin: 9px 0 0;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      font-size: 10px;
+      color: rgba(247,239,233,.55);
+    }
+
+    .nav {
+      display: grid;
+      gap: 12px;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(247,239,233,.70);
+      text-decoration: none;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid transparent;
+    }
+
+    .nav a.active,
+    .nav a:hover {
+      color: var(--cream);
+      background: rgba(206,183,171,.15);
+      border-color: rgba(206,183,171,.16);
+    }
+
+    .consultant-card {
+      margin-top: 190px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(206,183,171,.15);
+      background: linear-gradient(135deg, rgba(100,80,74,.24), rgba(18,11,6,.78));
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: #170f0a;
+      background: linear-gradient(135deg, var(--cream), var(--gold2));
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    .consultant-card strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .consultant-card span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .upgrade {
+      margin-top: 12px;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(244,201,93,.30);
+      background: linear-gradient(135deg, rgba(244,201,93,.08), rgba(18,11,6,.72));
+    }
+
+    .upgrade strong {
+      display: block;
+      color: var(--gold);
+      margin-bottom: 7px;
+      font-size: 13px;
+    }
+
+    .upgrade p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .upgrade button,
+    .ghost-btn {
+      width: 100%;
+      border: 1px solid rgba(244,201,93,.42);
+      background: transparent;
+      color: var(--gold);
+      border-radius: 999px;
+      padding: 11px 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    main {
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.025), transparent 280px),
+        rgba(8,6,5,.28);
+    }
+
+    .topbar {
+      height: 88px;
+      display: grid;
+      grid-template-columns: 240px 1fr 260px;
+      align-items: center;
+      gap: 20px;
+      padding: 0 30px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(10,7,5,.74);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .back {
+      color: rgba(247,239,233,.76);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 56px;
+    }
+
+    .tabs a {
+      color: rgba(247,239,233,.66);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 34px 0 30px;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tabs a.active {
+      color: var(--cream);
+      border-bottom-color: var(--gold);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .export,
+    .menu {
+      border: 1px solid rgba(206,183,171,.32);
+      background: rgba(18,11,6,.42);
+      color: var(--cream);
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .menu {
+      width: 48px;
+      padding: 12px 0;
+    }
+
+    .content {
+      padding: 44px;
+      max-width: 1370px;
+      margin: 0 auto;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr .78fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2.6px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(48px, 5.2vw, 76px);
+      line-height: .92;
+      letter-spacing: -2.5px;
+      color: var(--cream);
+    }
+
+    .hero p {
+      margin: 24px 0 28px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+      max-width: 620px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .gold-btn {
+      border: 1px solid rgba(244,201,93,.66);
+      background: linear-gradient(135deg, #F7DE86, #B8862E);
+      color: #120B06;
+      border-radius: 999px;
+      padding: 15px 24px;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(244,201,93,.18);
+    }
+
+    .outline-btn {
+      border: 1px solid rgba(206,183,171,.34);
+      background: rgba(10,7,5,.25);
+      color: var(--cream);
+      border-radius: 999px;
+      padding: 15px 24px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .panel {
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(30,25,22,.86), rgba(12,9,7,.78));
+      box-shadow: var(--shadow);
+    }
+
+    .placement {
+      padding: 22px;
+      min-height: 445px;
+    }
+
+    .panel-title {
+      margin: 0 0 16px;
+      color: rgba(247,239,233,.84);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .pill-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .pill-tabs button {
+      border: 1px solid rgba(206,183,171,.20);
+      background: rgba(10,7,5,.34);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .pill-tabs button.active {
+      background: var(--cream);
+      color: #120B06;
+    }
+
+    .placement-body {
+      display: grid;
+      grid-template-columns: 1fr 175px;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .head-frame {
+      border-radius: 18px;
+      overflow: hidden;
+      background: #0d0a08;
+      min-height: 316px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(206,183,171,.12);
+    }
+
+    .head-frame img {
+      width: 100%;
+      height: 100%;
+      min-height: 316px;
+      object-fit: cover;
+      display: block;
+      filter: contrast(1.03) saturate(.95);
+    }
+
+    .legend {
+      border: 1px solid rgba(206,183,171,.24);
+      border-radius: 12px;
+      padding: 18px;
+      background: rgba(10,7,5,.32);
+    }
+
+    .legend-row {
+      display: grid;
+      grid-template-columns: 12px 1fr;
+      gap: 10px;
+      margin-bottom: 17px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-top: 4px;
+      background: var(--gold);
+    }
+
+    .dot.white { background: var(--cream); }
+    .dot.blue { background: #B7D6EA; }
+    .dot.purple { background: #C8B8FF; }
+
+    .legend strong {
+      display: block;
+      color: var(--cream);
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .legend-total {
+      border-top: 1px solid rgba(206,183,171,.22);
+      margin-top: 6px;
+      padding-top: 15px;
+      color: var(--cream);
+      font-size: 22px;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .note {
+      margin-top: 15px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: rgba(206,183,171,.12);
+      color: rgba(247,239,233,.74);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .score-panel {
+      padding: 26px;
+      min-height: 300px;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .score-ring {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background:
+        conic-gradient(var(--gold) 0 92%, rgba(206,183,171,.22) 92% 100%);
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: 0 0 45px rgba(244,201,93,.13);
+    }
+
+    .score-ring::before {
+      content: "";
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      background: #171210;
+      position: absolute;
+    }
+
+    .score-ring strong {
+      position: relative;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 52px;
+      color: var(--cream);
+      line-height: .8;
+    }
+
+    .score-ring span {
+      position: relative;
+      color: var(--muted);
+      margin-top: 58px;
+      margin-left: -48px;
+      font-size: 13px;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .check-list div::before {
+      content: "✓";
+      color: var(--gold);
+      border: 1px solid rgba(244,201,93,.45);
+      border-radius: 50%;
+      padding: 1px 4px;
+      margin-right: 8px;
+      font-size: 10px;
+    }
+
+    .install-panel {
+      padding: 24px;
+      min-height: 300px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 19px;
+    }
+
+    .time-row {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .time-icon {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(206,183,171,.32);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--vanilla);
+      background: rgba(206,183,171,.09);
+    }
+
+    .time-row span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .time-row strong {
+      color: var(--cream);
+      font-size: 13px;
+    }
+
+    .full-details {
+      margin-top: 21px;
+      width: 100%;
+      border-radius: 999px;
+      padding: 13px;
+      border: 1px solid rgba(206,183,171,.32);
+      background: transparent;
+      color: var(--cream);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .client-card {
+      padding: 22px;
+      background:
+        linear-gradient(145deg, rgba(206,183,171,.92), rgba(100,80,74,.78));
+      color: white;
+      min-height: 365px;
+    }
+
+    .client-card .panel-title {
+      color: rgba(255,255,255,.80);
+    }
+
+    .client-avatar {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      margin: 10px 0 14px;
+      border: 3px solid rgba(255,255,255,.30);
+      overflow: hidden;
+      background: rgba(255,255,255,.16);
+    }
+
+    .client-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .client-card h3 {
+      margin: 0 0 6px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .client-card p {
+      margin: 0 0 20px;
+      color: rgba(255,255,255,.82);
+      line-height: 1.4;
+      font-size: 14px;
+    }
+
+    .client-data {
+      border-top: 1px solid rgba(255,255,255,.25);
+      padding-top: 18px;
+      display: grid;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .client-data div {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      color: rgba(255,255,255,.75);
+    }
+
+    .client-data strong {
+      color: white;
+    }
+
+    .load-panel {
+      padding: 22px;
+      margin-top: 22px;
+    }
+
+    .load-body {
+      display: grid;
+      grid-template-columns: 132px 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .small-ring {
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      background:
+        conic-gradient(var(--gold) 0 58%, rgba(206,183,171,.28) 58% 72%, rgba(255,255,255,.13) 72% 100%);
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .small-ring::before {
+      content: "";
+      position: absolute;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: #171210;
+    }
+
+    .small-ring span {
+      position: relative;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 21px;
+    }
+
+    .load-stats {
+      display: grid;
+      gap: 13px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .load-stats div {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(206,183,171,.13);
+      padding-bottom: 9px;
+    }
+
+    .load-stats strong {
+      color: var(--cream);
+    }
+
+    .load-stats .safe {
+      color: var(--green);
+    }
+
+    .bottom-cta {
+      grid-column: 1 / -1;
+      margin-top: 22px;
+      padding: 24px 28px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(100,80,74,.46), rgba(30,25,22,.78));
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .bottom-cta span {
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(247,239,233,.65);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .bottom-cta h3 {
+      margin: 5px 0 4px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px;
+      font-weight: 500;
+    }
+
+    .bottom-cta p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1220px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        display: none;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        height: auto;
+        gap: 14px;
+        padding: 22px;
+      }
+
+      .tabs,
+      .actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom-cta {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .content {
+        padding: 24px;
+      }
+
+      .placement-body,
+      .score-panel,
+      .load-body {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .gold-btn,
+      .outline-btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <div id="hi-app">
-    <!-- Phone Frame (desktop) -->
-    <div id="hi-frame">
-      <!-- Toast -->
-      <div id="hi-toast-container"></div>
-      <!-- Screen Container -->
-      <div id="hi-screen-container"></div>
-    </div>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <h1>HairIntel</h1>
+        <p>Intelligent Hair Consultation</p>
+      </div>
+
+      <nav class="nav">
+        <a class="active" href="/">▦ Dashboard</a>
+        <a href="hairintel/index.html">☰ Consultations</a>
+        <a href="hairintel/index.html">♙ Clients</a>
+        <a href="#">☷ Templates</a>
+        <a href="#">◇ Education</a>
+        <a href="#">? Support</a>
+      </nav>
+
+      <div class="consultant-card">
+        <div class="avatar">HI</div>
+        <div>
+          <strong>Master Consultant</strong>
+          <span>HairIntel Pro</span>
+        </div>
+      </div>
+
+      <div class="upgrade">
+        <strong>Unlock Pro Tools</strong>
+        <p>Advanced mapping, load modeling, saved reports, and client-ready exports.</p>
+        <button onclick="location.href='hairintel/index.html'">Upgrade Now</button>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <a class="back" href="hairintel/index.html">‹ Back to Consultations</a>
+
+        <nav class="tabs">
+          <a class="active" href="#">Overview</a>
+          <a href="hairintel/index.html">Analysis</a>
+          <a href="hairintel/index.html">Recommendations</a>
+          <a href="hairintel/index.html">History</a>
+        </nav>
+
+        <div class="actions">
+          <button class="export" onclick="window.print()">⇩ Export Report</button>
+          <button class="menu">•••</button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="dashboard-grid">
+          <div class="hero">
+            <p class="eyebrow">Consultation Results</p>
+            <h2>Your Confidence,<br>Our Precision</h2>
+            <p>A data-driven plan designed for a seamless, natural look with comfort, safety, and longevity in mind.</p>
+
+            <div class="hero-actions">
+              <button class="gold-btn" onclick="location.href='hairintel/index.html'">Review Plan ↗</button>
+              <button class="outline-btn" onclick="navigator.share ? navigator.share({title:'HairIntel AI', url:location.href}) : alert('Copy this page URL to share.')">Share Results ⤴</button>
+            </div>
+
+            <div class="panel placement">
+              <h3 class="panel-title">Placement Map Preview</h3>
+
+              <div class="pill-tabs">
+                <button class="active">Top</button>
+                <button>Side</button>
+                <button>Back</button>
+              </div>
+
+              <div class="placement-body">
+                <div>
+                  <div class="head-frame">
+                    <img src="public/placement-head.png" alt="Hair extension placement map preview">
+                  </div>
+
+                  <div class="note">✧ Balanced distribution for maximum coverage and the most natural movement.</div>
+                </div>
+
+                <div class="legend">
+                  <div class="legend-row">
+                    <span class="dot white"></span>
+                    <div><strong>Front Hairline</strong>120 strands</div>
+                  </div>
+                  <div class="legend-row">
+                    <span class="dot"></span>
+                    <div><strong>Mid Scalp</strong>180 strands</div>
+                  </div>
+                  <div class="legend-row">
+                    <span class="dot blue"></span>
+                    <div><strong>Crown</strong>160 strands</div>
+                  </div>
+                  <div class="legend-row">
+                    <span class="dot purple"></span>
+                    <div><strong>Sides</strong>80 strands</div>
+                  </div>
+
+                  <div class="legend-total">
+                    <small style="display:block;color:var(--muted);text-transform:uppercase;font-size:11px;">Total</small>
+                    540 strands
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel score-panel">
+              <div>
+                <h3 class="panel-title">Readiness Score ⓘ</h3>
+                <div class="score-ring">
+                  <strong>92</strong><span>/100</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="font-family:Georgia,serif;font-weight:400;margin:0 0 8px;">Excellent Candidate</h3>
+                <p style="color:var(--muted);font-size:13px;line-height:1.45;margin:0;">You are an excellent candidate for a natural, safe, and long-lasting install.</p>
+
+                <div class="check-list">
+                  <div>Strong Donor Area</div>
+                  <div>Healthy Scalp</div>
+                  <div>Good Density</div>
+                  <div>Low Shedding Risk</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel install-panel" style="margin-top:22px;">
+              <h3 class="panel-title">Install Plan</h3>
+
+              <div class="timeline">
+                <div class="time-row">
+                  <div class="time-icon">▣</div>
+                  <div><span>Method</span><strong>Micro Bead Invisible</strong></div>
+                </div>
+                <div class="time-row">
+                  <div class="time-icon">✺</div>
+                  <div><span>Total Strands</span><strong>540</strong></div>
+                </div>
+                <div class="time-row">
+                  <div class="time-icon">◷</div>
+                  <div><span>Estimated Time</span><strong>2.5 – 3.0 hours</strong></div>
+                </div>
+                <div class="time-row">
+                  <div class="time-icon">⌁</div>
+                  <div><span>Maintenance</span><strong>6 – 8 weeks</strong></div>
+                </div>
+                <div class="time-row">
+                  <div class="time-icon">↻</div>
+                  <div><span>Longevity</span><strong>6 – 12 months+</strong></div>
+                </div>
+              </div>
+
+              <button class="full-details" onclick="location.href='hairintel/index.html'">View Full Plan Details ↗</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel client-card">
+              <h3 class="panel-title">Client Summary</h3>
+
+              <div class="client-avatar">
+                <img src="public/placement-head.png" alt="Client preview">
+              </div>
+
+              <h3>Ava Morgan</h3>
+              <p>28 · Female<br>Long-term volume & length</p>
+
+              <div class="client-data">
+                <div><span>Hair Type</span><strong>Straight</strong></div>
+                <div><span>Average Density</span><strong>Medium</strong></div>
+                <div><span>Scalp Condition</span><strong>Healthy</strong></div>
+                <div><span>Donor Strength</span><strong>Strong</strong></div>
+                <div><span>Primary Goal</span><strong>Volume & Length</strong></div>
+              </div>
+            </div>
+
+            <div class="panel load-panel">
+              <h3 class="panel-title">Load Safety</h3>
+
+              <div class="load-body">
+                <div class="small-ring"><span>Optimal</span></div>
+
+                <div class="load-stats">
+                  <div><span>Total Load</span><strong>23.4%</strong></div>
+                  <div><span>Recommended Max</span><strong>40%</strong></div>
+                  <div><span>Scalp Tension</span><strong>Low</strong></div>
+                  <div><span>Weight per Strand</span><strong>0.009g</strong></div>
+                  <div><span>Load per Area</span><strong>23.4%</strong></div>
+                  <div><span>Safety Margin</span><strong class="safe">16.6%</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-cta panel">
+            <div>
+              <span>What’s Next?</span>
+              <h3>You’re one step away from your best hair.</h3>
+              <p>Book your installation or save your plan to continue later.</p>
+            </div>
+
+            <button class="gold-btn" onclick="location.href='hairintel/index.html'">▣ Book Installation</button>
+            <button class="outline-btn" onclick="location.href='hairintel/index.html'">▱ Save Plan</button>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
-
-  <footer style="padding: 32px 20px; text-align: center; font-size: 14px; color: #6b7280;">
-    <a href="/privacy.html" style="color: #7c3aed; text-decoration: none;">Privacy Policy</a>
-    <span style="margin: 0 8px;">|</span>
-    <a href="/terms.html" style="color: #7c3aed; text-decoration: none;">Terms & Billing</a>
-  </footer>
-
-  <!-- Core Engine & Utilities -->
-  <script src="js/engine.js"></script>
-  <script src="js/utils.js"></script>
-
-  <!-- Screens
-       Note: several files contain multiple screens:
-       s02 = S02 ClientInfo + (S03 Photos + S04 Goals as fallback)
-       s03 = S03 Photos (standalone) + S04 Goals (standalone)
-       s05 = S05 HairProfile + S06 Concerns
-       s09 = S09 Placement + S10 Install Plan
-       s11 = S11 Load Safety + S12 Outcome
-       s13 = S13 Summary + S14 Estimate
-       s15 = S15 Alternatives + S16 Export
-       s17 = S17 Clients + S18 Subscription
-  -->
-  <script src="js/screens/s01-welcome.js"></script>
-  <script src="js/screens/s02-client-info.js"></script>
-  <script src="js/screens/s03-photos.js"></script>
-  <script src="js/screens/s05-hair-profile.js"></script>
-  <script src="js/screens/s07-analysis.js"></script>
-  <script src="js/screens/s08-readiness.js"></script>
-  <script src="js/screens/s09-placement.js"></script>
-  <script src="js/screens/s11-load-safety.js"></script>
-  <script src="js/screens/s13-summary.js"></script>
-  <script src="js/screens/s15-alternatives.js"></script>
-  <script src="js/screens/s17-clients.js"></script>
-
-  <script src="js/env.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/auth.js"></script>
-
-  <!-- App Initializer -->
-  <script src="js/screens/s19-ai-preview.js"></script>
-  <script src="js/app.js"></script>
-\n  <script src="js/hairintel-dashboard-real.js"></script>\n    <script src="js/luxe-dashboard.js"></script>
 </body>
 </html>
-
-
-
