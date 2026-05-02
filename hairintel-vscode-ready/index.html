@@ -1002,6 +1002,23 @@
       </section>
     </main>
   </div>
+<script id="stay-on-luxe-dashboard">
+document.addEventListener("click", function(e) {
+  const link = e.target.closest("a, button");
+  if (!link) return;
+
+  const href = link.getAttribute("href") || "";
+  const onclick = link.getAttribute("onclick") || "";
+
+  if (href.includes("hairintel/index.html") || onclick.includes("hairintel/index.html")) {
+    e.preventDefault();
+    e.stopPropagation();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return false;
+  }
+}, true);
+</script>
 </body>
 </html>
+
 
