@@ -471,6 +471,32 @@ const HI = {
     safeMax = Math.max(0, Math.round(safeMax));
     const safeMin = safeMax === 0 ? 0 : Math.max(30, Math.round(safeMax * 0.45));
     const requested = Math.max(0, Math.round(plan.grams || 0));
+
+    if (safeMax < safeMin) {
+      plan.originalGrams = requested;
+      plan.grams = 0;
+      plan.rows = 0;
+      plan.wefts = 0;
+      plan.method = 'Not recommended';
+      plan.extensionLength = 'N/A';
+      plan.complexity = 'N/A';
+      plan.maintenance = 'Reassess in 6-12 weeks';
+      plan.appointmentDuration = 'N/A';
+      plan.safetyOverride = true;
+      plan.safetyOverrideReason = `Calculated safe capacity of ${safeMax}g is below the minimum viable install load of ${safeMin}g. No install is recommended at this time.`;
+
+      return {
+        score: Math.max(0, Math.round(integrity)),
+        safeMin: 0,
+        safeMax: 0,
+        calculatedSafeMax: safeMax,
+        minimumViableLoad: safeMin,
+        recommended: 0,
+        requested,
+        status: 'NOT RECOMMENDED',
+        safetyOverride: true
+      };
+    }
     const status = requested > safeMax ? 'OVERLOAD RISK' : requested > safeMax * 0.9 ? 'BORDERLINE' : 'SAFE';
     const score = Math.max(0, Math.min(100, Math.round((safeMax / baseMax) * 100)));
 
@@ -481,7 +507,7 @@ const HI = {
       The original number is preserved as plan.originalGrams.
     */
     if (safeMax > 0 && requested > safeMax) {
-      const capped = Math.max(safeMin, Math.min(requested, safeMax));
+      const capped = Math.max(0, Math.min(requested, safeMax));
 
       plan.originalGrams = requested;
       plan.grams = capped;
