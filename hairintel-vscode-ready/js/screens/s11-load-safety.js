@@ -16,7 +16,14 @@ function renderS11LoadSafety(params = {}) {
   const plan = result.plan || {};
   const readiness = result.readiness || 'yellow';
 
-  const status = capacity.status || 'UNKNOWN';
+  const status = capacity.status || (readiness === 'red' ? 'NOT RECOMMENDED' : 'UNKNOWN');
+
+  const isNotRecommended =
+    readiness === 'red' ||
+    status === 'NOT RECOMMENDED' ||
+    plan.method === 'Not recommended' ||
+    Number(plan.grams || 0) <= 0;
+
   const isSafe = status === 'SAFE';
   const isBorderline = status === 'BORDERLINE';
   const isOverload = status === 'OVERLOAD RISK';
