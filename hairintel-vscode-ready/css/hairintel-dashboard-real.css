@@ -1,0 +1,481 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap');
+
+:root {
+  --hi-black: #120B06;
+  --hi-black-2: #0B0705;
+  --hi-panel: rgba(28, 24, 21, 0.88);
+  --hi-panel-2: rgba(42, 35, 31, 0.82);
+  --hi-umber: #64504A;
+  --hi-umber-soft: #8A6C61;
+  --hi-vanilla: #CEB7AB;
+  --hi-cream: #F8EFE8;
+  --hi-gray: #7B7985;
+  --hi-gold: #E9C96A;
+  --hi-gold-soft: #F3D77A;
+  --hi-red: #B65B61;
+  --hi-green: #7DBB83;
+
+  --text: #F8EFE8;
+  --text-soft: rgba(248,239,232,.78);
+  --text-muted: rgba(248,239,232,.55);
+  --line: rgba(206,183,171,.17);
+  --line-gold: rgba(233,201,106,.38);
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', Arial, sans-serif;
+}
+
+/* REAL DASHBOARD LAYOUT — NOT AN OVERLAY */
+html,
+body {
+  margin: 0 !important;
+  min-height: 100% !important;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(233,201,106,.14), transparent 30%),
+    radial-gradient(circle at 90% 8%, rgba(206,183,171,.12), transparent 28%),
+    linear-gradient(135deg, #070504 0%, #120B06 42%, #201612 100%) !important;
+  color: var(--text) !important;
+  font-family: var(--font-body) !important;
+}
+
+body.hi-dashboard-active {
+  overflow-x: hidden;
+}
+
+.hi-dashboard-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.hi-dashboard-sidebar {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 30% 0%, rgba(233,201,106,.15), transparent 28%),
+    linear-gradient(180deg, rgba(13,9,7,.98), rgba(8,6,5,.98));
+  border-right: 1px solid var(--line);
+  padding: 32px 18px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.hi-dashboard-logo {
+  font-family: var(--font-display);
+  color: var(--hi-gold);
+  font-size: 39px;
+  line-height: .9;
+  font-weight: 800;
+  letter-spacing: -.055em;
+  margin: 0 10px;
+  text-shadow: 0 0 28px rgba(233,201,106,.18);
+}
+
+.hi-dashboard-tagline {
+  margin: 12px 10px 44px;
+  color: rgba(248,239,232,.52);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.hi-dashboard-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hi-dashboard-nav button {
+  height: 50px;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(248,239,232,.66);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: left;
+}
+
+.hi-dashboard-nav button.active {
+  color: #fff;
+  background: rgba(206,183,171,.14);
+  border-color: rgba(206,183,171,.16);
+}
+
+.hi-dashboard-main {
+  min-width: 0;
+  min-height: 100vh;
+}
+
+.hi-dashboard-topbar {
+  height: 86px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(18,13,11,.94), rgba(18,13,11,.76));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 36px;
+  box-sizing: border-box;
+}
+
+.hi-dashboard-back {
+  color: rgba(248,239,232,.68);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.hi-dashboard-tabs {
+  display: flex;
+  align-items: center;
+  gap: 54px;
+}
+
+.hi-dashboard-tabs button {
+  height: 86px;
+  border: 0;
+  background: transparent;
+  color: rgba(248,239,232,.62);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  position: relative;
+  cursor: pointer;
+}
+
+.hi-dashboard-tabs button.active {
+  color: #fff;
+}
+
+.hi-dashboard-tabs button.active::after {
+  content: "";
+  height: 2px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, var(--hi-gold), transparent);
+  box-shadow: 0 0 18px rgba(233,201,106,.55);
+}
+
+.hi-dashboard-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.hi-dashboard-export,
+.hi-dashboard-more {
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(206,183,171,.28);
+  background: rgba(18,11,6,.26);
+  color: rgba(248,239,232,.78);
+  font-weight: 900;
+  padding: 0 18px;
+  cursor: pointer;
+}
+
+.hi-dashboard-more {
+  width: 44px;
+  padding: 0;
+}
+
+.hi-dashboard-user,
+.hi-dashboard-upgrade {
+  border: 1px solid rgba(206,183,171,.16);
+  background: rgba(206,183,171,.09);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.hi-dashboard-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hi-dashboard-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hi-dashboard-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 34% 25%, #E9D7CC, #765B4F 68%);
+  display: grid;
+  place-items: center;
+  color: #120B06;
+  font-weight: 900;
+}
+
+.hi-dashboard-user strong {
+  display: block;
+  color: #fff;
+  font-size: 13px;
+}
+
+.hi-dashboard-user span {
+  display: block;
+  color: rgba(248,239,232,.55);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.hi-dashboard-upgrade {
+  border-color: rgba(233,201,106,.27);
+  background: linear-gradient(145deg, rgba(233,201,106,.10), rgba(206,183,171,.07));
+}
+
+.hi-dashboard-upgrade strong {
+  color: var(--hi-gold);
+  font-size: 13px;
+}
+
+.hi-dashboard-upgrade p {
+  color: rgba(248,239,232,.62);
+  font-size: 11px;
+  line-height: 1.45;
+  margin: 8px 0 12px;
+}
+
+.hi-dashboard-upgrade button {
+  width: 100%;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(233,201,106,.42);
+  background: transparent;
+  color: var(--hi-gold);
+  font-weight: 900;
+}
+
+.hi-dashboard-logout {
+  color: rgba(248,239,232,.52);
+  padding: 10px;
+  font-size: 13px;
+}
+
+/* APP AREA */
+.hi-dashboard-app-wrap {
+  padding: 34px 36px 40px;
+  box-sizing: border-box;
+}
+
+/* Make your actual wizard/results screen look like the dashboard cards */
+#app,
+#root {
+  color: var(--text) !important;
+  font-family: var(--font-body) !important;
+}
+
+#app > div,
+#root > div,
+.hi-screen,
+.hi-screen-container,
+#hi-screen-container {
+  max-width: none !important;
+  width: 100% !important;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(233,201,106,.08), transparent 32%),
+    linear-gradient(145deg, rgba(28,23,20,.92), rgba(13,10,8,.94)) !important;
+  border: 1px solid rgba(206,183,171,.18) !important;
+  box-shadow: 0 24px 74px rgba(0,0,0,.38) !important;
+  color: var(--text) !important;
+  border-radius: 24px !important;
+}
+
+header,
+[class*="header"] {
+  background: rgba(18,11,6,.30) !important;
+  border-color: rgba(206,183,171,.16) !important;
+  color: var(--text) !important;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+[class*="title"],
+[class*="heading"] {
+  font-family: var(--font-display) !important;
+  color: #FFF3E9 !important;
+  letter-spacing: -.055em !important;
+}
+
+h1 {
+  font-size: clamp(44px, 5vw, 76px) !important;
+  line-height: .94 !important;
+}
+
+h2 {
+  font-size: clamp(30px, 3vw, 48px) !important;
+  line-height: 1 !important;
+}
+
+p,
+li {
+  color: var(--text-soft) !important;
+}
+
+small,
+label,
+[class*="label"],
+[class*="subtitle"] {
+  color: var(--text-muted) !important;
+}
+
+/* Cards */
+section,
+article,
+.hi-card,
+.card,
+.panel,
+[class*="card"],
+[class*="panel"],
+[class*="summary"],
+[class*="readiness"],
+[class*="install"],
+[class*="placement"],
+[class*="safety"],
+[class*="estimate"],
+div[style*="border"] {
+  background: linear-gradient(145deg, rgba(255,255,255,.042), rgba(206,183,171,.052)) !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(206,183,171,.16) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 18px 48px rgba(0,0,0,.22) !important;
+}
+
+/* Kill remaining white panels */
+div[style*="background:#fff"],
+div[style*="background: #fff"],
+div[style*="background:white"],
+div[style*="background: white"],
+section[style*="background:#fff"],
+section[style*="background: #fff"],
+section[style*="background:white"],
+section[style*="background: white"] {
+  background: linear-gradient(145deg, rgba(255,255,255,.042), rgba(206,183,171,.052)) !important;
+  color: var(--text) !important;
+}
+
+/* Buttons */
+button,
+[class*="btn"] {
+  border-radius: 999px !important;
+  font-family: var(--font-body) !important;
+  font-weight: 900 !important;
+  border: 1px solid rgba(206,183,171,.25) !important;
+}
+
+button:hover {
+  border-color: rgba(233,201,106,.52) !important;
+}
+
+[class*="primary"],
+[class*="gold"],
+button[data-primary="true"] {
+  background: linear-gradient(135deg, #F3D77A 0%, #D6AD48 46%, #A97A30 100%) !important;
+  color: #130B06 !important;
+  border-color: rgba(255,238,162,.55) !important;
+  box-shadow: 0 16px 38px rgba(233,201,106,.20) !important;
+}
+
+[class*="secondary"] {
+  background: rgba(18,11,6,.32) !important;
+  color: #F8EFE8 !important;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+  background: rgba(255,255,255,.065) !important;
+  border: 1px solid rgba(206,183,171,.20) !important;
+  color: var(--text) !important;
+  border-radius: 14px !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(248,239,232,.36) !important;
+}
+
+/* Warnings */
+[class*="warning"],
+[class*="caution"],
+[class*="flag"],
+[class*="alert"] {
+  background: rgba(233,201,106,.075) !important;
+  border-color: rgba(233,201,106,.28) !important;
+  color: rgba(255,246,232,.88) !important;
+}
+
+[class*="red"],
+[class*="danger"],
+[class*="recovery"],
+[class*="no-install"],
+[class*="not-recommended"] {
+  border-color: rgba(182,91,97,.42) !important;
+}
+
+[class*="recovery"],
+[class*="no-install"] {
+  background: linear-gradient(145deg, rgba(182,91,97,.18), rgba(100,80,74,.11)) !important;
+}
+
+a {
+  color: var(--hi-gold) !important;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #100B09;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--hi-gold), var(--hi-umber));
+  border-radius: 999px;
+  border: 3px solid #100B09;
+}
+
+@media (max-width: 980px) {
+  .hi-dashboard-shell {
+    display: block;
+  }
+
+  .hi-dashboard-sidebar {
+    display: none;
+  }
+
+  .hi-dashboard-topbar {
+    height: 74px;
+    padding: 0 16px;
+  }
+
+  .hi-dashboard-tabs {
+    display: none;
+  }
+
+  .hi-dashboard-app-wrap {
+    padding: 18px;
+  }
+}
