@@ -150,9 +150,9 @@ function renderS11LoadSafety(params = {}) {
 
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button class="hi-btn hi-btn-gold" onclick="HIApp.go('outcome', { consultId: '${consultId}' })">
-          View Projected Outcome
+          ${isNotRecommended ? 'View No-Install Outcome' : 'View Projected Outcome'}
         </button>
-        <button class="hi-btn hi-btn-ghost" onclick="HIApp.go('install-plan', { consultId: '${consultId}' })">Back to Install Plan</button>
+        <button class="hi-btn hi-btn-ghost" onclick="HIApp.go('${isNotRecommended ? 'readiness' : 'install-plan'}', { consultId: '${consultId}' })">${isNotRecommended ? 'Back to Readiness' : 'Back to Install Plan'}</button>
       </div>
     </div>
   </div>`;

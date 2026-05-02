@@ -123,9 +123,15 @@ function renderS09Placement(params = {}) {
 
       <!-- Navigation -->
       <div style="display:flex;flex-direction:column;gap:10px;">
-        <button class="hi-btn hi-btn-gold" onclick="HIApp.go('install-plan', { consultId: '${consultId}' })">
-          View Install Plan →
+        ${result.readiness === 'red' ? `
+        <button class="hi-btn hi-btn-gold" onclick="HIApp.go('summary', { consultId: '${consultId}' })">
+          View Recovery Summary
         </button>
+        ` : `
+        <button class="hi-btn hi-btn-gold" onclick="HIApp.go('install-plan', { consultId: '${consultId}' })">
+          View Install Plan
+        </button>
+        `}
         <button class="hi-btn hi-btn-ghost" onclick="HIApp.go('readiness', { consultId: '${consultId}' })">Back to Readiness</button>
       </div>
 

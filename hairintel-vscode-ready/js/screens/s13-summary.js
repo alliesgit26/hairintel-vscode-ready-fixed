@@ -152,9 +152,9 @@ function renderS13Summary(params = {}) {
           ${[
             { label:'Hair Readiness Score',  screen:'readiness',  icon:'◉' },
             { label:'Placement Map',          screen:'placement',  icon:'⊟' },
-            { label:'Install Plan',           screen:'install-plan',icon:'⊞' },
+            { label: readiness === 'red' ? 'Recovery / No-Install Plan' : 'Install Plan', screen:'install-plan', icon:'!' },
             { label:'Load Safety Score',      screen:'load-safety',icon:'◷' },
-            { label:'Projected Outcome',      screen:'outcome',    icon:'◈' },
+            { label: readiness === 'red' ? 'No-Install Outcome' : 'Projected Outcome', screen:'outcome', icon:'!' },
             { label:'Service Estimate',       screen:'estimate',   icon:'$' },
             { label:'Alternative Options',    screen:'alternatives',icon:'⊙' }
           ].map(r => `
