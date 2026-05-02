@@ -1,0 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap');
+
+:root {
+  --hi-smoky: #120B06;
+  --hi-smoky-2: #1A120E;
+  --hi-umber: #64504A;
+  --hi-umber-soft: #8A6C61;
+  --hi-vanilla: #CEB7AB;
+  --hi-vanilla-light: #E7D8CF;
+  --hi-gray: #7B7985;
+  --hi-ph-gray: #8A8C8D;
+  --hi-gold: #E9C96A;
+  --hi-gold-soft: #F3D77A;
+  --hi-red: #B65B61;
+  --hi-green: #7FAF80;
+
+  --bg: #120B06;
+  --surface: rgba(31, 25, 22, 0.86);
+  --surface-soft: rgba(206, 183, 171, 0.10);
+  --surface-warm: rgba(100, 80, 74, 0.24);
+
+  --text: #F8EFE8;
+  --text-muted: rgba(248, 239, 232, 0.66);
+  --text-soft: rgba(248, 239, 232, 0.82);
+  --line: rgba(206, 183, 171, 0.18);
+  --line-gold: rgba(233, 201, 106, 0.34);
+
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', Arial, sans-serif;
+
+  --radius-xl: 28px;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+
+  --shadow-deep: 0 26px 80px rgba(0, 0, 0, 0.44);
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.28);
+}
+
+/* PAGE BACKGROUND */
+html,
+body {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(233, 201, 106, 0.12), transparent 30%),
+    radial-gradient(circle at 88% 10%, rgba(206, 183, 171, 0.11), transparent 28%),
+    radial-gradient(circle at 50% 100%, rgba(100, 80, 74, 0.25), transparent 38%),
+    linear-gradient(135deg, #080604 0%, #120B06 42%, #1B120E 100%) !important;
+  color: var(--text) !important;
+  font-family: var(--font-body) !important;
+}
+
+/* MAIN APP CARD */
+#app,
+#root,
+.hi-app,
+.hi-screen,
+.hi-screen-container,
+#hi-screen-container {
+  color: var(--text) !important;
+  font-family: var(--font-body) !important;
+}
+
+#app > div,
+#root > div,
+.hi-screen-container,
+#hi-screen-container,
+.hi-screen {
+  background:
+    radial-gradient(circle at top left, rgba(233, 201, 106, 0.07), transparent 32%),
+    linear-gradient(145deg, rgba(28, 23, 20, 0.96), rgba(14, 10, 8, 0.96)) !important;
+  border: 1px solid rgba(206, 183, 171, 0.18) !important;
+  box-shadow: var(--shadow-deep) !important;
+  color: var(--text) !important;
+}
+
+/* TOP BAR / SCREEN HEADER */
+header,
+.hi-header,
+[class*="header"] {
+  background:
+    linear-gradient(180deg, rgba(19, 14, 12, 0.96), rgba(23, 17, 14, 0.88)) !important;
+  color: var(--text) !important;
+  border-color: rgba(206, 183, 171, 0.16) !important;
+}
+
+/* BRAND / TITLES */
+h1,
+h2,
+h3,
+.hi-title,
+.hi-heading,
+[class*="title"],
+[class*="heading"] {
+  font-family: var(--font-heading) !important;
+  color: #FFF3E9 !important;
+  letter-spacing: -0.045em !important;
+  font-weight: 800 !important;
+}
+
+h1 {
+  font-size: clamp(38px, 4.8vw, 68px) !important;
+  line-height: 0.96 !important;
+}
+
+h2 {
+  font-size: clamp(28px, 3.2vw, 46px) !important;
+  line-height: 1.02 !important;
+}
+
+h3 {
+  font-size: clamp(20px, 2vw, 30px) !important;
+}
+
+/* BODY TEXT */
+p,
+li,
+td,
+th,
+label,
+small,
+span,
+div {
+  font-family: var(--font-body);
+}
+
+p,
+li {
+  color: var(--text-soft) !important;
+}
+
+small,
+label,
+[class*="label"],
+[class*="subtitle"],
+[class*="eyebrow"] {
+  color: var(--text-muted) !important;
+}
+
+/* CARDS / PANELS */
+.hi-card,
+.card,
+.panel,
+section,
+article,
+[class*="card"],
+[class*="panel"],
+[class*="summary"],
+[class*="readiness"],
+[class*="install"],
+[class*="placement"],
+[class*="safety"],
+[class*="estimate"],
+div[style*="border"] {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(206, 183, 171, 0.055)) !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(206, 183, 171, 0.16) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    var(--shadow-soft) !important;
+}
+
+/* REMOVE WHITE INLINE BOXES */
+div[style*="background:#fff"],
+div[style*="background: #fff"],
+div[style*="background:white"],
+div[style*="background: white"],
+section[style*="background:#fff"],
+section[style*="background: #fff"],
+section[style*="background:white"],
+section[style*="background: white"] {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(206, 183, 171, 0.055)) !important;
+  color: var(--text) !important;
+}
+
+/* HERO / WELCOME AREAS */
+.hi-hero,
+.hero,
+[class*="welcome"],
+[class*="hero"] {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(233, 201, 106, 0.18), transparent 28%),
+    linear-gradient(135deg, rgba(18, 11, 6, 0.98), rgba(100, 80, 74, 0.70)) !important;
+  color: var(--text) !important;
+}
+
+/* BUTTONS */
+button,
+.hi-btn,
+[class*="btn"],
+a[role="button"] {
+  border-radius: 999px !important;
+  font-family: var(--font-body) !important;
+  font-weight: 900 !important;
+  border: 1px solid rgba(206, 183, 171, 0.24) !important;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease !important;
+}
+
+button:hover,
+.hi-btn:hover,
+[class*="btn"]:hover {
+  transform: translateY(-1px);
+  border-color: rgba(233, 201, 106, 0.48) !important;
+}
+
+/* PRIMARY BUTTONS */
+.hi-btn-gold,
+.hi-btn-primary,
+button.primary,
+button[data-primary="true"],
+[class*="gold"],
+[class*="primary"] {
+  background:
+    linear-gradient(135deg, #F3D77A 0%, #D8AE49 48%, #A7792F 100%) !important;
+  color: #160D08 !important;
+  border-color: rgba(255, 238, 162, 0.55) !important;
+  box-shadow:
+    0 16px 36px rgba(233, 201, 106, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.34) !important;
+}
+
+/* SECONDARY BUTTONS */
+.hi-btn-secondary,
+button.secondary,
+[class*="secondary"] {
+  background: rgba(18, 11, 6, 0.32) !important;
+  color: #F8EFE8 !important;
+  border-color: rgba(206, 183, 171, 0.26) !important;
+}
+
+/* BADGES */
+.badge,
+.pill,
+[class*="badge"],
+[class*="pill"],
+[class*="status"] {
+  border-radius: 999px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase;
+}
+
+/* WARNING / FLAGS */
+[class*="flag"],
+[class*="warning"],
+[class*="caution"],
+[class*="alert"] {
+  background: rgba(233, 201, 106, 0.075) !important;
+  border-color: rgba(233, 201, 106, 0.28) !important;
+  color: rgba(255, 246, 232, 0.88) !important;
+}
+
+/* RED / RECOVERY / NO INSTALL */
+[class*="red"],
+[class*="danger"],
+[class*="not-recommended"],
+[class*="recovery"],
+[class*="no-install"] {
+  border-color: rgba(182, 91, 97, 0.42) !important;
+}
+
+[class*="recovery"],
+[class*="no-install"],
+[class*="notrecommended"] {
+  background:
+    linear-gradient(145deg, rgba(182, 91, 97, 0.18), rgba(100, 80, 74, 0.11)) !important;
+}
+
+/* SCORE / METRICS */
+[class*="score"],
+[class*="metric"],
+[class*="number"] {
+  color: #FFF4EA !important;
+}
+
+/* TABLE ROWS */
+tr,
+[class*="row"] {
+  border-color: rgba(206, 183, 171, 0.14) !important;
+}
+
+/* INPUTS */
+input,
+select,
+textarea {
+  background: rgba(255, 255, 255, 0.065) !important;
+  border: 1px solid rgba(206, 183, 171, 0.20) !important;
+  color: var(--text) !important;
+  border-radius: 14px !important;
+  font-family: var(--font-body) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(248, 239, 232, 0.36) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none !important;
+  border-color: rgba(233, 201, 106, 0.62) !important;
+  box-shadow: 0 0 0 4px rgba(233, 201, 106, 0.12) !important;
+}
+
+/* SVG / ICONS */
+svg,
+[class*="icon"] {
+  color: currentColor;
+}
+
+/* LINKS */
+a {
+  color: var(--hi-gold) !important;
+}
+
+/* DARK VANILLA CLIENT SUMMARY STYLE */
+[class*="client"],
+[class*="profile"] {
+  border-color: rgba(206, 183, 171, 0.20) !important;
+}
+
+/* NAV-LIKE TABS */
+[class*="tab"] {
+  color: var(--text-muted) !important;
+}
+
+[class*="active"] {
+  border-color: rgba(233, 201, 106, 0.42) !important;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #100B09;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--hi-gold), var(--hi-umber));
+  border-radius: 999px;
+  border: 3px solid #100B09;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 38px !important;
+  }
+
+  h2 {
+    font-size: 28px !important;
+  }
+
+  .hi-card,
+  .card,
+  .panel,
+  [class*="card"],
+  [class*="panel"] {
+    border-radius: 18px !important;
+  }
+}
