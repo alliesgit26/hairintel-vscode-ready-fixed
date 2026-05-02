@@ -1,0 +1,309 @@
+﻿:root {
+  --hi-smoky: #120B06;
+  --hi-black: #0A0705;
+  --hi-umber: #64504A;
+  --hi-gray: #7B7985;
+  --hi-philippine: #8A8C8D;
+  --hi-vanilla: #CEB7AB;
+  --hi-gold: #F2C760;
+  --hi-soft-gold: #F7DE86;
+  --hi-border: rgba(206,183,171,.22);
+  --hi-glass: rgba(18,11,6,.72);
+  --hi-card: rgba(28,24,22,.82);
+  --hi-card-2: rgba(100,80,74,.20);
+  --hi-text: #F6EEE8;
+  --hi-muted: rgba(246,238,232,.68);
+}
+
+html,
+body {
+  background:
+    radial-gradient(circle at top left, rgba(242,199,96,.16), transparent 32%),
+    radial-gradient(circle at 78% 12%, rgba(206,183,171,.10), transparent 28%),
+    linear-gradient(135deg, #050403 0%, #120B06 45%, #221712 100%) !important;
+  color: var(--hi-text) !important;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: .28;
+  z-index: 0;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,.44) 78%);
+  z-index: 0;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hi-luxe-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 255px;
+  z-index: 80;
+  padding: 32px 22px;
+  background: linear-gradient(180deg, rgba(10,7,5,.96), rgba(18,11,6,.90));
+  border-right: 1px solid var(--hi-border);
+  box-shadow: 18px 0 60px rgba(0,0,0,.38);
+  color: var(--hi-text);
+}
+
+.hi-luxe-brand {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -1.4px;
+  color: var(--hi-soft-gold);
+  line-height: 1;
+}
+
+.hi-luxe-brand span {
+  color: var(--hi-vanilla);
+}
+
+.hi-luxe-sub {
+  margin-top: 9px;
+  font-size: 10px;
+  letter-spacing: 1.7px;
+  text-transform: uppercase;
+  color: rgba(246,238,232,.55);
+}
+
+.hi-luxe-nav {
+  margin-top: 54px;
+  display: grid;
+  gap: 12px;
+}
+
+.hi-luxe-nav button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(246,238,232,.70);
+  border-radius: 14px;
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: .1px;
+  cursor: pointer;
+}
+
+.hi-luxe-nav button:hover,
+.hi-luxe-nav button.active {
+  background: rgba(206,183,171,.16);
+  border-color: rgba(206,183,171,.18);
+  color: var(--hi-text);
+}
+
+.hi-luxe-pro {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 28px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(242,199,96,.28);
+  background: linear-gradient(135deg, rgba(100,80,74,.24), rgba(18,11,6,.74));
+}
+
+.hi-luxe-pro strong {
+  display: block;
+  color: var(--hi-soft-gold);
+  margin-bottom: 6px;
+}
+
+.hi-luxe-pro p {
+  margin: 0 0 14px;
+  color: var(--hi-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.hi-luxe-pro button {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(242,199,96,.5);
+  color: var(--hi-soft-gold);
+  background: transparent;
+  padding: 11px;
+  font-weight: 800;
+}
+
+.hi-luxe-topbar {
+  position: fixed;
+  left: 255px;
+  right: 0;
+  top: 0;
+  height: 86px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 54px;
+  background: rgba(10,7,5,.78);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(206,183,171,.15);
+}
+
+.hi-luxe-topbar a,
+.hi-luxe-topbar button {
+  color: rgba(246,238,232,.72);
+  background: transparent;
+  border: 0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.hi-luxe-topbar .active {
+  color: var(--hi-text);
+  border-bottom: 2px solid var(--hi-gold);
+  padding-bottom: 18px;
+}
+
+body.hi-luxe-active {
+  padding-left: 255px;
+}
+
+body.hi-luxe-active main,
+body.hi-luxe-active .app,
+body.hi-luxe-active #app,
+body.hi-luxe-active .hi-app,
+body.hi-luxe-active .screen,
+body.hi-luxe-active .page,
+body.hi-luxe-active .container {
+  max-width: 1320px !important;
+}
+
+body.hi-luxe-active .app,
+body.hi-luxe-active #app,
+body.hi-luxe-active main {
+  padding-top: 88px !important;
+}
+
+.card,
+.panel,
+section,
+.hi-card,
+[class*="card"],
+[class*="panel"],
+[class*="summary"],
+[class*="result"] {
+  background: linear-gradient(145deg, rgba(28,24,22,.88), rgba(18,11,6,.78)) !important;
+  border: 1px solid var(--hi-border) !important;
+  box-shadow: 0 28px 80px rgba(0,0,0,.36) !important;
+  color: var(--hi-text) !important;
+}
+
+h1,
+h2,
+h3,
+.title,
+.screen-title {
+  font-family: Georgia, "Times New Roman", serif !important;
+  color: var(--hi-text) !important;
+  letter-spacing: -1.3px;
+}
+
+h1 {
+  font-size: clamp(42px, 6vw, 78px) !important;
+  line-height: .95 !important;
+}
+
+p,
+label,
+small,
+span {
+  color: inherit;
+}
+
+button,
+.btn,
+.hi-btn,
+[class*="button"] {
+  border-radius: 999px !important;
+}
+
+button.primary,
+.btn-primary,
+.hi-btn-gold,
+[class*="gold"] {
+  background: linear-gradient(135deg, var(--hi-soft-gold), #B98928) !important;
+  color: #100905 !important;
+  border: 1px solid rgba(247,222,134,.60) !important;
+  font-weight: 900 !important;
+}
+
+input,
+select,
+textarea {
+  background: rgba(246,238,232,.10) !important;
+  color: var(--hi-text) !important;
+  border: 1px solid rgba(206,183,171,.22) !important;
+  border-radius: 16px !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(246,238,232,.38) !important;
+}
+
+.hi-placement-head-card {
+  width: min(100%, 540px);
+  margin: 18px auto;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(206,183,171,.24);
+  background: #0b0806;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), 0 28px 70px rgba(0,0,0,.42);
+}
+
+.hi-placement-head-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.hi-placement-caption {
+  padding: 14px 18px;
+  background: rgba(18,11,6,.86);
+  color: var(--hi-vanilla);
+  font-size: 13px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 960px) {
+  body.hi-luxe-active {
+    padding-left: 0;
+  }
+
+  .hi-luxe-sidebar,
+  .hi-luxe-topbar {
+    display: none;
+  }
+
+  body.hi-luxe-active .app,
+  body.hi-luxe-active #app,
+  body.hi-luxe-active main {
+    padding-top: 0 !important;
+  }
+}
