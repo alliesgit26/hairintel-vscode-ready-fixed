@@ -1,34 +1,65 @@
-﻿<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>HairIntel Luxury Dashboard Test</title>
-  <style>
-    body {
-      margin: 0;
-      background: #120b06;
-      color: #f6d36f;
-      font-family: Georgia, serif;
-      display: grid;
-      place-items: center;
-      min-height: 100vh;
-    }
-    .box {
-      border: 1px solid #f6d36f;
-      padding: 60px;
-      border-radius: 30px;
-      background: #120b06;
-      box-shadow: 0 30px 100px rgba(0,0,0,.7);
-      text-align: center;
-    }
-    h1 { font-size: 56px; margin: 0 0 20px; }
-    p { color: #ceb7ab; font-size: 22px; }
-  </style>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HairIntel AI — AI Consultation System for Extension Stylists</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+\n
+\n  <link rel="stylesheet" href="css/hairintel-dashboard-real.css">\n</head>
 <body>
-  <div class="box">
-    <h1>HairIntel Luxury Dashboard Is Live</h1>
-    <p>Vercel is now serving the correct folder.</p>
+  <div id="hi-app">
+    <!-- Phone Frame (desktop) -->
+    <div id="hi-frame">
+      <!-- Toast -->
+      <div id="hi-toast-container"></div>
+      <!-- Screen Container -->
+      <div id="hi-screen-container"></div>
+    </div>
   </div>
-</body>
+
+  <footer style="padding: 32px 20px; text-align: center; font-size: 14px; color: #6b7280;">
+    <a href="/privacy.html" style="color: #7c3aed; text-decoration: none;">Privacy Policy</a>
+    <span style="margin: 0 8px;">|</span>
+    <a href="/terms.html" style="color: #7c3aed; text-decoration: none;">Terms & Billing</a>
+  </footer>
+
+  <!-- Core Engine & Utilities -->
+  <script src="js/engine.js"></script>
+  <script src="js/utils.js"></script>
+
+  <!-- Screens
+       Note: several files contain multiple screens:
+       s02 = S02 ClientInfo + (S03 Photos + S04 Goals as fallback)
+       s03 = S03 Photos (standalone) + S04 Goals (standalone)
+       s05 = S05 HairProfile + S06 Concerns
+       s09 = S09 Placement + S10 Install Plan
+       s11 = S11 Load Safety + S12 Outcome
+       s13 = S13 Summary + S14 Estimate
+       s15 = S15 Alternatives + S16 Export
+       s17 = S17 Clients + S18 Subscription
+  -->
+  <script src="js/screens/s01-welcome.js"></script>
+  <script src="js/screens/s02-client-info.js"></script>
+  <script src="js/screens/s03-photos.js"></script>
+  <script src="js/screens/s05-hair-profile.js"></script>
+  <script src="js/screens/s07-analysis.js"></script>
+  <script src="js/screens/s08-readiness.js"></script>
+  <script src="js/screens/s09-placement.js"></script>
+  <script src="js/screens/s11-load-safety.js"></script>
+  <script src="js/screens/s13-summary.js"></script>
+  <script src="js/screens/s15-alternatives.js"></script>
+  <script src="js/screens/s17-clients.js"></script>
+
+  <script src="js/env.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth.js"></script>
+
+  <!-- App Initializer -->
+  <script src="js/screens/s19-ai-preview.js"></script>
+  <script src="js/app.js"></script>
+\n  <script src="js/hairintel-dashboard-real.js"></script>\n</body>
 </html>
