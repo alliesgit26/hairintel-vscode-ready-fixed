@@ -1,6 +1,7 @@
+node_modules
+.env
+.vercel
+.DS_Store
+
 .vercel
 .env*.local
-.env.local
-hairintel-vscode-ready/.env.local
-node_modules/
-hairintel-vscode-ready/node_modules/
