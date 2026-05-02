@@ -41,7 +41,7 @@ async function handleCheckoutReturn() {
     window.history.replaceState({}, document.title, "/");
 
     if (!allowedStatuses.includes(status)) {
-      if (window.HI && typeof HI.setSub === "function") {
+      if (typeof HI !== "undefined" && typeof HI.setSub === "function") {
         HI.setSub({
           plan: "none",
           status,
@@ -59,7 +59,7 @@ async function handleCheckoutReturn() {
       return true;
     }
 
-    if (window.HI && typeof HI.setSub === "function") {
+    if (typeof HI !== "undefined" && typeof HI.setSub === "function") {
       HI.setSub({
         plan,
         status,
@@ -69,6 +69,14 @@ async function handleCheckoutReturn() {
         stripe_subscription_id: data.stripe_subscription_id || "",
         updatedAt: new Date().toISOString(),
       });
+
+      console.log("[HIApp] Local subscription saved:", {
+        plan,
+        status,
+        email: data.email || "",
+      });
+    } else {
+      console.warn("[HIApp] HI.setSub is not available, subscription could not be saved locally.");
     }
 
     if (data.email) {
