@@ -802,11 +802,11 @@
 
       <nav class="nav">
         <a class="active" href="/">▦ Dashboard</a>
-        <a href="#">☰ Consultations</a>
-        <a href="#">♙ Clients</a>
-        <a href="#">☷ Templates</a>
-        <a href="#">◇ Education</a>
-        <a href="#">? Support</a>
+        <a href="javascript:void(0)">☰ Consultations</a>
+        <a href="javascript:void(0)">♙ Clients</a>
+        <a href="javascript:void(0)">☷ Templates</a>
+        <a href="javascript:void(0)">◇ Education</a>
+        <a href="javascript:void(0)">? Support</a>
       </nav>
 
       <div class="consultant-card">
@@ -826,13 +826,13 @@
 
     <main>
       <header class="topbar">
-        <a class="back" href="#">‹ Dashboard</a>
+        <a class="back" href="javascript:void(0)">‹ Dashboard</a>
 
         <nav class="tabs">
-          <a class="active" href="#">Overview</a>
-          <a href="#">Analysis</a>
-          <a href="#">Recommendations</a>
-          <a href="#">History</a>
+          <a class="active" href="javascript:void(0)">Overview</a>
+          <a href="javascript:void(0)">Analysis</a>
+          <a href="javascript:void(0)">Recommendations</a>
+          <a href="javascript:void(0)">History</a>
         </nav>
 
         <div class="actions">
@@ -1002,23 +1002,68 @@
       </section>
     </main>
   </div>
-<script id="stay-on-luxe-dashboard">
-document.addEventListener("click", function(e) {
-  const link = e.target.closest("a, button");
-  if (!link) return;
+<script id="luxe-dashboard-actions">
+function openDashboardPanel(name) {
+  const panels = {
+    dashboard: "Dashboard overview is already open.",
+    consultations: "Consultation builder will stay inside this luxury dashboard next.",
+    clients: "Client panel will stay inside this luxury dashboard next.",
+    templates: "Templates panel will stay inside this luxury dashboard next.",
+    education: "Education panel will stay inside this luxury dashboard next.",
+    support: "Support panel will stay inside this luxury dashboard next.",
+    analysis: "Analysis section is being prepared inside this dashboard.",
+    recommendations: "Recommendations section is being prepared inside this dashboard.",
+    history: "History section is being prepared inside this dashboard."
+  };
 
-  const href = link.getAttribute("href") || "";
-  const onclick = link.getAttribute("onclick") || "";
+  alert(panels[name] || "Dashboard action selected.");
+}
 
-  if (href.includes("hairintel/index.html") || onclick.includes("hairintel/index.html")) {
-    e.preventDefault();
-    e.stopPropagation();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    return false;
-  }
-}, true);
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("a, button").forEach(function (el) {
+    const text = (el.textContent || "").toLowerCase();
+
+    if (text.includes("dashboard")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("dashboard"); };
+    if (text.includes("consultation")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("consultations"); };
+    if (text.includes("client")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("clients"); };
+    if (text.includes("template")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("templates"); };
+    if (text.includes("education")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("education"); };
+    if (text.includes("support")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("support"); };
+    if (text.includes("analysis")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("analysis"); };
+    if (text.includes("recommendation")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("recommendations"); };
+    if (text.includes("history")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("history"); };
+
+    if (text.includes("review plan") || text.includes("view full plan") || text.includes("book installation") || text.includes("save plan")) {
+      el.onclick = function(e){
+        e.preventDefault();
+        const placement = document.querySelector(".placement");
+        if (placement) placement.scrollIntoView({ behavior: "smooth", block: "center" });
+      };
+    }
+
+    if (text.includes("export report")) {
+      el.onclick = function(e){
+        e.preventDefault();
+        window.print();
+      };
+    }
+
+    if (text.includes("share results")) {
+      el.onclick = function(e){
+        e.preventDefault();
+        if (navigator.share) {
+          navigator.share({ title: "HairIntel AI Dashboard", url: window.location.href });
+        } else {
+          navigator.clipboard && navigator.clipboard.writeText(window.location.href);
+          alert("Dashboard link copied.");
+        }
+      };
+    }
+  });
+});
 </script>
 </body>
 </html>
+
 
 
