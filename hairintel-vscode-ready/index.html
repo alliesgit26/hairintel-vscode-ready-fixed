@@ -25,12 +25,9 @@
       --shadow: 0 26px 80px rgba(0,0,0,.48);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html,
-    body {
+    html, body {
       margin: 0;
       min-height: 100%;
       background:
@@ -55,23 +52,12 @@
       z-index: 0;
     }
 
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,.42) 78%);
-      z-index: 0;
-    }
-
     .app {
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: 255px 1fr;
+      grid-template-columns: 255px minmax(0, 1fr);
       min-height: 100vh;
-      border: 1px solid rgba(206,183,171,.22);
-      border-radius: 0;
       overflow: hidden;
     }
 
@@ -86,9 +72,7 @@
       align-self: start;
     }
 
-    .brand {
-      margin-bottom: 54px;
-    }
+    .brand { margin-bottom: 54px; }
 
     .brand h1 {
       margin: 0;
@@ -99,10 +83,6 @@
       color: var(--gold);
     }
 
-    .brand h1 span {
-      color: var(--cream);
-    }
-
     .brand p {
       margin: 9px 0 0;
       text-transform: uppercase;
@@ -111,33 +91,32 @@
       color: rgba(247,239,233,.55);
     }
 
-    .nav {
-      display: grid;
-      gap: 12px;
-    }
+    .nav { display: grid; gap: 12px; }
 
-    .nav a {
+    .nav button {
       display: flex;
       align-items: center;
       gap: 12px;
       color: rgba(247,239,233,.70);
-      text-decoration: none;
       padding: 14px 16px;
       border-radius: 12px;
       font-weight: 800;
       font-size: 14px;
       border: 1px solid transparent;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
     }
 
-    .nav a.active,
-    .nav a:hover {
+    .nav button.active,
+    .nav button:hover {
       color: var(--cream);
       background: rgba(206,183,171,.15);
       border-color: rgba(206,183,171,.16);
     }
 
     .consultant-card {
-      margin-top: 190px;
+      margin-top: 210px;
       padding: 16px;
       border-radius: 16px;
       border: 1px solid rgba(206,183,171,.15);
@@ -156,19 +135,11 @@
       font-weight: 900;
       color: #170f0a;
       background: linear-gradient(135deg, var(--cream), var(--gold2));
-      overflow: hidden;
       flex: 0 0 auto;
     }
 
-    .consultant-card strong {
-      display: block;
-      font-size: 13px;
-    }
-
-    .consultant-card span {
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .consultant-card strong { display: block; font-size: 13px; }
+    .consultant-card span { color: var(--muted); font-size: 12px; }
 
     .upgrade {
       margin-top: 12px;
@@ -192,8 +163,7 @@
       line-height: 1.45;
     }
 
-    .upgrade button,
-    .ghost-btn {
+    .upgrade button {
       width: 100%;
       border: 1px solid rgba(244,201,93,.42);
       background: transparent;
@@ -205,6 +175,7 @@
     }
 
     main {
+      min-width: 0;
       min-height: 100vh;
       background:
         linear-gradient(180deg, rgba(255,255,255,.025), transparent 280px),
@@ -214,7 +185,7 @@
     .topbar {
       height: 88px;
       display: grid;
-      grid-template-columns: 240px 1fr 260px;
+      grid-template-columns: 240px minmax(420px, 1fr) 250px;
       align-items: center;
       gap: 20px;
       padding: 0 30px;
@@ -228,29 +199,35 @@
 
     .back {
       color: rgba(247,239,233,.76);
-      text-decoration: none;
+      border: 0;
+      background: transparent;
+      text-align: left;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
+      cursor: pointer;
     }
 
     .tabs {
       display: flex;
       justify-content: center;
-      gap: 56px;
+      gap: clamp(24px, 4vw, 56px);
+      min-width: 0;
     }
 
-    .tabs a {
+    .tabs button {
       color: rgba(247,239,233,.66);
-      text-decoration: none;
+      background: transparent;
+      border: 0;
       text-transform: uppercase;
       letter-spacing: 1.6px;
       font-size: 12px;
       font-weight: 900;
       padding: 34px 0 30px;
       border-bottom: 2px solid transparent;
+      cursor: pointer;
     }
 
-    .tabs a.active {
+    .tabs button.active {
       color: var(--cream);
       border-bottom-color: var(--gold);
     }
@@ -261,8 +238,7 @@
       gap: 10px;
     }
 
-    .export,
-    .menu {
+    .export, .menu {
       border: 1px solid rgba(206,183,171,.32);
       background: rgba(18,11,6,.42);
       color: var(--cream);
@@ -270,22 +246,20 @@
       padding: 12px 18px;
       font-weight: 900;
       cursor: pointer;
+      white-space: nowrap;
     }
 
-    .menu {
-      width: 48px;
-      padding: 12px 0;
-    }
+    .menu { width: 48px; padding: 12px 0; }
 
     .content {
       padding: 44px;
-      max-width: 1370px;
+      max-width: 1380px;
       margin: 0 auto;
     }
 
     .dashboard-grid {
       display: grid;
-      grid-template-columns: 1.35fr 1fr .78fr;
+      grid-template-columns: minmax(460px, 1.22fr) minmax(340px, .88fr) minmax(280px, .62fr);
       gap: 22px;
       align-items: start;
     }
@@ -302,10 +276,11 @@
     .hero h2 {
       margin: 0;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(48px, 5.2vw, 76px);
+      font-size: clamp(54px, 5vw, 74px);
       line-height: .92;
       letter-spacing: -2.5px;
       color: var(--cream);
+      max-width: 620px;
     }
 
     .hero p {
@@ -320,16 +295,20 @@
       display: flex;
       gap: 14px;
       margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .gold-btn, .outline-btn {
+      border-radius: 999px;
+      padding: 15px 24px;
+      font-weight: 950;
+      cursor: pointer;
     }
 
     .gold-btn {
       border: 1px solid rgba(244,201,93,.66);
       background: linear-gradient(135deg, #F7DE86, #B8862E);
       color: #120B06;
-      border-radius: 999px;
-      padding: 15px 24px;
-      font-weight: 950;
-      cursor: pointer;
       box-shadow: 0 12px 28px rgba(244,201,93,.18);
     }
 
@@ -337,10 +316,6 @@
       border: 1px solid rgba(206,183,171,.34);
       background: rgba(10,7,5,.25);
       color: var(--cream);
-      border-radius: 999px;
-      padding: 15px 24px;
-      font-weight: 900;
-      cursor: pointer;
     }
 
     .panel {
@@ -348,11 +323,7 @@
       border: 1px solid var(--line);
       background: linear-gradient(145deg, rgba(30,25,22,.86), rgba(12,9,7,.78));
       box-shadow: var(--shadow);
-    }
-
-    .placement {
-      padding: 22px;
-      min-height: 445px;
+      overflow: hidden;
     }
 
     .panel-title {
@@ -362,6 +333,134 @@
       letter-spacing: 2px;
       font-size: 12px;
       font-weight: 950;
+    }
+
+    .score-panel {
+      padding: 26px;
+      display: grid;
+      grid-template-columns: 165px minmax(0, 1fr);
+      gap: 22px;
+      align-items: center;
+      min-height: 300px;
+    }
+
+    .score-ring {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: conic-gradient(var(--gold) 0 92%, rgba(206,183,171,.22) 92% 100%);
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: 0 0 45px rgba(244,201,93,.13);
+      flex: 0 0 auto;
+    }
+
+    .score-ring::before {
+      content: "";
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      background: #171210;
+      position: absolute;
+    }
+
+    .score-ring strong {
+      position: relative;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 52px;
+      color: var(--cream);
+      line-height: .8;
+    }
+
+    .score-ring small {
+      position: relative;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 56px;
+      margin-left: -48px;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .check-list div::before {
+      content: "✓";
+      color: var(--gold);
+      border: 1px solid rgba(244,201,93,.45);
+      border-radius: 50%;
+      padding: 1px 4px;
+      margin-right: 8px;
+      font-size: 10px;
+    }
+
+    .client-card {
+      padding: 22px;
+      background: linear-gradient(145deg, rgba(206,183,171,.92), rgba(100,80,74,.78));
+      color: white;
+      min-height: 365px;
+    }
+
+    .client-card .panel-title { color: rgba(255,255,255,.82); }
+
+    .client-avatar {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      margin: 10px 0 14px;
+      border: 3px solid rgba(255,255,255,.30);
+      overflow: hidden;
+      background: rgba(255,255,255,.16);
+    }
+
+    .client-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .client-card h3 {
+      margin: 0 0 6px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .client-card p {
+      margin: 0 0 20px;
+      color: rgba(255,255,255,.82);
+      line-height: 1.4;
+      font-size: 14px;
+    }
+
+    .client-data {
+      border-top: 1px solid rgba(255,255,255,.25);
+      padding-top: 18px;
+      display: grid;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .client-data div {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      color: rgba(255,255,255,.75);
+    }
+
+    .client-data strong {
+      color: white;
+      text-align: right;
+    }
+
+    .placement {
+      padding: 22px;
+      min-height: 445px;
     }
 
     .pill-tabs {
@@ -387,7 +486,7 @@
 
     .placement-body {
       display: grid;
-      grid-template-columns: 1fr 175px;
+      grid-template-columns: minmax(0, 1fr) 175px;
       gap: 18px;
       align-items: center;
     }
@@ -467,72 +566,9 @@
       line-height: 1.45;
     }
 
-    .score-panel {
-      padding: 26px;
-      min-height: 300px;
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .score-ring {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background:
-        conic-gradient(var(--gold) 0 92%, rgba(206,183,171,.22) 92% 100%);
-      display: grid;
-      place-items: center;
-      position: relative;
-      box-shadow: 0 0 45px rgba(244,201,93,.13);
-    }
-
-    .score-ring::before {
-      content: "";
-      width: 118px;
-      height: 118px;
-      border-radius: 50%;
-      background: #171210;
-      position: absolute;
-    }
-
-    .score-ring strong {
-      position: relative;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 52px;
-      color: var(--cream);
-      line-height: .8;
-    }
-
-    .score-ring span {
-      position: relative;
-      color: var(--muted);
-      margin-top: 58px;
-      margin-left: -48px;
-      font-size: 13px;
-    }
-
-    .check-list {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .check-list div::before {
-      content: "✓";
-      color: var(--gold);
-      border: 1px solid rgba(244,201,93,.45);
-      border-radius: 50%;
-      padding: 1px 4px;
-      margin-right: 8px;
-      font-size: 10px;
-    }
-
     .install-panel {
       padding: 24px;
+      margin-top: 22px;
       min-height: 300px;
     }
 
@@ -583,67 +619,6 @@
       cursor: pointer;
     }
 
-    .client-card {
-      padding: 22px;
-      background:
-        linear-gradient(145deg, rgba(206,183,171,.92), rgba(100,80,74,.78));
-      color: white;
-      min-height: 365px;
-    }
-
-    .client-card .panel-title {
-      color: rgba(255,255,255,.80);
-    }
-
-    .client-avatar {
-      width: 76px;
-      height: 76px;
-      border-radius: 50%;
-      margin: 10px 0 14px;
-      border: 3px solid rgba(255,255,255,.30);
-      overflow: hidden;
-      background: rgba(255,255,255,.16);
-    }
-
-    .client-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .client-card h3 {
-      margin: 0 0 6px;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 24px;
-      font-weight: 500;
-    }
-
-    .client-card p {
-      margin: 0 0 20px;
-      color: rgba(255,255,255,.82);
-      line-height: 1.4;
-      font-size: 14px;
-    }
-
-    .client-data {
-      border-top: 1px solid rgba(255,255,255,.25);
-      padding-top: 18px;
-      display: grid;
-      gap: 12px;
-      font-size: 12px;
-    }
-
-    .client-data div {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      color: rgba(255,255,255,.75);
-    }
-
-    .client-data strong {
-      color: white;
-    }
-
     .load-panel {
       padding: 22px;
       margin-top: 22px;
@@ -651,17 +626,16 @@
 
     .load-body {
       display: grid;
-      grid-template-columns: 132px 1fr;
-      gap: 20px;
+      grid-template-columns: 122px minmax(0,1fr);
+      gap: 18px;
       align-items: center;
     }
 
     .small-ring {
-      width: 128px;
-      height: 128px;
+      width: 118px;
+      height: 118px;
       border-radius: 50%;
-      background:
-        conic-gradient(var(--gold) 0 58%, rgba(206,183,171,.28) 58% 72%, rgba(255,255,255,.13) 72% 100%);
+      background: conic-gradient(var(--gold) 0 58%, rgba(206,183,171,.28) 58% 72%, rgba(255,255,255,.13) 72% 100%);
       display: grid;
       place-items: center;
       position: relative;
@@ -670,8 +644,8 @@
     .small-ring::before {
       content: "";
       position: absolute;
-      width: 96px;
-      height: 96px;
+      width: 88px;
+      height: 88px;
       border-radius: 50%;
       background: #171210;
     }
@@ -679,12 +653,12 @@
     .small-ring span {
       position: relative;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 21px;
+      font-size: 20px;
     }
 
     .load-stats {
       display: grid;
-      gap: 13px;
+      gap: 11px;
       color: var(--muted);
       font-size: 12px;
     }
@@ -693,16 +667,12 @@
       display: flex;
       justify-content: space-between;
       border-bottom: 1px solid rgba(206,183,171,.13);
-      padding-bottom: 9px;
+      padding-bottom: 8px;
+      gap: 12px;
     }
 
-    .load-stats strong {
-      color: var(--cream);
-    }
-
-    .load-stats .safe {
-      color: var(--green);
-    }
+    .load-stats strong { color: var(--cream); text-align: right; }
+    .load-stats .safe { color: var(--green); }
 
     .bottom-cta {
       grid-column: 1 / -1;
@@ -712,7 +682,7 @@
       border: 1px solid var(--line);
       background: linear-gradient(135deg, rgba(100,80,74,.46), rgba(30,25,22,.78));
       display: grid;
-      grid-template-columns: 1fr auto auto;
+      grid-template-columns: minmax(0, 1fr) auto auto;
       align-items: center;
       gap: 18px;
     }
@@ -738,56 +708,90 @@
       font-size: 13px;
     }
 
-    @media (max-width: 1220px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
+    .dynamic-panel {
+      grid-column: 1 / -1;
+      padding: 26px;
+      margin-top: 22px;
+      display: none;
+    }
 
-      aside {
-        display: none;
-      }
+    .dynamic-panel.show { display: block; }
 
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      place-items: center;
+    }
+
+    .modal.show { display: grid; }
+
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-card {
+      position: relative;
+      width: min(92vw, 540px);
+      border-radius: 24px;
+      padding: 30px;
+      background: linear-gradient(145deg, rgba(30,25,22,.96), rgba(18,11,6,.96));
+      border: 1px solid rgba(206,183,171,.28);
+      box-shadow: 0 40px 110px rgba(0,0,0,.65);
+      color: var(--cream);
+    }
+
+    .modal-card h2 {
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 32px;
+    }
+
+    .modal-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 1240px) {
+      .app { grid-template-columns: 1fr; }
+      aside { display: none; }
       .topbar {
         grid-template-columns: 1fr;
         height: auto;
         gap: 14px;
         padding: 22px;
       }
-
-      .tabs,
-      .actions {
-        justify-content: flex-start;
-        flex-wrap: wrap;
-      }
-
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .bottom-cta {
-        grid-template-columns: 1fr;
-      }
+      .tabs, .actions { justify-content: flex-start; flex-wrap: wrap; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .bottom-cta { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 680px) {
-      .content {
-        padding: 24px;
-      }
+      .content { padding: 24px; }
+      .placement-body, .score-panel, .load-body { grid-template-columns: 1fr; }
+      .hero-actions { flex-direction: column; }
+      .gold-btn, .outline-btn { width: 100%; }
+      .hero h2 { font-size: 48px; }
+    }
 
-      .placement-body,
-      .score-panel,
-      .load-body {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-      }
-
-      .gold-btn,
-      .outline-btn {
-        width: 100%;
-      }
+    @media print {
+      aside, .topbar, .hero-actions, .bottom-cta, .modal { display: none !important; }
+      body { background: #fff !important; color: #111 !important; }
+      .app, main { display: block !important; background: #fff !important; }
+      .panel { break-inside: avoid; box-shadow: none !important; }
     }
   </style>
 </head>
@@ -801,41 +805,41 @@
       </div>
 
       <nav class="nav">
-        <a class="active" href="/">▦ Dashboard</a>
-        <a href="javascript:void(0)">☰ Consultations</a>
-        <a href="javascript:void(0)">♙ Clients</a>
-        <a href="javascript:void(0)">◇ Education</a>
+        <button class="active" data-action="dashboard">▦ Dashboard</button>
+        <button data-action="consultations">☰ Consultations</button>
+        <button data-action="clients">♙ Clients</button>
+        <button data-action="education">◇ Education</button>
       </nav>
 
       <div class="consultant-card">
         <div class="avatar">HI</div>
         <div>
-          <strong>Master Consultant</strong>
-          <span>HairIntel Pro</span>
+          <strong>Stylist Dashboard</strong>
+          <span>HairIntel Workspace</span>
         </div>
       </div>
 
       <div class="upgrade">
-        <strong>Unlock Pro Tools</strong>
+        <strong>Pro Tools</strong>
         <p>Advanced mapping, load modeling, saved reports, and client-ready exports.</p>
-        <button onclick="window.scrollTo({top:0,behavior:'smooth'})">Upgrade Now</button>
+        <button data-action="upgrade">Manage Tools</button>
       </div>
     </aside>
 
     <main>
       <header class="topbar">
-        <a class="back" href="javascript:void(0)">‹ Dashboard</a>
+        <button class="back" data-action="consultations">‹ Start Consultation</button>
 
         <nav class="tabs">
-          <a class="active" href="javascript:void(0)">Overview</a>
-          <a href="javascript:void(0)">Analysis</a>
-          <a href="javascript:void(0)">Recommendations</a>
-          <a href="javascript:void(0)">History</a>
+          <button class="active" data-panel="overview">Overview</button>
+          <button data-panel="analysis">Analysis</button>
+          <button data-panel="recommendations">Recommendations</button>
+          <button data-panel="history">History</button>
         </nav>
 
         <div class="actions">
-          <button class="export" onclick="window.print()">⇩ Export Report</button>
-          <button class="menu">•••</button>
+          <button class="export" data-action="export">⇩ Export Report</button>
+          <button class="menu" data-action="menu">•••</button>
         </div>
       </header>
 
@@ -844,20 +848,20 @@
           <div class="hero">
             <p class="eyebrow">Consultation Results</p>
             <h2>Your Confidence,<br>Our Precision</h2>
-            <p>A data-driven plan designed for a seamless, natural look with comfort, safety, and longevity in mind.</p>
+            <p>A data-driven extension consultation dashboard designed for planning, placement safety, client review, and stylist decision support.</p>
 
             <div class="hero-actions">
-              <button class="gold-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Review Plan</button>
-              <button class="outline-btn" onclick="navigator.share ? navigator.share({title:'HairIntel AI', url:location.href}) : alert('Copy this page URL to share.')">Share Results ⤴</button>
+              <button class="gold-btn" data-action="review">Review Plan ↗</button>
+              <button class="outline-btn" data-action="share">Share Results ⤴</button>
             </div>
 
-            <div class="panel placement">
+            <div class="panel placement" id="placement">
               <h3 class="panel-title">Placement Map Preview</h3>
 
               <div class="pill-tabs">
-                <button class="active">Top</button>
-                <button>Side</button>
-                <button>Back</button>
+                <button class="active" data-placement="top">Top</button>
+                <button data-placement="side">Side</button>
+                <button data-placement="back">Back</button>
               </div>
 
               <div class="placement-body">
@@ -866,30 +870,30 @@
                     <img src="public/placement-head.png" alt="Hair extension placement map preview">
                   </div>
 
-                  <div class="note">✧ Balanced distribution for maximum coverage and the most natural movement.</div>
+                  <div class="note" id="placementNote">Balanced distribution for maximum coverage and natural movement.</div>
                 </div>
 
                 <div class="legend">
                   <div class="legend-row">
                     <span class="dot white"></span>
-                    <div><strong>Front Hairline</strong>120 strands</div>
+                    <div><strong>Front Hairline</strong><span id="frontCount">120 strands</span></div>
                   </div>
                   <div class="legend-row">
                     <span class="dot"></span>
-                    <div><strong>Mid Scalp</strong>180 strands</div>
+                    <div><strong>Mid Scalp</strong><span id="midCount">180 strands</span></div>
                   </div>
                   <div class="legend-row">
                     <span class="dot blue"></span>
-                    <div><strong>Crown</strong>160 strands</div>
+                    <div><strong>Crown</strong><span id="crownCount">160 strands</span></div>
                   </div>
                   <div class="legend-row">
                     <span class="dot purple"></span>
-                    <div><strong>Sides</strong>80 strands</div>
+                    <div><strong>Sides</strong><span id="sideCount">80 strands</span></div>
                   </div>
 
                   <div class="legend-total">
                     <small style="display:block;color:var(--muted);text-transform:uppercase;font-size:11px;">Total</small>
-                    540 strands
+                    <span id="totalStrands">540 strands</span>
                   </div>
                 </div>
               </div>
@@ -897,524 +901,325 @@
           </div>
 
           <div>
-            <div class="panel score-panel">
+            <div class="panel score-panel" id="scorePanel">
               <div>
                 <h3 class="panel-title">Readiness Score ⓘ</h3>
                 <div class="score-ring">
-                  <strong>92</strong><span>/100</span>
+                  <strong id="readinessScore">--</strong><small>/100</small>
                 </div>
               </div>
 
               <div>
-                <h3 style="font-family:Georgia,serif;font-weight:400;margin:0 0 8px;">Excellent Candidate</h3>
-                <p style="color:var(--muted);font-size:13px;line-height:1.45;margin:0;">You are an excellent candidate for a natural, safe, and long-lasting install.</p>
+                <h3 id="candidateStatus" style="font-family:Georgia,serif;font-weight:400;margin:0 0 8px;">Awaiting Client Data</h3>
+                <p id="candidateSummary" style="color:var(--muted);font-size:13px;line-height:1.45;margin:0;">Run a consultation to populate readiness, placement, load safety, and recommended service plan.</p>
 
-                <div class="check-list">
-                  <div>Strong Donor Area</div>
-                  <div>Healthy Scalp</div>
-                  <div>Good Density</div>
-                  <div>Low Shedding Risk</div>
+                <div class="check-list" id="checkList">
+                  <div>Client intake required</div>
+                  <div>Hair profile required</div>
+                  <div>Scalp assessment required</div>
+                  <div>Goal review required</div>
                 </div>
               </div>
             </div>
 
-            <div class="panel install-panel" style="margin-top:22px;">
+            <div class="panel install-panel" id="install">
               <h3 class="panel-title">Install Plan</h3>
 
               <div class="timeline">
                 <div class="time-row">
                   <div class="time-icon">▣</div>
-                  <div><span>Method</span><strong>Micro Bead Invisible</strong></div>
+                  <div><span>Method</span><strong id="methodText">Pending consultation</strong></div>
                 </div>
                 <div class="time-row">
                   <div class="time-icon">✺</div>
-                  <div><span>Total Strands</span><strong>540</strong></div>
+                  <div><span>Total Strands</span><strong id="strandText">Pending</strong></div>
                 </div>
                 <div class="time-row">
                   <div class="time-icon">◷</div>
-                  <div><span>Estimated Time</span><strong>2.5 – 3.0 hours</strong></div>
+                  <div><span>Estimated Time</span><strong id="timeText">Pending</strong></div>
                 </div>
                 <div class="time-row">
                   <div class="time-icon">⌁</div>
-                  <div><span>Maintenance</span><strong>6 – 8 weeks</strong></div>
+                  <div><span>Maintenance</span><strong id="maintenanceText">Pending</strong></div>
                 </div>
                 <div class="time-row">
                   <div class="time-icon">↻</div>
-                  <div><span>Longevity</span><strong>6 – 12 months+</strong></div>
+                  <div><span>Longevity</span><strong id="longevityText">Pending</strong></div>
                 </div>
               </div>
 
-              <button class="full-details" onclick="window.scrollTo({top:0,behavior:'smooth'})">View Full Plan Details</button>
+              <button class="full-details" data-action="fullPlan">View Full Plan Details ↗</button>
             </div>
           </div>
 
           <div>
-            <div class="panel client-card">
+            <div class="panel client-card" id="client">
               <h3 class="panel-title">Client Summary</h3>
 
               <div class="client-avatar">
-                <img src="public/placement-head.png" alt="Client preview">
+                <img src="public/placement-head.png" alt="Client hair preview">
               </div>
 
-              <h3>Ava Morgan</h3>
-              <p>28 · Female<br>Long-term volume & length</p>
+              <h3 id="clientName">No Client Selected</h3>
+              <p id="clientSub">Start or select a consultation to populate this area.</p>
 
               <div class="client-data">
-                <div><span>Hair Type</span><strong>Straight</strong></div>
-                <div><span>Average Density</span><strong>Medium</strong></div>
-                <div><span>Scalp Condition</span><strong>Healthy</strong></div>
-                <div><span>Donor Strength</span><strong>Strong</strong></div>
-                <div><span>Primary Goal</span><strong>Volume & Length</strong></div>
+                <div><span>Hair Type</span><strong id="hairType">Pending</strong></div>
+                <div><span>Average Density</span><strong id="density">Pending</strong></div>
+                <div><span>Scalp Condition</span><strong id="scalp">Pending</strong></div>
+                <div><span>Donor Strength</span><strong id="donor">Pending</strong></div>
+                <div><span>Primary Goal</span><strong id="goal">Pending</strong></div>
               </div>
             </div>
 
-            <div class="panel load-panel">
+            <div class="panel load-panel" id="load">
               <h3 class="panel-title">Load Safety</h3>
 
               <div class="load-body">
-                <div class="small-ring"><span>Optimal</span></div>
+                <div class="small-ring"><span id="loadStatus">Pending</span></div>
 
                 <div class="load-stats">
-                  <div><span>Total Load</span><strong>23.4%</strong></div>
-                  <div><span>Recommended Max</span><strong>40%</strong></div>
-                  <div><span>Scalp Tension</span><strong>Low</strong></div>
-                  <div><span>Weight per Strand</span><strong>0.009g</strong></div>
-                  <div><span>Load per Area</span><strong>23.4%</strong></div>
-                  <div><span>Safety Margin</span><strong class="safe">16.6%</strong></div>
+                  <div><span>Total Load</span><strong id="totalLoad">Pending</strong></div>
+                  <div><span>Recommended Max</span><strong id="maxLoad">Pending</strong></div>
+                  <div><span>Scalp Tension</span><strong id="tension">Pending</strong></div>
+                  <div><span>Weight per Strand</span><strong id="weightStrand">Pending</strong></div>
+                  <div><span>Load per Area</span><strong id="loadArea">Pending</strong></div>
+                  <div><span>Safety Margin</span><strong class="safe" id="safetyMargin">Pending</strong></div>
                 </div>
               </div>
             </div>
           </div>
 
+          <section class="dynamic-panel panel" id="dynamicPanel"></section>
+
           <div class="bottom-cta panel">
             <div>
               <span>What’s Next?</span>
-              <h3>You’re one step away from your best hair.</h3>
-              <p>Book your installation or save your plan to continue later.</p>
+              <h3>Open the consultation builder or save this dashboard view.</h3>
+              <p>Use this dashboard as the polished overview. Use the consultation builder for client intake and analysis.</p>
             </div>
 
-            <button class="gold-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">▣ Book Installation</button>
-            <button class="outline-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">▱ Save Plan</button>
+            <button class="gold-btn" data-action="book">Start Consultation</button>
+            <button class="outline-btn" data-action="save">Save Dashboard</button>
           </div>
         </div>
       </section>
     </main>
   </div>
-<script id="hairintel-working-dashboard-actions">
-(function () {
-  const CONSULT_URL = "hairintel/index.html";
 
-  function qs(selector) {
-    return document.querySelector(selector);
-  }
-
-  function qsa(selector) {
-    return Array.from(document.querySelectorAll(selector));
-  }
-
-  function scrollToMatch(textMatch) {
-    const el = qsa("h1,h2,h3,.panel-title,p,section,div").find(function (node) {
-      return (node.textContent || "").toLowerCase().includes(textMatch.toLowerCase());
-    });
-
-    if (el) {
-      const card = el.closest(".panel, .placement, section, div") || el;
-      card.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }
-
-  window.openConsultationBuilder = function () {
-    window.location.href = CONSULT_URL;
-  };
-
-  function makeModal(title, body, primaryText, primaryAction) {
-    let old = qs("#hi-dashboard-modal");
-    if (old) old.remove();
-
-    const modal = document.createElement("div");
-    modal.id = "hi-dashboard-modal";
-    modal.innerHTML = `
-      <div class="hi-modal-backdrop"></div>
-      <div class="hi-modal-card">
-        <button class="hi-modal-x" type="button">×</button>
-        <h2>${title}</h2>
-        <p>${body}</p>
-        <div class="hi-modal-actions">
-          <button class="hi-modal-secondary" type="button">Close</button>
-          ${primaryText ? `<button class="hi-modal-primary" type="button">${primaryText}</button>` : ""}
-        </div>
+  <div class="modal" id="modal">
+    <div class="modal-backdrop" data-action="closeModal"></div>
+    <div class="modal-card">
+      <h2 id="modalTitle">HairIntel</h2>
+      <p id="modalBody"></p>
+      <div class="modal-actions">
+        <button class="outline-btn" data-action="closeModal">Close</button>
+        <button class="gold-btn" id="modalPrimary" style="display:none;">Continue</button>
       </div>
-    `;
+    </div>
+  </div>
 
-    document.body.appendChild(modal);
+  <script>
+    const CONSULT_URL = "hairintel/index.html";
 
-    modal.querySelector(".hi-modal-x").onclick = function () { modal.remove(); };
-    modal.querySelector(".hi-modal-secondary").onclick = function () { modal.remove(); };
-    modal.querySelector(".hi-modal-backdrop").onclick = function () { modal.remove(); };
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
-    const primary = modal.querySelector(".hi-modal-primary");
-    if (primary && primaryAction) {
-      primary.onclick = function () {
-        primaryAction();
-        modal.remove();
-      };
-    }
-  }
-
-  function showPanel(panelName) {
-    const normalized = panelName.toLowerCase();
-
-    qsa(".tabs a").forEach(function (tab) {
-      tab.classList.toggle("active", (tab.textContent || "").toLowerCase().includes(normalized));
-    });
-
-    let panel = qs("#hi-dynamic-panel");
-    if (!panel) {
-      panel = document.createElement("section");
-      panel.id = "hi-dynamic-panel";
-      panel.className = "panel";
-      panel.style.marginTop = "22px";
-      panel.style.padding = "26px";
-      const bottom = qs(".bottom-cta");
-      if (bottom && bottom.parentNode) {
-        bottom.parentNode.insertBefore(panel, bottom);
-      }
-    }
-
-    const content = {
-      overview: {
-        title: "Overview",
-        body: "This dashboard summarizes readiness, placement strategy, install load, client profile, and the next service action."
-      },
-      analysis: {
-        title: "Analysis",
-        body: "Analysis reviews scalp condition, donor density, strand load, maintenance interval, and safe placement distribution before the stylist finalizes service."
-      },
-      recommendations: {
-        title: "Recommendations",
-        body: "Recommended next step: confirm scalp health, verify density in person, review client goals, then proceed with the listed install plan only if the stylist assessment supports it."
-      },
-      history: {
-        title: "History",
-        body: "History will display saved consultation records, prior recommendations, client notes, and exported reports once consultations are saved."
-      }
+    const state = {
+      clientName: "No Client Selected",
+      score: null,
+      status: "Awaiting Client Data",
+      summary: "Run a consultation to populate readiness, placement, load safety, and recommended service plan.",
+      method: "Pending consultation",
+      strands: "Pending",
+      time: "Pending",
+      maintenance: "Pending",
+      longevity: "Pending",
+      hairType: "Pending",
+      density: "Pending",
+      scalp: "Pending",
+      donor: "Pending",
+      goal: "Pending"
     };
 
-    const picked = content[normalized] || content.overview;
-
-    panel.innerHTML = `
-      <h3 class="panel-title">${picked.title}</h3>
-      <p style="color:var(--muted);font-size:15px;line-height:1.6;margin:0;">${picked.body}</p>
-    `;
-
-    panel.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
-  function savePlan() {
-    const saved = {
-      savedAt: new Date().toISOString(),
-      client: "Ava Morgan",
-      readinessScore: 92,
-      method: "Micro Bead Invisible",
-      strands: 540,
-      estimatedTime: "2.5 – 3.0 hours",
-      maintenance: "6 – 8 weeks"
-    };
-
-    localStorage.setItem("hairintel_luxe_saved_plan", JSON.stringify(saved));
-
-    makeModal(
-      "Plan Saved",
-      "This dashboard plan has been saved in this browser. You can connect this to your real client database later.",
-      null,
-      null
-    );
-  }
-
-  function bookInstallation() {
-    makeModal(
-      "Book Installation",
-      "This can connect to your booking calendar, Stripe deposit flow, or stylist scheduling page. For now, it is ready as a working dashboard action.",
-      "Open Consultation Builder",
-      function () { window.location.href = CONSULT_URL; }
-    );
-  }
-
-  function shareResults() {
-    if (navigator.share) {
-      navigator.share({
-        title: "HairIntel AI Dashboard",
-        text: "HairIntel AI consultation dashboard",
-        url: window.location.href
-      }).catch(function () {});
-      return;
+    function openConsultationBuilder() {
+      window.location.href = CONSULT_URL;
     }
 
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href).then(function () {
-        makeModal("Link Copied", "The dashboard link was copied to your clipboard.", null, null);
+    function showModal(title, body, primaryText, primaryAction) {
+      $("modalTitle").textContent = title;
+      $("modalBody").textContent = body;
+
+      const primary = $("modalPrimary");
+      if (primaryText) {
+        primary.style.display = "inline-block";
+        primary.textContent = primaryText;
+        primary.onclick = primaryAction || null;
+      } else {
+        primary.style.display = "none";
+        primary.onclick = null;
+      }
+
+      $("modal").classList.add("show");
+    }
+
+    function closeModal() {
+      $("modal").classList.remove("show");
+    }
+
+    function showPanel(name) {
+      $$(".tabs button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.panel === name);
       });
-    } else {
-      makeModal("Share Link", window.location.href, null, null);
+
+      const panel = $("dynamicPanel");
+      panel.classList.add("show");
+
+      const content = {
+        overview: {
+          title: "Overview",
+          body: "This dashboard summarizes readiness, placement strategy, install load, client profile, and the next service action."
+        },
+        analysis: {
+          title: "Analysis",
+          body: "Analysis reviews scalp condition, donor density, strand load, maintenance timing, blending risk, and extension method suitability."
+        },
+        recommendations: {
+          title: "Recommendations",
+          body: "Recommendations update after client intake. A stylist should confirm scalp health, density, shedding, chemical history, and final extension method in person."
+        },
+        history: {
+          title: "History",
+          body: "History will show saved consultations, prior recommendations, exported reports, and client notes after records are saved."
+        }
+      };
+
+      const item = content[name] || content.overview;
+
+      panel.innerHTML = `
+        <h3 class="panel-title">${item.title}</h3>
+        <p style="color:var(--muted);font-size:15px;line-height:1.6;margin:0;">${item.body}</p>
+      `;
+
+      panel.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  }
 
-  function attachActions() {
-    qsa("a, button").forEach(function (el) {
-      const text = (el.textContent || "").trim().toLowerCase();
+    function updatePlacement(view) {
+      $$(".pill-tabs button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.placement === view);
+      });
 
-      if (el.dataset.hiBound === "yes") return;
-      el.dataset.hiBound = "yes";
-
-      if (text.includes("start new consultation")) {
-        el.onclick = function (e) {
-          e.preventDefault();
-          openConsultationBuilder();
-        };
-        return;
-      }
-
-      if (text.includes("back to consultations") || text === "consultations" || text.includes("consultation builder")) {
-        el.onclick = function (e) {
-          e.preventDefault();
-          openConsultationBuilder();
-        };
-        return;
-      }
-
-      if (text === "dashboard" || text.includes("‹ dashboard")) {
-        el.onclick = function (e) {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        };
-        return;
-      }
-
-      if (text === "clients") {
-        el.onclick = function (e) {
-          e.preventDefault();
-          scrollToMatch("Client Summary");
-        };
-        return;
-      }
-
-      if (text === "education") {
-        el.onclick = function (e) {
-          e.preventDefault();
-          makeModal(
-            "Education",
-            "Add stylist education here: safe load limits, blending rules, scalp contraindications, maintenance guidance, and extension method comparisons.",
-            null,
-            null
-          );
-        };
-        return;
-      }
-
-      if (text.includes("overview")) {
-        el.onclick = function (e) { e.preventDefault(); showPanel("overview"); };
-        return;
-      }
-
-      if (text.includes("analysis")) {
-        el.onclick = function (e) { e.preventDefault(); showPanel("analysis"); };
-        return;
-      }
-
-      if (text.includes("recommendations")) {
-        el.onclick = function (e) { e.preventDefault(); showPanel("recommendations"); };
-        return;
-      }
-
-      if (text.includes("history")) {
-        el.onclick = function (e) { e.preventDefault(); showPanel("history"); };
-        return;
-      }
-
-      if (text.includes("review plan") || text.includes("view full plan")) {
-        el.onclick = function (e) {
-          e.preventDefault();
-          scrollToMatch("Install Plan");
-        };
-        return;
-      }
-
-      if (text.includes("book installation")) {
-        el.onclick = function (e) {
-          e.preventDefault();
-          bookInstallation();
-        };
-        return;
-      }
-
-      if (text.includes("save plan")) {
-        el.onclick = function (e) {
-          e.preventDefault();
-          savePlan();
-        };
-        return;
-      }
-
-      if (text.includes("export report")) {
-        el.onclick = function (e) {
-          e.preventDefault();
-          window.print();
-        };
-        return;
-      }
-
-      if (text.includes("share results")) {
-        el.onclick = function (e) {
-          e.preventDefault();
-          shareResults();
-        };
-        return;
-      }
-
-      if (text.includes("upgrade")) {
-        el.onclick = function (e) {
-          e.preventDefault();
-          makeModal(
-            "Upgrade Plan",
-            "This button can connect to your Stripe checkout. Your dashboard is ready for subscription routing.",
-            null,
-            null
-          );
-        };
-      }
-    });
-  }
-
-  function addModalStyles() {
-    if (qs("#hi-modal-styles")) return;
-
-    const style = document.createElement("style");
-    style.id = "hi-modal-styles";
-    style.textContent = `
-      #hi-dashboard-modal {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        display: grid;
-        place-items: center;
-      }
-
-      .hi-modal-backdrop {
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,.70);
-        backdrop-filter: blur(8px);
-      }
-
-      .hi-modal-card {
-        position: relative;
-        width: min(92vw, 520px);
-        border-radius: 24px;
-        padding: 30px;
-        background: linear-gradient(145deg, rgba(30,25,22,.96), rgba(18,11,6,.96));
-        border: 1px solid rgba(206,183,171,.28);
-        box-shadow: 0 40px 110px rgba(0,0,0,.65);
-        color: #F7EFE9;
-      }
-
-      .hi-modal-card h2 {
-        margin: 0 0 12px;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 32px;
-        color: #F7EFE9;
-      }
-
-      .hi-modal-card p {
-        margin: 0;
-        color: rgba(247,239,233,.72);
-        line-height: 1.6;
-        font-size: 15px;
-      }
-
-      .hi-modal-x {
-        position: absolute;
-        right: 18px;
-        top: 14px;
-        border: 0;
-        background: transparent;
-        color: #CEB7AB;
-        font-size: 28px;
-        cursor: pointer;
-      }
-
-      .hi-modal-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        margin-top: 24px;
-      }
-
-      .hi-modal-primary,
-      .hi-modal-secondary {
-        border-radius: 999px;
-        padding: 12px 18px;
-        font-weight: 900;
-        cursor: pointer;
-      }
-
-      .hi-modal-primary {
-        background: linear-gradient(135deg, #F7DE86, #B8862E);
-        color: #120B06;
-        border: 1px solid rgba(247,222,134,.66);
-      }
-
-      .hi-modal-secondary {
-        background: transparent;
-        color: #F7EFE9;
-        border: 1px solid rgba(206,183,171,.30);
-      }
-
-      @media print {
-        aside,
-        .topbar,
-        .hero-actions,
-        .bottom-cta,
-        #hi-dashboard-modal {
-          display: none !important;
+      const data = {
+        top: {
+          front: "120 strands",
+          mid: "180 strands",
+          crown: "160 strands",
+          sides: "80 strands",
+          total: "540 strands",
+          note: "Balanced distribution for maximum coverage and natural movement."
+        },
+        side: {
+          front: "Light face-frame only",
+          mid: "Reduced side load",
+          crown: "No side crown overlap",
+          sides: "Controlled tension",
+          total: "Side view active",
+          note: "Side placement should protect the hairline and reduce visible attachment points."
+        },
+        back: {
+          front: "N/A",
+          mid: "Back rows balanced",
+          crown: "Crown blend protected",
+          sides: "Perimeter softened",
+          total: "Back view active",
+          note: "Back placement should preserve movement and prevent heavy perimeter loading."
         }
+      };
 
-        body {
-          background: #fff !important;
-          color: #111 !important;
-        }
+      const picked = data[view] || data.top;
+      $("frontCount").textContent = picked.front;
+      $("midCount").textContent = picked.mid;
+      $("crownCount").textContent = picked.crown;
+      $("sideCount").textContent = picked.sides;
+      $("totalStrands").textContent = picked.total;
+      $("placementNote").textContent = picked.note;
+    }
 
-        .app {
-          display: block !important;
-        }
+    function saveDashboard() {
+      localStorage.setItem("hairintel_dashboard_saved", JSON.stringify({
+        savedAt: new Date().toISOString(),
+        dashboard: "luxury",
+        clientName: $("clientName").textContent,
+        score: $("readinessScore").textContent
+      }));
 
-        main {
-          background: #fff !important;
-        }
+      showModal("Dashboard Saved", "This dashboard view was saved in this browser. Later, this can be connected to your real database or client records.", null, null);
+    }
 
-        .panel {
-          break-inside: avoid;
-          box-shadow: none !important;
-        }
+    function shareDashboard() {
+      if (navigator.share) {
+        navigator.share({
+          title: "HairIntel AI Dashboard",
+          text: "HairIntel AI consultation dashboard",
+          url: window.location.href
+        }).catch(() => {});
+        return;
       }
-    `;
 
-    document.head.appendChild(style);
-  }
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+        showModal("Link Copied", "The dashboard link was copied to your clipboard.", null, null);
+      } else {
+        showModal("Share Link", window.location.href, null, null);
+      }
+    }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    addModalStyles();
-    attachActions();
-  });
+    function populateDashboard() {
+      $("clientName").textContent = state.clientName;
+      $("readinessScore").textContent = state.score === null ? "--" : state.score;
+      $("candidateStatus").textContent = state.status;
+      $("candidateSummary").textContent = state.summary;
+      $("methodText").textContent = state.method;
+      $("strandText").textContent = state.strands;
+      $("timeText").textContent = state.time;
+      $("maintenanceText").textContent = state.maintenance;
+      $("longevityText").textContent = state.longevity;
+      $("hairType").textContent = state.hairType;
+      $("density").textContent = state.density;
+      $("scalp").textContent = state.scalp;
+      $("donor").textContent = state.donor;
+      $("goal").textContent = state.goal;
+    }
 
-  window.addEventListener("load", function () {
-    addModalStyles();
-    attachActions();
-  });
-})();
-</script>
+    function wireButtons() {
+      document.addEventListener("click", function(e) {
+        const el = e.target.closest("[data-action], [data-panel], [data-placement]");
+        if (!el) return;
+
+        e.preventDefault();
+
+        if (el.dataset.panel) return showPanel(el.dataset.panel);
+        if (el.dataset.placement) return updatePlacement(el.dataset.placement);
+
+        const action = el.dataset.action;
+
+        if (action === "dashboard") return window.scrollTo({ top: 0, behavior: "smooth" });
+        if (action === "consultations") return openConsultationBuilder();
+        if (action === "clients") return $("client").scrollIntoView({ behavior: "smooth", block: "center" });
+        if (action === "education") return showModal("Education", "Education can include safe load limits, blending rules, scalp contraindications, maintenance guidance, and extension method comparisons.", null, null);
+        if (action === "upgrade") return showModal("Pro Tools", "Connect this button to Stripe or your subscription screen when ready.", null, null);
+        if (action === "review" || action === "fullPlan") return $("install").scrollIntoView({ behavior: "smooth", block: "center" });
+        if (action === "share") return shareDashboard();
+        if (action === "export") return window.print();
+        if (action === "menu") return showModal("Dashboard Menu", "Options can include duplicate report, archive consultation, edit client, export PDF, or send to client.", null, null);
+        if (action === "book") return openConsultationBuilder();
+        if (action === "save") return saveDashboard();
+        if (action === "closeModal") return closeModal();
+      });
+    }
+
+    populateDashboard();
+    wireButtons();
+  </script>
 </body>
 </html>
-
-
-
-
