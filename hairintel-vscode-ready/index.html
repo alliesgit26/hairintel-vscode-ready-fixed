@@ -804,9 +804,7 @@
         <a class="active" href="/">▦ Dashboard</a>
         <a href="javascript:void(0)">☰ Consultations</a>
         <a href="javascript:void(0)">♙ Clients</a>
-        <a href="javascript:void(0)">☷ Templates</a>
         <a href="javascript:void(0)">◇ Education</a>
-        <a href="javascript:void(0)">? Support</a>
       </nav>
 
       <div class="consultant-card">
@@ -1002,68 +1000,421 @@
       </section>
     </main>
   </div>
-<script id="luxe-dashboard-actions">
-function openDashboardPanel(name) {
-  const panels = {
-    dashboard: "Dashboard overview is already open.",
-    consultations: "Consultation builder will stay inside this luxury dashboard next.",
-    clients: "Client panel will stay inside this luxury dashboard next.",
-    templates: "Templates panel will stay inside this luxury dashboard next.",
-    education: "Education panel will stay inside this luxury dashboard next.",
-    support: "Support panel will stay inside this luxury dashboard next.",
-    analysis: "Analysis section is being prepared inside this dashboard.",
-    recommendations: "Recommendations section is being prepared inside this dashboard.",
-    history: "History section is being prepared inside this dashboard."
+<script id="hairintel-working-dashboard-actions">
+(function () {
+  const CONSULT_URL = "hairintel/index.html";
+
+  function qs(selector) {
+    return document.querySelector(selector);
+  }
+
+  function qsa(selector) {
+    return Array.from(document.querySelectorAll(selector));
+  }
+
+  function scrollToMatch(textMatch) {
+    const el = qsa("h1,h2,h3,.panel-title,p,section,div").find(function (node) {
+      return (node.textContent || "").toLowerCase().includes(textMatch.toLowerCase());
+    });
+
+    if (el) {
+      const card = el.closest(".panel, .placement, section, div") || el;
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  window.openConsultationBuilder = function () {
+    window.location.href = CONSULT_URL;
   };
 
-  alert(panels[name] || "Dashboard action selected.");
-}
+  function makeModal(title, body, primaryText, primaryAction) {
+    let old = qs("#hi-dashboard-modal");
+    if (old) old.remove();
 
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("a, button").forEach(function (el) {
-    const text = (el.textContent || "").toLowerCase();
+    const modal = document.createElement("div");
+    modal.id = "hi-dashboard-modal";
+    modal.innerHTML = `
+      <div class="hi-modal-backdrop"></div>
+      <div class="hi-modal-card">
+        <button class="hi-modal-x" type="button">×</button>
+        <h2>${title}</h2>
+        <p>${body}</p>
+        <div class="hi-modal-actions">
+          <button class="hi-modal-secondary" type="button">Close</button>
+          ${primaryText ? `<button class="hi-modal-primary" type="button">${primaryText}</button>` : ""}
+        </div>
+      </div>
+    `;
 
-    if (text.includes("dashboard")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("dashboard"); };
-    if (text.includes("consultation")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("consultations"); };
-    if (text.includes("client")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("clients"); };
-    if (text.includes("template")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("templates"); };
-    if (text.includes("education")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("education"); };
-    if (text.includes("support")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("support"); };
-    if (text.includes("analysis")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("analysis"); };
-    if (text.includes("recommendation")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("recommendations"); };
-    if (text.includes("history")) el.onclick = function(e){ e.preventDefault(); openDashboardPanel("history"); };
+    document.body.appendChild(modal);
 
-    if (text.includes("review plan") || text.includes("view full plan") || text.includes("book installation") || text.includes("save plan")) {
-      el.onclick = function(e){
-        e.preventDefault();
-        const placement = document.querySelector(".placement");
-        if (placement) placement.scrollIntoView({ behavior: "smooth", block: "center" });
+    modal.querySelector(".hi-modal-x").onclick = function () { modal.remove(); };
+    modal.querySelector(".hi-modal-secondary").onclick = function () { modal.remove(); };
+    modal.querySelector(".hi-modal-backdrop").onclick = function () { modal.remove(); };
+
+    const primary = modal.querySelector(".hi-modal-primary");
+    if (primary && primaryAction) {
+      primary.onclick = function () {
+        primaryAction();
+        modal.remove();
       };
     }
+  }
 
-    if (text.includes("export report")) {
-      el.onclick = function(e){
-        e.preventDefault();
-        window.print();
-      };
+  function showPanel(panelName) {
+    const normalized = panelName.toLowerCase();
+
+    qsa(".tabs a").forEach(function (tab) {
+      tab.classList.toggle("active", (tab.textContent || "").toLowerCase().includes(normalized));
+    });
+
+    let panel = qs("#hi-dynamic-panel");
+    if (!panel) {
+      panel = document.createElement("section");
+      panel.id = "hi-dynamic-panel";
+      panel.className = "panel";
+      panel.style.marginTop = "22px";
+      panel.style.padding = "26px";
+      const bottom = qs(".bottom-cta");
+      if (bottom && bottom.parentNode) {
+        bottom.parentNode.insertBefore(panel, bottom);
+      }
     }
 
-    if (text.includes("share results")) {
-      el.onclick = function(e){
-        e.preventDefault();
-        if (navigator.share) {
-          navigator.share({ title: "HairIntel AI Dashboard", url: window.location.href });
-        } else {
-          navigator.clipboard && navigator.clipboard.writeText(window.location.href);
-          alert("Dashboard link copied.");
+    const content = {
+      overview: {
+        title: "Overview",
+        body: "This dashboard summarizes readiness, placement strategy, install load, client profile, and the next service action."
+      },
+      analysis: {
+        title: "Analysis",
+        body: "Analysis reviews scalp condition, donor density, strand load, maintenance interval, and safe placement distribution before the stylist finalizes service."
+      },
+      recommendations: {
+        title: "Recommendations",
+        body: "Recommended next step: confirm scalp health, verify density in person, review client goals, then proceed with the listed install plan only if the stylist assessment supports it."
+      },
+      history: {
+        title: "History",
+        body: "History will display saved consultation records, prior recommendations, client notes, and exported reports once consultations are saved."
+      }
+    };
+
+    const picked = content[normalized] || content.overview;
+
+    panel.innerHTML = `
+      <h3 class="panel-title">${picked.title}</h3>
+      <p style="color:var(--muted);font-size:15px;line-height:1.6;margin:0;">${picked.body}</p>
+    `;
+
+    panel.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function savePlan() {
+    const saved = {
+      savedAt: new Date().toISOString(),
+      client: "Ava Morgan",
+      readinessScore: 92,
+      method: "Micro Bead Invisible",
+      strands: 540,
+      estimatedTime: "2.5 – 3.0 hours",
+      maintenance: "6 – 8 weeks"
+    };
+
+    localStorage.setItem("hairintel_luxe_saved_plan", JSON.stringify(saved));
+
+    makeModal(
+      "Plan Saved",
+      "This dashboard plan has been saved in this browser. You can connect this to your real client database later.",
+      null,
+      null
+    );
+  }
+
+  function bookInstallation() {
+    makeModal(
+      "Book Installation",
+      "This can connect to your booking calendar, Stripe deposit flow, or stylist scheduling page. For now, it is ready as a working dashboard action.",
+      "Open Consultation Builder",
+      function () { window.location.href = CONSULT_URL; }
+    );
+  }
+
+  function shareResults() {
+    if (navigator.share) {
+      navigator.share({
+        title: "HairIntel AI Dashboard",
+        text: "HairIntel AI consultation dashboard",
+        url: window.location.href
+      }).catch(function () {});
+      return;
+    }
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href).then(function () {
+        makeModal("Link Copied", "The dashboard link was copied to your clipboard.", null, null);
+      });
+    } else {
+      makeModal("Share Link", window.location.href, null, null);
+    }
+  }
+
+  function attachActions() {
+    qsa("a, button").forEach(function (el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+
+      if (el.dataset.hiBound === "yes") return;
+      el.dataset.hiBound = "yes";
+
+      if (text.includes("start new consultation")) {
+        el.onclick = function (e) {
+          e.preventDefault();
+          openConsultationBuilder();
+        };
+        return;
+      }
+
+      if (text.includes("back to consultations") || text === "consultations" || text.includes("consultation builder")) {
+        el.onclick = function (e) {
+          e.preventDefault();
+          openConsultationBuilder();
+        };
+        return;
+      }
+
+      if (text === "dashboard" || text.includes("‹ dashboard")) {
+        el.onclick = function (e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+        return;
+      }
+
+      if (text === "clients") {
+        el.onclick = function (e) {
+          e.preventDefault();
+          scrollToMatch("Client Summary");
+        };
+        return;
+      }
+
+      if (text === "education") {
+        el.onclick = function (e) {
+          e.preventDefault();
+          makeModal(
+            "Education",
+            "Add stylist education here: safe load limits, blending rules, scalp contraindications, maintenance guidance, and extension method comparisons.",
+            null,
+            null
+          );
+        };
+        return;
+      }
+
+      if (text.includes("overview")) {
+        el.onclick = function (e) { e.preventDefault(); showPanel("overview"); };
+        return;
+      }
+
+      if (text.includes("analysis")) {
+        el.onclick = function (e) { e.preventDefault(); showPanel("analysis"); };
+        return;
+      }
+
+      if (text.includes("recommendations")) {
+        el.onclick = function (e) { e.preventDefault(); showPanel("recommendations"); };
+        return;
+      }
+
+      if (text.includes("history")) {
+        el.onclick = function (e) { e.preventDefault(); showPanel("history"); };
+        return;
+      }
+
+      if (text.includes("review plan") || text.includes("view full plan")) {
+        el.onclick = function (e) {
+          e.preventDefault();
+          scrollToMatch("Install Plan");
+        };
+        return;
+      }
+
+      if (text.includes("book installation")) {
+        el.onclick = function (e) {
+          e.preventDefault();
+          bookInstallation();
+        };
+        return;
+      }
+
+      if (text.includes("save plan")) {
+        el.onclick = function (e) {
+          e.preventDefault();
+          savePlan();
+        };
+        return;
+      }
+
+      if (text.includes("export report")) {
+        el.onclick = function (e) {
+          e.preventDefault();
+          window.print();
+        };
+        return;
+      }
+
+      if (text.includes("share results")) {
+        el.onclick = function (e) {
+          e.preventDefault();
+          shareResults();
+        };
+        return;
+      }
+
+      if (text.includes("upgrade")) {
+        el.onclick = function (e) {
+          e.preventDefault();
+          makeModal(
+            "Upgrade Plan",
+            "This button can connect to your Stripe checkout. Your dashboard is ready for subscription routing.",
+            null,
+            null
+          );
+        };
+      }
+    });
+  }
+
+  function addModalStyles() {
+    if (qs("#hi-modal-styles")) return;
+
+    const style = document.createElement("style");
+    style.id = "hi-modal-styles";
+    style.textContent = `
+      #hi-dashboard-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+      }
+
+      .hi-modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,.70);
+        backdrop-filter: blur(8px);
+      }
+
+      .hi-modal-card {
+        position: relative;
+        width: min(92vw, 520px);
+        border-radius: 24px;
+        padding: 30px;
+        background: linear-gradient(145deg, rgba(30,25,22,.96), rgba(18,11,6,.96));
+        border: 1px solid rgba(206,183,171,.28);
+        box-shadow: 0 40px 110px rgba(0,0,0,.65);
+        color: #F7EFE9;
+      }
+
+      .hi-modal-card h2 {
+        margin: 0 0 12px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 32px;
+        color: #F7EFE9;
+      }
+
+      .hi-modal-card p {
+        margin: 0;
+        color: rgba(247,239,233,.72);
+        line-height: 1.6;
+        font-size: 15px;
+      }
+
+      .hi-modal-x {
+        position: absolute;
+        right: 18px;
+        top: 14px;
+        border: 0;
+        background: transparent;
+        color: #CEB7AB;
+        font-size: 28px;
+        cursor: pointer;
+      }
+
+      .hi-modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .hi-modal-primary,
+      .hi-modal-secondary {
+        border-radius: 999px;
+        padding: 12px 18px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .hi-modal-primary {
+        background: linear-gradient(135deg, #F7DE86, #B8862E);
+        color: #120B06;
+        border: 1px solid rgba(247,222,134,.66);
+      }
+
+      .hi-modal-secondary {
+        background: transparent;
+        color: #F7EFE9;
+        border: 1px solid rgba(206,183,171,.30);
+      }
+
+      @media print {
+        aside,
+        .topbar,
+        .hero-actions,
+        .bottom-cta,
+        #hi-dashboard-modal {
+          display: none !important;
         }
-      };
-    }
+
+        body {
+          background: #fff !important;
+          color: #111 !important;
+        }
+
+        .app {
+          display: block !important;
+        }
+
+        main {
+          background: #fff !important;
+        }
+
+        .panel {
+          break-inside: avoid;
+          box-shadow: none !important;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    addModalStyles();
+    attachActions();
   });
-});
+
+  window.addEventListener("load", function () {
+    addModalStyles();
+    attachActions();
+  });
+})();
 </script>
 </body>
 </html>
+
 
 
 
