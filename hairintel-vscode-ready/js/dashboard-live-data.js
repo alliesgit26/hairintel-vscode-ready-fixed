@@ -189,7 +189,27 @@
     });
   }
 
-  function hydrateDashboard() {
+  function updateScorePanelLanguage(result, capacity) {
+  const capacityStatus = clean(capacity?.status || "").toUpperCase();
+  const hasOverloadRisk = capacityStatus.includes("OVERLOAD");
+
+  const scorePanel = document.getElementById("scorePanel");
+  if (scorePanel) {
+    const title = scorePanel.querySelector(".panel-title");
+    if (title) {
+      title.textContent = hasOverloadRisk ? "HAIR INTEGRITY SCORE" : "READINESS SCORE";
+    }
+  }
+
+  const denom = document.querySelector(".score-ring small");
+  if (denom) {
+    denom.textContent = "/100";
+  }
+
+  return hasOverloadRisk;
+}
+
+function hydrateDashboard() {
     const consult = latestConsultation();
     if (!consult) return;
 
@@ -258,4 +278,5 @@ localStorage.setItem("hairintel_dashboard_state", JSON.stringify({
   setTimeout(hydrateDashboard, 1000);
   setTimeout(hydrateDashboard, 1800);
 })();
+
 
