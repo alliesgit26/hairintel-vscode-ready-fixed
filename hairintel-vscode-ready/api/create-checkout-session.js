@@ -67,7 +67,7 @@ export default async function handler(req, res) {
       /*
         Checkout now requires payment to start the subscription.
         Stripe may still ask for a card depending on your Stripe Checkout settings,
-        the subscription will not include a free trial.
+        the subscription includes a 7-day trial, but a payment method is required up front.
       */
       payment_method_collection: "always",
 
@@ -79,6 +79,19 @@ export default async function handler(req, res) {
       ],
 
       allow_promotion_codes: true,
+
+      consent_collection: {
+        terms_of_service: "required",
+      },
+
+      custom_text: {
+        terms_of_service_acceptance: {
+          message: "I agree that HairIntel AI subscriptions include a 7-day trial. My payment method will be charged automatically when the trial ends unless I cancel before the trial deadline. Payments are non-refundable once processed.",
+        },
+        submit: {
+          message: "No charge today. Your payment method will be charged after the 7-day trial unless you cancel before the trial ends. Payments are non-refundable once processed.",
+        },
+      },
 
       success_url: `${origin}/?checkout=success&plan=${encodeURIComponent(
         plan
@@ -92,6 +105,7 @@ export default async function handler(req, res) {
       },
 
       subscription_data: {
+        trial_period_days: 7,
         metadata: {
           plan,
           app: "hairintel-ai",
@@ -119,6 +133,9 @@ export default async function handler(req, res) {
     });
   }
 }
+
+
+
 
 
 
