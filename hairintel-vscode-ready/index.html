@@ -1122,6 +1122,46 @@
       line-height: 1.08 !important;
     }
     /* End HairIntel compact dashboard final fit */
+  
+    /* HairIntel score circle fit fix */
+    .score-ring {
+      position: relative !important;
+      display: grid !important;
+      place-items: center !important;
+      overflow: hidden !important;
+    }
+
+    .score-ring strong {
+      position: absolute !important;
+      left: 50% !important;
+      top: 48% !important;
+      transform: translate(-50%, -50%) !important;
+      margin: 0 !important;
+      font-size: clamp(38px, 3.4vw, 46px) !important;
+      line-height: .9 !important;
+      max-width: 86px !important;
+      text-align: center !important;
+      white-space: nowrap !important;
+      z-index: 2 !important;
+    }
+
+    .score-ring small {
+      position: absolute !important;
+      left: 50% !important;
+      top: 68% !important;
+      transform: translateX(-50%) !important;
+      margin: 0 !important;
+      font-size: 11px !important;
+      line-height: 1 !important;
+      color: var(--muted) !important;
+      z-index: 2 !important;
+      white-space: nowrap !important;
+    }
+
+    .score-ring::before {
+      z-index: 1 !important;
+    }
+    /* End HairIntel score circle fit fix */
   </style>
 </head>
 
@@ -1608,6 +1648,7 @@
   <script src="js/dashboard-live-data.js"></script>
 </body>
 </html>
+
 
 
 
