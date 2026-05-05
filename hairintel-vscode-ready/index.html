@@ -393,7 +393,7 @@
     }
 
     .check-list div::before {
-      content: "✓";
+      content: "OK";
       color: var(--gold);
       border: 1px solid rgba(244,201,93,.45);
       border-radius: 50%;
@@ -831,7 +831,7 @@
 
     <main>
       <header class="topbar">
-        <button class="back" data-action="consultations">‹ Start Consultation</button>
+        <button class="back" data-action="consultations"> Start Consultation</button>
 
         <nav class="tabs">
           <button class="active" data-panel="overview">Overview</button>
@@ -841,8 +841,8 @@
         </nav>
 
         <div class="actions">
-          <button class="export" data-action="export">⇩ Export Report</button>
-          <button class="menu" data-action="menu">•••</button>
+          <button class="export" data-action="export"> Export Report</button>
+          <button class="menu" data-action="menu">...</button>
         </div>
       </header>
 
@@ -854,8 +854,8 @@
             <p>A data-driven extension consultation dashboard designed for planning, placement safety, client review, and stylist decision support.</p>
 
             <div class="hero-actions">
-              <button class="gold-btn" data-action="review">Review Plan ↗</button>
-              <button class="outline-btn" data-action="share">Share Results ⤴</button>
+              <button class="gold-btn" data-action="review">Review Plan </button>
+              <button class="outline-btn" data-action="share">Share Results </button>
             </div>
 
             <div class="panel placement" id="placement">
@@ -873,30 +873,30 @@
                     <img src="public/placement-head.png" alt="Hair extension placement map preview">
                   </div>
 
-                  <div class="note" id="placementNote">Balanced distribution for maximum coverage and natural movement.</div>
+                  <div class="note" id="placementNote">Run a consultation to generate placement guidance.</div>
                 </div>
 
                 <div class="legend">
                   <div class="legend-row">
                     <span class="dot white"></span>
-                    <div><strong>Front Hairline</strong><span id="frontCount">120 strands</span></div>
+                    <div><strong>Front Hairline</strong><span id="frontCount">Pending</span></div>
                   </div>
                   <div class="legend-row">
                     <span class="dot"></span>
-                    <div><strong>Mid Scalp</strong><span id="midCount">180 strands</span></div>
+                    <div><strong>Mid Scalp</strong><span id="midCount">Pending</span></div>
                   </div>
                   <div class="legend-row">
                     <span class="dot blue"></span>
-                    <div><strong>Crown</strong><span id="crownCount">160 strands</span></div>
+                    <div><strong>Crown</strong><span id="crownCount">Pending</span></div>
                   </div>
                   <div class="legend-row">
                     <span class="dot purple"></span>
-                    <div><strong>Sides</strong><span id="sideCount">80 strands</span></div>
+                    <div><strong>Sides</strong><span id="sideCount">Pending</span></div>
                   </div>
 
                   <div class="legend-total">
                     <small style="display:block;color:var(--muted);text-transform:uppercase;font-size:11px;">Total</small>
-                    <span id="totalStrands">540 strands</span>
+                    <span id="totalStrands">Pending</span>
                   </div>
                 </div>
               </div>
@@ -906,7 +906,7 @@
           <div>
             <div class="panel score-panel" id="scorePanel">
               <div>
-                <h3 class="panel-title">Readiness Score ⓘ</h3>
+                <h3 class="panel-title">Readiness Score Info</h3>
                 <div class="score-ring">
                   <strong id="readinessScore">--</strong><small>/100</small>
                 </div>
@@ -951,7 +951,7 @@
                 </div>
               </div>
 
-              <button class="full-details" data-action="fullPlan">View Full Plan Details ↗</button>
+              <button class="full-details" data-action="fullPlan">View Full Plan Details </button>
             </div>
           </div>
 
@@ -1114,18 +1114,18 @@
 
       const data = {
         top: {
-          front: "120 strands",
-          mid: "180 strands",
-          crown: "160 strands",
-          sides: "80 strands",
-          total: "540 strands",
-          note: "Balanced distribution for maximum coverage and natural movement."
+          front: "Pending",
+          mid: "Pending",
+          crown: "Pending",
+          sides: "Pending",
+          total: "Pending",
+          note: "Run a consultation to generate placement guidance."
         },
         side: {
-          front: "Light face-frame only",
-          mid: "Reduced side load",
-          crown: "No side crown overlap",
-          sides: "Controlled tension",
+          front: "Pending",
+          mid: "Pending",
+          crown: "Pending",
+          sides: "Pending",
           total: "Side view active",
           note: "Side placement should protect the hairline and reduce visible attachment points."
         },
@@ -1225,7 +1225,62 @@
     wireButtons();
   </script>
   <script src="js/auth-subscription-gate.js"></script>
+
+<script>
+(function () {
+  function hasRealConsultationData() {
+    try {
+      const raw = localStorage.getItem("hi_consultations");
+      const consults = raw ? JSON.parse(raw) : [];
+      return Array.isArray(consults) && consults.some(c => c && c.result);
+    } catch {
+      return false;
+    }
+  }
+
+  function forcePendingDashboard() {
+    if (hasRealConsultationData()) return;
+
+    const pendingIds = [
+      "frontCount",
+      "midCount",
+      "crownCount",
+      "sideCount",
+      "totalStrands",
+      "methodText",
+      "strandText",
+      "timeText",
+      "maintenanceText",
+      "readinessScore"
+    ];
+
+    pendingIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = id === "readinessScore" ? "--" : "Pending";
+    });
+
+    const note = document.getElementById("placementNote");
+    if (note) note.textContent = "Run a consultation to generate placement guidance.";
+
+    const status = document.getElementById("candidateStatus");
+    if (status) status.textContent = "Awaiting Client Data";
+
+    const summary = document.getElementById("candidateSummary");
+    if (summary) {
+      summary.textContent = "Run a consultation to populate readiness, placement, load safety, and recommended service plan.";
+    }
+
+    const total = document.getElementById("totalStrands");
+    if (total) total.textContent = "Pending";
+  }
+
+  document.addEventListener("DOMContentLoaded", forcePendingDashboard);
+  setTimeout(forcePendingDashboard, 250);
+  setTimeout(forcePendingDashboard, 1000);
+})();
+</script>
 </body>
 </html>
+
 
 
