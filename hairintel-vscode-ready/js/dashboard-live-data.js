@@ -1,4 +1,6 @@
 ﻿(function () {
+  let latestState = null;
+
   function readJson(key, fallback) {
     try {
       const raw = localStorage.getItem(key);
@@ -91,42 +93,80 @@
     const loadStats = document.querySelector(".load-stats");
     if (!loadStats) return;
 
-    const totalLoad = plan.grams ? `${plan.grams}g` : "Pending";
-    const maxLoad = capacity.safeMax ? `${capacity.safeMax}g` : capacity.recommendedMax ? `${capacity.recommendedMax}g` : "Pending";
-    const tension = result.readiness === "red" ? "High risk" : result.readiness === "yellow" ? "Moderate" : "Low / controlled";
-    const perStrand = plan.method ? "Method dependent" : "Pending";
-    const perArea = plan.grams ? "Distributed by placement map" : "Pending";
-    const margin = capacity.status || (capacity.score ? `${capacity.score}/100` : "Pending");
+    const grams = Number(plan.grams || 0);
+    const safeMax = Number(capacity.safeMax || capacity.recommendedMax || 0);
+    const totalLoad = grams ? grams + "g" : "Pending";
+    const maxLoad = safeMax ? safeMax + "g" : "Pending";
+
+    let status = clean(capacity.status || "Pending");
+    if (status === "OVERLOAD RISK") status = "Overload Risk";
+
+    const tension =
+      result.readiness === "red" ? "High" :
+      result.readiness === "yellow" ? "Moderate" :
+      "Low";
+
+    const perStrand = plan.method ? "Method based" : "Pending";
+    const perArea = grams ? "Distributed" : "Pending";
 
     loadStats.querySelectorAll("div").forEach(row => {
       const txt = row.textContent.toLowerCase();
       const strong = row.querySelector("strong");
       if (!strong) return;
 
-      if (txt.includes("total load")) strong.textContent = clean(totalLoad);
-      if (txt.includes("recommended")) strong.textContent = clean(maxLoad);
-      if (txt.includes("scalp tension")) strong.textContent = clean(tension);
-      if (txt.includes("weight per")) strong.textContent = clean(perStrand);
-      if (txt.includes("load per area")) strong.textContent = clean(perArea);
-      if (txt.includes("safety margin")) strong.textContent = clean(margin);
+      if (txt.includes("total load")) strong.textContent = totalLoad;
+      if (txt.includes("recommended")) strong.textContent = maxLoad;
+      if (txt.includes("scalp tension")) strong.textContent = tension;
+      if (txt.includes("weight per")) strong.textContent = perStrand;
+      if (txt.includes("load per area")) strong.textContent = perArea;
+      if (txt.includes("safety margin")) strong.textContent = status;
     });
 
     const ring = document.querySelector(".small-ring span");
-    if (ring) ring.textContent = clean(capacity.status || "Safe");
+    if (ring) {
+      ring.textContent = status === "Overload Risk" ? "Risk" : status;
+      ring.title = status;
+    }
   }
 
-  function setPlacement(result, plan, capacity) {
-    const grams = Number(plan.grams || 0);
+  function setPlacement(view) {
+    if (!latestState) return;
+
+    const result = latestState.result || {};
+    const plan = latestState.plan || {};
     const map = result.placementMap || {};
     const warnings = Array.isArray(result.warnings) ? result.warnings : [];
+    const grams = Number(plan.grams || 0);
+    const total = grams ? grams + "g total load" : "Pending";
+
+    const note = document.getElementById("placementNote");
+
+    if (view === "side") {
+      setText("frontCount", grams ? "Face frame only" : "Pending");
+      setText("midCount", grams ? "Reduced side load" : "Pending");
+      setText("crownCount", grams ? "No crown overlap" : "Pending");
+      setText("sideCount", map.avoidTemples ? "Avoid tension" : "Controlled tension");
+      setText("totalStrands", total);
+      if (note) note.textContent = "Side placement should reduce temple tension and protect the front hairline.";
+      return;
+    }
+
+    if (view === "back") {
+      setText("frontCount", "N/A");
+      setText("midCount", grams ? "Back rows balanced" : "Pending");
+      setText("crownCount", grams ? "Crown blend protected" : "Pending");
+      setText("sideCount", grams ? "Perimeter softened" : "Pending");
+      setText("totalStrands", total);
+      if (note) note.textContent = "Back placement should preserve movement and prevent heavy perimeter loading.";
+      return;
+    }
 
     setText("frontCount", grams ? "Light face frame" : "Pending");
     setText("midCount", grams ? "Primary support zone" : "Pending");
     setText("crownCount", map.cautionCrown ? "Caution" : grams ? "Blend controlled" : "Pending");
     setText("sideCount", map.avoidTemples ? "Reduce tension" : grams ? "Controlled tension" : "Pending");
-    setText("totalStrands", grams ? `${grams}g total load` : "Pending");
+    setText("totalStrands", total);
 
-    const note = document.getElementById("placementNote");
     if (note) {
       note.textContent = clean(
         plan.rationale ||
@@ -134,6 +174,19 @@
         "Placement guidance loaded from the saved consultation result."
       );
     }
+  }
+
+  function wirePlacementTabs() {
+    document.querySelectorAll("[data-placement]").forEach(btn => {
+      if (btn.__hiPlacementWired) return;
+      btn.__hiPlacementWired = true;
+
+      btn.addEventListener("click", () => {
+        const view = btn.getAttribute("data-placement") || "top";
+        setTimeout(() => setPlacement(view), 0);
+        setTimeout(() => setPlacement(view), 80);
+      });
+    });
   }
 
   function hydrateDashboard() {
@@ -147,13 +200,15 @@
     const warnings = Array.isArray(result.warnings) ? result.warnings : [];
     const client = findClient(consult);
 
+    latestState = { consult, result, plan, capacity, client };
+
     setClientCard(client, consult);
 
     const score = result.integrityScore ?? result.readinessScore ?? capacity.score ?? "--";
     setText("readinessScore", score);
 
     const readiness = clean(result.readiness || "loaded").toUpperCase();
-    setText("candidateStatus", readiness === "LOADED" ? "Consultation Loaded" : `${readiness} Readiness`);
+    setText("candidateStatus", readiness === "LOADED" ? "Consultation Loaded" : readiness + " Readiness");
 
     setText(
       "candidateSummary",
@@ -163,12 +218,13 @@
     );
 
     setText("methodText", plan.method);
-    setText("strandText", plan.grams ? `${plan.grams}g` : plan.wefts ? `${plan.wefts} attachment points` : "Pending");
+    setText("strandText", plan.grams ? plan.grams + "g" : plan.wefts ? plan.wefts + " attachment points" : "Pending");
     setText("timeText", plan.appointmentDuration || plan.duration);
     setText("maintenanceText", plan.maintenance);
 
-    setPlacement(result, plan, capacity);
+    setPlacement("top");
     setLoadSafety(result, plan, capacity);
+    wirePlacementTabs();
 
     localStorage.setItem("hairintel_dashboard_state", JSON.stringify({
       syncedAt: new Date().toISOString(),
