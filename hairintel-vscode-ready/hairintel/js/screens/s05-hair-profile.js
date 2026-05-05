@@ -1,12 +1,12 @@
 ﻿/* ================================================================
-   S03 â€” PHOTOS (file is s02 for bundling but logically screen 3)
-   S04 â€” GOALS (same bundle)
+   S03 - PHOTOS (file is s02 for bundling but logically screen 3)
+   S04 - GOALS (same bundle)
    These are now co-located in s02-client-info.js
    This file holds S05 and S06
    ================================================================ */
 
 /* ================================================================
-   S05 â€” HAIR PROFILE
+   S05 - HAIR PROFILE
    ================================================================ */
 function renderS05HairProfile() {
   return `
@@ -89,7 +89,7 @@ function renderS05HairProfile() {
         </div>
       </div>
 
-      <button class="hi-btn hi-btn-gold" id="profile-next-btn">Continue â†’</button>
+      <button class="hi-btn hi-btn-gold" id="profile-next-btn">Continue -></button>
     </div>
   </div>`;
 }
@@ -111,7 +111,7 @@ function initS05HairProfile() {
 }
 
 /* ================================================================
-   S06 â€” HAIR HEALTH & CONCERN CHECK
+   S06 - HAIR HEALTH & CONCERN CHECK
    ================================================================ */
 function renderS06Concerns() {
   return `
@@ -210,7 +210,7 @@ function renderS06Concerns() {
       </div>
 
       <button class="hi-btn hi-btn-gold" id="concerns-next-btn">
-        Analyze Hair →
+        Analyze Hair ->
       </button>
     </div>
   </div>`;
@@ -250,4 +250,5 @@ function initS06Concerns() {
     HIApp.go('analysis');
   });
 }
+
 

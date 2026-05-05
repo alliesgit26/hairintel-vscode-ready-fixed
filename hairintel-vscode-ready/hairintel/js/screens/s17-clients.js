@@ -1,5 +1,5 @@
-/* ================================================================
-   S17 — SAVED CLIENTS / HISTORY
+﻿/* ================================================================
+   S17 - SAVED CLIENTS / HISTORY
    ================================================================ */
 function renderS17Clients(params = {}) {
   const clients  = HI.getClients();
@@ -69,7 +69,7 @@ function renderS17Clients(params = {}) {
               </div>
               <div style="display:flex;align-items:center;gap:6px;">
                 <span style="font-size:12px;color:var(--text-muted);">${cConsults.length} consult${cConsults.length !== 1 ? 's' : ''}</span>
-                ${latest ? `<span style="font-size:12px;color:var(--border);">·</span><span style="font-size:12px;color:var(--text-muted);">Last: ${hiDate(latest.createdAt)}</span>` : ''}
+                ${latest ? `<span style="font-size:12px;color:var(--border);">-</span><span style="font-size:12px;color:var(--text-muted);">Last: ${hiDate(latest.createdAt)}</span>` : ''}
               </div>
             </div>
             <span style="color:var(--text-muted);flex-shrink:0;">${HIcons.chevron}</span>
@@ -112,7 +112,7 @@ function initS17Clients() {
 }
 
 /* ================================================================
-   S18 — SUBSCRIPTION PLANS
+   S18 - SUBSCRIPTION PLANS
    ================================================================ */
 function renderS18Subscription() {
   const sub = HI.getSub();
@@ -196,7 +196,7 @@ function renderS18Subscription() {
         <span class="hi-banner-icon">${HIcons.info}</span>
         <div style="font-size:13px;color:var(--text-sub);">
           You have used <strong style="color:var(--text);">${usage.consultCount}</strong> of <strong style="color:var(--text);">${HI.FREE_LIMIT}</strong> free consultations.
-          ${HI.remainingFree() === 0 ? ' <strong style="color:var(--danger);">Limit reached — upgrade to continue.</strong>' : ''}
+          ${HI.remainingFree() === 0 ? ' <strong style="color:var(--danger);">Limit reached - upgrade to continue.</strong>' : ''}
         </div>
       </div>
       ` : `
@@ -250,7 +250,7 @@ function renderS18Subscription() {
       <div style="text-align:center;padding:16px 0;">
         <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          7-day free trial · Cancel any time
+          7-day free trial - Cancel any time
         </div>
       </div>
 
@@ -291,3 +291,4 @@ function initS18Subscription() {
     setTimeout(() => HIApp.go('welcome'), 1000);
   };
 }
+

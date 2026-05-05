@@ -1,5 +1,5 @@
 ﻿/* ================================================================
-   S19 â€” AI HAIR PREVIEW
+   S19 - AI HAIR PREVIEW
    ================================================================ */
 function renderS19AIPreview(params = {}) {
   const consultId = params.consultId || HIConsult.get("consultId");
@@ -48,11 +48,11 @@ function renderS19AIPreview(params = {}) {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <div style="padding:10px;background:var(--bg-raised);border-radius:10px;border:1px solid var(--border);">
             <div style="font-size:11px;color:var(--text-muted);">Method</div>
-            <div style="font-size:13px;font-weight:700;color:var(--text);">${result.plan?.method || "â€”"}</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);">${result.plan?.method || "-"}</div>
           </div>
           <div style="padding:10px;background:var(--bg-raised);border-radius:10px;border:1px solid var(--border);">
             <div style="font-size:11px;color:var(--text-muted);">Length</div>
-            <div style="font-size:13px;font-weight:700;color:var(--text);">${result.plan?.extensionLength || "â€”"}</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);">${result.plan?.extensionLength || "-"}</div>
           </div>
           <div style="padding:10px;background:var(--bg-raised);border-radius:10px;border:1px solid var(--border);">
             <div style="font-size:11px;color:var(--text-muted);">Weight</div>
@@ -179,4 +179,5 @@ function initS19AIPreview(params = {}) {
     }
   });
 }
+
 

@@ -1,5 +1,5 @@
 ﻿/* ================================================================
-   S03 â€” CLIENT PHOTOS (standalone render/init â€” called from s02)
+   S03 - CLIENT PHOTOS (standalone render/init - called from s02)
    ================================================================ */
 function renderS03Photos() {
   return `
@@ -20,10 +20,10 @@ function renderS03Photos() {
         <div>
           <div style="font-weight:600;color:var(--gold);margin-bottom:4px;font-size:12px;">Photo Guidelines</div>
           <ul style="font-size:12px;color:var(--text-muted);line-height:1.8;">
-            <li>Â· Natural lighting â€” no flash</li>
-            <li>Â· Hair down and fully brushed</li>
-            <li>Â· Shoot at shoulder height</li>
-            <li>Â· Avoid filters or editing</li>
+            <li>- Natural lighting - no flash</li>
+            <li>- Hair down and fully brushed</li>
+            <li>- Shoot at shoulder height</li>
+            <li>- Avoid filters or editing</li>
           </ul>
         </div>
       </div>
@@ -43,7 +43,7 @@ function renderS03Photos() {
         </div>`).join('')}
       </div>
       <div style="display:flex;flex-direction:column;gap:10px;">
-        <button class="hi-btn hi-btn-gold" id="photos-next-btn">Continue â†’</button>
+        <button class="hi-btn hi-btn-gold" id="photos-next-btn">Continue -></button>
         <button class="hi-btn hi-btn-ghost" onclick="HIApp.go('goals')">Skip Photos</button>
       </div>
     </div>
@@ -75,7 +75,7 @@ function initS03Photos() {
 }
 
 /* ================================================================
-   S04 â€” CLIENT GOALS (standalone)
+   S04 - CLIENT GOALS (standalone)
    ================================================================ */
 function renderS04Goals() {
   return `
@@ -107,9 +107,9 @@ function renderS04Goals() {
         <div class="hi-label hi-mb-3">Desired Transformation Level</div>
         <div class="hi-options" data-option-group="transform" id="transform-group" style="flex-direction:column;gap:8px;">
           ${[
-            {val:'subtle',    label:'Subtle',    sub:'Natural enhancement â€” barely there'},
+            {val:'subtle',    label:'Subtle',    sub:'Natural enhancement - barely there'},
             {val:'noticeable',label:'Noticeable',sub:'Clear, visible difference'},
-            {val:'dramatic',  label:'Dramatic',  sub:'Full transformation â€” maximum impact'}
+            {val:'dramatic',  label:'Dramatic',  sub:'Full transformation - maximum impact'}
           ].map(o=>`
           <div class="hi-option" data-val="${o.val}" style="width:100%;display:flex;justify-content:space-between;text-align:left;">
             <span style="font-weight:600;">${o.label}</span>
@@ -129,7 +129,7 @@ function renderS04Goals() {
           ].map(o=>`<div class="hi-option" data-val="${o.val}">${o.label}</div>`).join('')}
         </div>
       </div>
-      <button class="hi-btn hi-btn-gold" id="goals-next-btn">Continue â†’</button>
+      <button class="hi-btn hi-btn-gold" id="goals-next-btn">Continue -></button>
     </div>
   </div>`;
 }
@@ -145,4 +145,5 @@ function initS04Goals() {
     HIApp.go('hair-profile');
   });
 }
+
 

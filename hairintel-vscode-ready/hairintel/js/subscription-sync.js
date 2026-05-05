@@ -36,3 +36,4 @@
   syncSubscription();
   document.addEventListener("DOMContentLoaded", syncSubscription);
 })();
+

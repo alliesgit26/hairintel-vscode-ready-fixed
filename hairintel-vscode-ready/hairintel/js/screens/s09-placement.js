@@ -1,5 +1,5 @@
-/* ================================================================
-   S09 — PLACEMENT MAP
+﻿/* ================================================================
+   S09 - PLACEMENT MAP
    ================================================================ */
 function renderS09Placement(params = {}) {
   const consultId = params.consultId || HIConsult.get('consultId');
@@ -73,15 +73,15 @@ function renderS09Placement(params = {}) {
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;align-items:center;gap:10px;">
             <div style="width:16px;height:4px;border-radius:2px;background:#22c55e;flex-shrink:0;"></div>
-            <span style="font-size:13px;color:var(--text-sub);">Safe Placement — Standard installation, full tension allowed</span>
+            <span style="font-size:13px;color:var(--text-sub);">Safe Placement - Standard installation, full tension allowed</span>
           </div>
           <div style="display:flex;align-items:center;gap:10px;">
             <div style="width:16px;height:4px;border-radius:2px;background:#f59e0b;flex-shrink:0;"></div>
-            <span style="font-size:13px;color:var(--text-sub);">Caution Zone — Reduced density, monitor closely</span>
+            <span style="font-size:13px;color:var(--text-sub);">Caution Zone - Reduced density, monitor closely</span>
           </div>
           <div style="display:flex;align-items:center;gap:10px;">
             <div style="width:16px;height:4px;border-radius:2px;background:#ef4444;flex-shrink:0;"></div>
-            <span style="font-size:13px;color:var(--text-sub);">Avoid Zone — No placement; risk of damage or traction</span>
+            <span style="font-size:13px;color:var(--text-sub);">Avoid Zone - No placement; risk of damage or traction</span>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@ function renderS09Placement(params = {}) {
         ${placementMap.cautionCrown ? `
         <div class="hi-banner hi-banner-warn hi-mb-2">
           <span class="hi-banner-icon">${HIcons.warning}</span>
-          <div style="font-size:13px;color:var(--text-sub);line-height:1.5;"><strong style="color:var(--warning);">Crown area — caution.</strong> Reduce weft density in upper rows to protect crown thinning zones.</div>
+          <div style="font-size:13px;color:var(--text-sub);line-height:1.5;"><strong style="color:var(--warning);">Crown area - caution.</strong> Reduce weft density in upper rows to protect crown thinning zones.</div>
         </div>` : ''}
         ${!placementMap.avoidTemples && !placementMap.avoidNape && !placementMap.cautionCrown ? `
         <div style="display:flex;align-items:center;gap:10px;">
@@ -114,7 +114,7 @@ function renderS09Placement(params = {}) {
       <!-- Navigation -->
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button class="hi-btn hi-btn-gold" onclick="HIApp.go('install-plan', { consultId: '${consultId}' })">
-          View Install Plan →
+          View Install Plan ->
         </button>
         <button class="hi-btn hi-btn-ghost" onclick="HIApp.go('readiness', { consultId: '${consultId}' })">Back to Readiness</button>
       </div>
@@ -126,7 +126,7 @@ function renderS09Placement(params = {}) {
 function initS09Placement() {}
 
 /* ================================================================
-   S10 — INSTALL PLAN GENERATOR
+   S10 - INSTALL PLAN GENERATOR
    ================================================================ */
 function renderS10InstallPlan(params = {}) {
   const consultId = params.consultId || HIConsult.get('consultId');
@@ -141,24 +141,24 @@ function renderS10InstallPlan(params = {}) {
   const isRed = readiness === 'red';
 
   const methodIcons = {
-    'Hand-Tied Wefts': '✦',
-    'Tape-Ins': '▬',
-    'I-Tips': '⊙',
-    'K-Tips': '⊡',
-    'Hybrid': '◈',
-    'Not recommended': '✕'
+    'Hand-Tied Wefts': '*',
+    'Tape-Ins': 'â-¬',
+    'I-Tips': 'âŠ™',
+    'K-Tips': 'âŠ¡',
+    'Hybrid': 'â-ˆ',
+    'Not recommended': 'âœ•'
   };
 
   const detailRows = [
-    { label: 'Method',              val: plan.method,              icon: '⊹' },
-    { label: 'Rows',                val: `${plan.rows} row${plan.rows !== 1 ? 's' : ''}`, icon: '≡' },
-    { label: 'Hair Weight',         val: `${plan.grams}g`,         icon: '⊜' },
-    { label: 'Extension Length',    val: plan.extensionLength,      icon: '↕' },
+    { label: 'Method',              val: plan.method,              icon: 'âŠ¹' },
+    { label: 'Rows',                val: `${plan.rows} row${plan.rows !== 1 ? 's' : ''}`, icon: 'â‰¡' },
+    { label: 'Hair Weight',         val: `${plan.grams}g`,         icon: 'âŠœ' },
+    { label: 'Extension Length',    val: plan.extensionLength,      icon: 'â†•' },
     { label: plan.method === 'Tape-Ins' ? 'Tape Pieces' : plan.method.includes('Tips') ? 'Strand Count' : 'Weft Count',
-                                    val: plan.wefts.toString(),     icon: '⊞' },
-    { label: 'Complexity',          val: plan.complexity,           icon: '◇' },
-    { label: 'Maintenance Interval',val: plan.maintenance,          icon: '↺' },
-    { label: 'Estimated Duration',  val: plan.appointmentDuration,  icon: '◷' }
+                                    val: plan.wefts.toString(),     icon: 'âŠž' },
+    { label: 'Complexity',          val: plan.complexity,           icon: 'â-‡' },
+    { label: 'Maintenance Interval',val: plan.maintenance,          icon: 'â†º' },
+    { label: 'Estimated Duration',  val: plan.appointmentDuration,  icon: 'â--' }
   ];
 
   return `
@@ -173,7 +173,7 @@ function renderS10InstallPlan(params = {}) {
 
       <!-- Status Banner -->
       <div class="hi-readiness-method-banner hi-mb-4" style="background:${isRed ? 'rgba(239,68,68,0.08)' : 'var(--gold-pale)'};border-color:${isRed ? 'rgba(239,68,68,0.3)' : 'var(--gold-border)'};">
-        <div style="font-size:30px;color:${isRed ? 'var(--danger)' : 'var(--gold)'};margin-bottom:8px;">${methodIcons[plan.method] || '⊹'}</div>
+        <div style="font-size:30px;color:${isRed ? 'var(--danger)' : 'var(--gold)'};margin-bottom:8px;">${methodIcons[plan.method] || 'âŠ¹'}</div>
         <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;">${plan.method}</div>
         ${isRed
           ? `<div style="font-size:13px;color:var(--danger);">Not recommended at this time</div>`
@@ -185,7 +185,7 @@ function renderS10InstallPlan(params = {}) {
       <div class="hi-card hi-mb-4" style="border-color:rgba(239,68,68,0.3);">
         <p class="hi-body" style="color:var(--danger);font-size:13px;line-height:1.6;">${plan.rationale}</p>
         <div style="margin-top:12px;">
-          <button class="hi-btn hi-btn-gold" onclick="HIApp.go('summary', { consultId: '${consultId}' })">View Full Consultation →</button>
+          <button class="hi-btn hi-btn-gold" onclick="HIApp.go('summary', { consultId: '${consultId}' })">View Full Consultation -></button>
         </div>
       </div>` : `
 
@@ -220,13 +220,13 @@ function renderS10InstallPlan(params = {}) {
       <div class="hi-card hi-mb-4">
         <div class="hi-label hi-mb-3">Hair Weight Reference</div>
         ${[
-          { range:'60–80g',   desc:'Light install — subtle enhancement' },
-          { range:'90–120g',  desc:'Standard install — noticeable result' },
-          { range:'130–160g', desc:'Full install — dramatic transformation' },
-          { range:'160g+',    desc:'Heavy install — maximum volume/length' }
+          { range:'60-80g',   desc:'Light install - subtle enhancement' },
+          { range:'90-120g',  desc:'Standard install - noticeable result' },
+          { range:'130-160g', desc:'Full install - dramatic transformation' },
+          { range:'160g+',    desc:'Heavy install - maximum volume/length' }
         ].map(g => {
-          const inRange = plan.grams >= parseInt(g.range) && plan.grams <= parseInt(g.range.split('–')[1]);
-          const isThis = (plan.grams >= parseInt(g.range) && plan.grams <= (parseInt(g.range.split('–')[1]) || 999));
+          const inRange = plan.grams >= parseInt(g.range) && plan.grams <= parseInt(g.range.split('-')[1]);
+          const isThis = (plan.grams >= parseInt(g.range) && plan.grams <= (parseInt(g.range.split('-')[1]) || 999));
           return `
           <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;margin-bottom:4px;background:${plan.grams >= parseInt(g.range) ? 'var(--gold-pale)' : 'transparent'};border:1px solid ${plan.grams >= parseInt(g.range) ? 'var(--gold-border)' : 'transparent'};">
             <span style="font-size:13px;font-weight:${plan.grams >= parseInt(g.range) ? '600' : '400'};color:${plan.grams >= parseInt(g.range) ? 'var(--gold)' : 'var(--text-muted)'};">${g.range}</span>
@@ -239,7 +239,7 @@ function renderS10InstallPlan(params = {}) {
       <!-- Navigation -->
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button class="hi-btn hi-btn-gold" onclick="HIApp.go('load-safety', { consultId: '${consultId}' })">
-          View Hair Load Safety →
+          View Hair Load Safety ->
         </button>
         <button class="hi-btn hi-btn-outline" onclick="HIApp.go('placement', { consultId: '${consultId}' })">
           View Placement Map
@@ -251,3 +251,4 @@ function renderS10InstallPlan(params = {}) {
 }
 
 function initS10InstallPlan() {}
+

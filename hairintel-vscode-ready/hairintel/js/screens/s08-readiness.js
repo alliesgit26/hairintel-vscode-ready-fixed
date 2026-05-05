@@ -1,5 +1,5 @@
-/* ================================================================
-   S08 — HAIR READINESS SCORE
+﻿/* ================================================================
+   S08 - HAIR READINESS SCORE
    ================================================================ */
 function renderS08Readiness(params = {}) {
   const consultId = params.consultId || HIConsult.get('consultId');
@@ -39,11 +39,11 @@ function renderS08Readiness(params = {}) {
     <div style="display:flex;flex-direction:column;gap:8px;">
       ${[
         'Begin a weekly strengthening treatment protocol (e.g., Olaplex, K18, bond repair)',
-        'Avoid additional chemical processing for a minimum of 6–8 weeks',
+        'Avoid additional chemical processing for a minimum of 6-8 weeks',
         'Trim compromised ends to remove structural damage',
         'Address any scalp condition with a dermatology referral if present',
         'Increase dietary protein and supplement with biotin if appropriate',
-        'Schedule a re-assessment in 6–12 weeks'
+        'Schedule a re-assessment in 6-12 weeks'
       ].map((s,i) => `
       <div style="display:flex;align-items:flex-start;gap:10px;">
         <div style="width:20px;height:20px;border-radius:50%;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">
@@ -119,7 +119,7 @@ function renderS08Readiness(params = {}) {
           </div>
           <div style="flex:1;">
             <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px;">${plan.method}</div>
-            <div style="font-size:12px;color:var(--text-muted);">${plan.rows} row${plan.rows !== 1 ? 's' : ''} · ${plan.grams}g · ${plan.extensionLength} · ${plan.complexity}</div>
+            <div style="font-size:12px;color:var(--text-muted);">${plan.rows} row${plan.rows !== 1 ? 's' : ''} - ${plan.grams}g - ${plan.extensionLength} - ${plan.complexity}</div>
           </div>
         </div>
       </div>
@@ -158,3 +158,4 @@ function initS08Readiness(params = {}) {
     circles.forEach(c => { c.style.transition = 'stroke-dasharray 1.2s cubic-bezier(0.4,0,0.2,1)'; });
   }, 100);
 }
+

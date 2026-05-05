@@ -1,5 +1,5 @@
 ﻿/* ================================================================
-   S02 â€” CLIENT INFO
+   S02 - CLIENT INFO
    ================================================================ */
 function renderS02ClientInfo(params = {}) {
   const clients = HI.getClients();
@@ -71,7 +71,7 @@ function renderS02ClientInfo(params = {}) {
       </div>
 
       <div style="margin-top:20px;">
-        <button class="hi-btn hi-btn-gold" id="ci-next-btn">Continue â†’</button>
+        <button class="hi-btn hi-btn-gold" id="ci-next-btn">Continue -></button>
       </div>
     </div>
   </div>`;
@@ -134,6 +134,7 @@ function initS02ClientInfo(params = {}) {
     HIApp.go('photos');
   });
 }
+
 
 
 

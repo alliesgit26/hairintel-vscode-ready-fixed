@@ -1,5 +1,5 @@
-/* ================================================================
-   S01 — WELCOME / DASHBOARD
+﻿/* ================================================================
+   S01 - WELCOME / DASHBOARD
    ================================================================ */
 function renderS01Welcome() {
   const stylist = HI.getStylist() || {};
@@ -52,7 +52,7 @@ function renderS01Welcome() {
       ${sub.plan === 'free' ? `
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;">
         <div style="font-size:12px;color:var(--text-muted);">${remaining} free consultation${remaining !== 1 ? 's' : ''} remaining</div>
-        <button onclick="HIApp.go('subscription')" style="font-size:12px;color:var(--gold);font-weight:600;background:none;border:none;cursor:pointer;">Upgrade →</button>
+        <button onclick="HIApp.go('subscription')" style="font-size:12px;color:var(--gold);font-weight:600;background:none;border:none;cursor:pointer;">Upgrade -></button>
       </div>
       ` : `
       <div style="text-align:center;margin-top:12px;">
@@ -144,3 +144,4 @@ function initS01Welcome() {
     HIApp.go('client-info');
   });
 }
+

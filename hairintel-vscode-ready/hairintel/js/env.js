@@ -1,4 +1,5 @@
-window.ENV = {
+﻿window.ENV = {
   SUPABASE_URL: '',
   SUPABASE_ANON_KEY: ''
 };
+

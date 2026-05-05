@@ -1,5 +1,5 @@
 ﻿/* ================================================================
-   HAIRINTEL AI â€” App Entry Point
+   HAIRINTEL AI - App Entry Point
    ================================================================ */
 
 async function startHIApp() {
@@ -44,4 +44,5 @@ if (document.readyState === 'loading') {
 } else {
   startHIApp();
 }
+
 

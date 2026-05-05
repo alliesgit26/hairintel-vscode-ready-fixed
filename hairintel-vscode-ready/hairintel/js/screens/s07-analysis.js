@@ -1,5 +1,5 @@
-/* ================================================================
-   S07 — ANALYSIS (Animated Processing Steps)
+﻿/* ================================================================
+   S07 - ANALYSIS (Animated Processing Steps)
    ================================================================ */
 function renderS07Analysis() {
   return `
@@ -119,3 +119,4 @@ function initS07Analysis() {
     HIApp.go('readiness', { consultId: consult.id });
   }, 3800);
 }
+

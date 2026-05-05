@@ -1,5 +1,5 @@
-/* ================================================================
-   S13 — CONSULTATION SUMMARY
+﻿/* ================================================================
+   S13 - CONSULTATION SUMMARY
    ================================================================ */
 function renderS13Summary(params = {}) {
   const consultId = params.consultId || HIConsult.get('consultId');
@@ -69,7 +69,7 @@ function renderS13Summary(params = {}) {
           <div class="hi-label hi-mb-3" style="color:var(--gold);">Service Estimate</div>
           <div style="font-size:28px;font-weight:700;color:var(--text);margin-bottom:4px;">${hiCurrency(result.estimate.total)}</div>
           <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Estimated investment</div>
-          <button class="hi-btn hi-btn-outline" style="font-size:13px;" onclick="HIApp.go('estimate', { consultId: '${consultId}' })">View Full Breakdown →</button>
+          <button class="hi-btn hi-btn-outline" style="font-size:13px;" onclick="HIApp.go('estimate', { consultId: '${consultId}' })">View Full Breakdown -></button>
         </div>
         ` : ''}
 
@@ -87,7 +87,7 @@ function renderS13Summary(params = {}) {
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
             <div style="flex:1;">
               <div style="font-size:15px;font-weight:700;color:var(--text);">Technical Assessment</div>
-              <div style="font-size:12px;color:var(--text-muted);">${hiDate(consult?.createdAt)} · HairIntel AI</div>
+              <div style="font-size:12px;color:var(--text-muted);">${hiDate(consult?.createdAt)} - HairIntel AI</div>
             </div>
             <div style="text-align:right;">
               <div style="font-size:22px;font-weight:700;color:${scoreColor};">${integrityScore}/100</div>
@@ -102,10 +102,10 @@ function renderS13Summary(params = {}) {
           <div class="hi-label hi-mb-3">Hair Assessment Data</div>
           <div style="display:flex;flex-direction:column;gap:0;">
             ${[
-              { label:'Density',      val: hiCapitalize(consult?.hairProfile?.density || '—') },
-              { label:'Texture',      val: hiCapitalize(consult?.hairProfile?.texture || '—') },
-              { label:'Current Length',val: hiCapitalize(consult?.hairProfile?.length || '—') },
-              { label:'Chem History', val: hiCapitalize((consult?.hairProfile?.chemHistory || '—').replace(/-/g,' ')) },
+              { label:'Density',      val: hiCapitalize(consult?.hairProfile?.density || '-') },
+              { label:'Texture',      val: hiCapitalize(consult?.hairProfile?.texture || '-') },
+              { label:'Current Length',val: hiCapitalize(consult?.hairProfile?.length || '-') },
+              { label:'Chem History', val: hiCapitalize((consult?.hairProfile?.chemHistory || '-').replace(/-/g,' ')) },
               { label:'Scalp Sensitivity',val: hiCapitalize(consult?.clientFlags?.scalp_sensitivity || 'None') },
               { label:'Shedding',     val: hiCapitalize(consult?.clientFlags?.shedding || 'Normal') }
             ].map((r,i,arr) => `
@@ -150,13 +150,13 @@ function renderS13Summary(params = {}) {
         <div class="hi-label hi-mb-3">Full Consultation Report</div>
         <div style="display:flex;flex-direction:column;gap:6px;">
           ${[
-            { label:'Hair Readiness Score',  screen:'readiness',  icon:'◉' },
-            { label:'Placement Map',          screen:'placement',  icon:'⊟' },
-            { label:'Install Plan',           screen:'install-plan',icon:'⊞' },
-            { label:'Load Safety Score',      screen:'load-safety',icon:'◷' },
-            { label:'Projected Outcome',      screen:'outcome',    icon:'◈' },
+            { label:'Hair Readiness Score',  screen:'readiness',  icon:'â-‰' },
+            { label:'Placement Map',          screen:'placement',  icon:'âŠŸ' },
+            { label:'Install Plan',           screen:'install-plan',icon:'âŠž' },
+            { label:'Load Safety Score',      screen:'load-safety',icon:'â--' },
+            { label:'Projected Outcome',      screen:'outcome',    icon:'â-ˆ' },
             { label:'Service Estimate',       screen:'estimate',   icon:'$' },
-            { label:'Alternative Options',    screen:'alternatives',icon:'⊙' }
+            { label:'Alternative Options',    screen:'alternatives',icon:'âŠ™' }
           ].map(r => `
           <div class="hi-card-raised" style="cursor:pointer;" onclick="HIApp.go('${r.screen}', { consultId: '${consultId}' })">
             <div style="display:flex;align-items:center;gap:12px;">
@@ -189,7 +189,7 @@ function initS13Summary(params = {}) {
 }
 
 /* ================================================================
-   S14 — SERVICE ESTIMATE
+   S14 - SERVICE ESTIMATE
    ================================================================ */
 function renderS14Estimate(params = {}) {
   const consultId = params.consultId || HIConsult.get('consultId');
@@ -305,7 +305,7 @@ function renderS14Estimate(params = {}) {
       <!-- Navigation -->
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button class="hi-btn hi-btn-gold" onclick="HIApp.go('alternatives', { consultId: '${consultId}' })">
-          View Alternative Options →
+          View Alternative Options ->
         </button>
         <button class="hi-btn hi-btn-outline" onclick="HIApp.go('export', { consultId: '${consultId}' })">
           ${HIcons.download} &nbsp;Export & Save
@@ -364,3 +364,4 @@ function initS14Estimate(params = {}) {
     hiToast(`${name} added`,'success');
   });
 }
+

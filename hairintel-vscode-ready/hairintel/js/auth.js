@@ -1,4 +1,4 @@
-window.ENV = window.ENV || {};
+﻿window.ENV = window.ENV || {};
 const HAIRI = window.HAIRI || {};
 window.HAIRI = HAIRI;
 
@@ -162,3 +162,4 @@ HAIRI.startCheckout = async function (plan) {
   if (!res.ok) throw new Error(data.error || 'Checkout failed');
   window.location.href = data.url;
 };
+

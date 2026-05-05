@@ -1,4 +1,4 @@
-
+﻿
 :root {
   --bg: #F6F3EE;
   --bg-card: #FFFFFF;
@@ -83,10 +83,12 @@ button { cursor: pointer; }
   overflow-y: auto;
   overflow-x: hidden;
   background: transparent;
-  scrollbar-width: none;
+  scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
 }
-.hi-screen::-webkit-scrollbar { display: none; }
+.hi-screen::-webkit-scrollbar { width: 10px; }
+.hi-screen::-webkit-scrollbar-track { background: rgba(221,212,201,.35); border-radius: 999px; }
+.hi-screen::-webkit-scrollbar-thumb { background: rgba(142,107,82,.55); border-radius: 999px; border: 2px solid rgba(246,243,238,.95); }
 .hi-header {
   position: sticky;
   top: 0;
@@ -365,3 +367,36 @@ button { cursor: pointer; }
   .hi-field-row, .hi-stat-grid { grid-template-columns: 1fr; }
   .hi-content { padding-left: var(--pad); padding-right: var(--pad); }
 }
+
+/* HairIntel emergency scrollbar fix */
+html, body {
+  overflow: auto !important;
+}
+
+#hi-screen-container {
+  overflow: hidden !important;
+}
+
+.hi-screen {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(142,107,82,.65) rgba(221,212,201,.35) !important;
+}
+
+.hi-screen::-webkit-scrollbar {
+  width: 10px !important;
+  display: block !important;
+}
+
+.hi-screen::-webkit-scrollbar-track {
+  background: rgba(221,212,201,.35) !important;
+  border-radius: 999px !important;
+}
+
+.hi-screen::-webkit-scrollbar-thumb {
+  background: rgba(142,107,82,.65) !important;
+  border-radius: 999px !important;
+  border: 2px solid rgba(246,243,238,.95) !important;
+}
+/* End HairIntel emergency scrollbar fix */

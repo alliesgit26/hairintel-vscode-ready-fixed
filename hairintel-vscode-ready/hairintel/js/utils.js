@@ -1,5 +1,5 @@
 ﻿/* ================================================================
-   HAIRINTEL AI â€” Utilities, Icons, Router
+   HAIRINTEL AI - Utilities, Icons, Router
    ================================================================ */
 
 /* ---- Toast ---- */
@@ -26,7 +26,7 @@ const hQsa = (s,c=document) => [...c.querySelectorAll(s)];
 
 /* ---- Format ---- */
 function hiCurrency(n) { return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n||0); }
-function hiDate(str)   { if (!str) return 'â€”'; try { return new Date(str).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); } catch { return str; } }
+function hiDate(str)   { if (!str) return '-'; try { return new Date(str).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); } catch { return str; } }
 function hiInitials(f='',l='') { return ((f[0]||'')+(l[0]||'')).toUpperCase(); }
 function hiCapitalize(s) { return s ? s.charAt(0).toUpperCase()+s.slice(1) : ''; }
 
@@ -163,4 +163,5 @@ const HIApp = {
     this.go('welcome');
   }
 };
+
 
