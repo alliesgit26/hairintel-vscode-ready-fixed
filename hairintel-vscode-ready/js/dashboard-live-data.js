@@ -208,14 +208,26 @@
     setText("readinessScore", score);
 
     const readiness = clean(result.readiness || "loaded").toUpperCase();
-    setText("candidateStatus", readiness === "LOADED" ? "Consultation Loaded" : readiness + " Readiness");
+const capacityStatus = clean(capacity.status || "").toUpperCase();
+const hasOverloadRisk = capacityStatus.includes("OVERLOAD");
+
+setText(
+  "candidateStatus",
+  hasOverloadRisk
+    ? "Load Review Required"
+    : readiness === "LOADED"
+      ? "Consultation Loaded"
+      : readiness + " Readiness"
+);
 
     setText(
-      "candidateSummary",
-      summaries.clientSummary ||
+  "candidateSummary",
+  hasOverloadRisk
+    ? "The recommended plan exceeds the calculated safe load. Reduce grams, adjust placement, or review the plan before service."
+    : summaries.clientSummary ||
       warnings[0] ||
       "Saved consultation loaded. Review the builder report for full analysis."
-    );
+);
 
     setText("methodText", plan.method);
     setText("strandText", plan.grams ? plan.grams + "g" : plan.wefts ? plan.wefts + " attachment points" : "Pending");
@@ -226,7 +238,13 @@
     setLoadSafety(result, plan, capacity);
     wirePlacementTabs();
 
-    localStorage.setItem("hairintel_dashboard_state", JSON.stringify({
+    document.querySelectorAll("#checkList div").forEach((item) => {
+  item.textContent = item.textContent
+    .replace("required", "loaded")
+    .replace("Required", "Loaded");
+});
+
+localStorage.setItem("hairintel_dashboard_state", JSON.stringify({
       syncedAt: new Date().toISOString(),
       client,
       consultId: consult.id || consult.consultId || null,
@@ -240,3 +258,4 @@
   setTimeout(hydrateDashboard, 1000);
   setTimeout(hydrateDashboard, 1800);
 })();
+
