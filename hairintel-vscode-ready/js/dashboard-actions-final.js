@@ -136,12 +136,47 @@
     toast("Dashboard saved.");
   }
 
+  function openConsultationBuilder() {
+    window.location.href = "/hairintel/index.html?from=dashboard&start=1";
+  }
+
+  function scrollToClientSummary() {
+    const card = document.querySelector(".client-card");
+    if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
   document.addEventListener("click", async function (event) {
     const target = event.target.closest("button, a");
     if (!target) return;
 
     const action = String(target.dataset.action || "").toLowerCase();
     const text = String(target.textContent || "").trim().toLowerCase();
+
+    const isStartConsultation =
+      action === "consultations" ||
+      action === "start-consultation" ||
+      text.includes("start consultation") ||
+      text.includes("new consultation");
+
+    const isClientsButton =
+      action === "clients" ||
+      text === "clients";
+
+    if (isStartConsultation) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      closeDashboardModal();
+      openConsultationBuilder();
+      return;
+    }
+
+    if (isClientsButton) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      closeDashboardModal();
+      scrollToClientSummary();
+      return;
+    }
 
     const isBillingButton =
       action === "upgrade" ||
@@ -178,3 +213,4 @@
     }
   }, true);
 })();
+
