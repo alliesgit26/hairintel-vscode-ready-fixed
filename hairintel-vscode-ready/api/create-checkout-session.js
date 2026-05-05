@@ -1,4 +1,4 @@
-import Stripe from "stripe";
+﻿import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -65,11 +65,11 @@ export default async function handler(req, res) {
       payment_method_types: ["card"],
 
       /*
-        This allows the 7-day trial to start without charging today.
+        Checkout now requires payment to start the subscription.
         Stripe may still ask for a card depending on your Stripe Checkout settings,
-        but the subscription will have trial_period_days: 7.
+        the subscription will not include a free trial.
       */
-      payment_method_collection: "if_required",
+      payment_method_collection: "always",
 
       line_items: [
         {
@@ -92,7 +92,6 @@ export default async function handler(req, res) {
       },
 
       subscription_data: {
-        trial_period_days: 7,
         metadata: {
           plan,
           app: "hairintel-ai",
@@ -120,3 +119,6 @@ export default async function handler(req, res) {
     });
   }
 }
+
+
+
