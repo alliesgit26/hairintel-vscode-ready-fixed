@@ -972,6 +972,156 @@
       line-height: 1.1 !important;
     }
     /* End HairIntel final dashboard layout fit */
+  
+    /* HairIntel compact dashboard final fit */
+    @media (min-width: 1241px) {
+      .content {
+        padding: 28px 28px 48px !important;
+        max-width: 1320px !important;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: minmax(440px, 1.05fr) minmax(330px, .82fr) minmax(290px, .66fr) !important;
+        gap: 18px !important;
+      }
+
+      .hero h2 {
+        font-size: clamp(46px, 3.85vw, 60px) !important;
+        line-height: .96 !important;
+      }
+
+      .hero p {
+        font-size: 15px !important;
+        margin: 18px 0 22px !important;
+      }
+
+      .score-panel {
+        grid-template-columns: 145px minmax(0, 1fr) !important;
+        min-height: 270px !important;
+        padding: 22px !important;
+      }
+
+      .score-ring {
+        width: 135px !important;
+        height: 135px !important;
+      }
+
+      .score-ring::before {
+        width: 106px !important;
+        height: 106px !important;
+      }
+
+      .score-ring strong {
+        font-size: 46px !important;
+      }
+
+      .client-card {
+        min-height: 300px !important;
+        padding: 20px !important;
+      }
+
+      .client-card h3 {
+        font-size: 22px !important;
+      }
+
+      .placement {
+        min-height: 360px !important;
+        padding: 20px !important;
+      }
+
+      .placement-body {
+        grid-template-columns: minmax(0, 1fr) 170px !important;
+        gap: 16px !important;
+      }
+
+      .head-frame {
+        min-height: 250px !important;
+      }
+
+      .head-frame img {
+        min-height: 250px !important;
+      }
+
+      .install-panel {
+        min-height: 260px !important;
+        padding: 22px !important;
+      }
+    }
+
+    .load-panel {
+      padding: 18px !important;
+      overflow: hidden !important;
+    }
+
+    .load-body {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+      align-items: center !important;
+    }
+
+    .small-ring {
+      width: 82px !important;
+      height: 82px !important;
+      margin: 0 auto 4px !important;
+    }
+
+    .small-ring::before {
+      width: 60px !important;
+      height: 60px !important;
+    }
+
+    .small-ring span {
+      font-size: 16px !important;
+      line-height: 1 !important;
+      max-width: 58px !important;
+      text-align: center !important;
+    }
+
+    .load-stats {
+      width: 100% !important;
+      gap: 7px !important;
+      font-size: 11px !important;
+    }
+
+    .load-stats div {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto !important;
+      gap: 8px !important;
+      align-items: center !important;
+      padding-bottom: 6px !important;
+    }
+
+    .load-stats strong {
+      white-space: nowrap !important;
+      max-width: 120px !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      text-align: right !important;
+      font-size: 11px !important;
+      line-height: 1.1 !important;
+    }
+
+    .load-stats div:nth-child(4) strong,
+    .load-stats div:nth-child(5) strong {
+      white-space: normal !important;
+      max-width: 92px !important;
+    }
+
+    .legend {
+      padding: 14px !important;
+    }
+
+    .legend-row {
+      margin-bottom: 12px !important;
+      font-size: 11px !important;
+    }
+
+    .legend-total span {
+      font-size: 17px !important;
+      line-height: 1.08 !important;
+    }
+    /* End HairIntel compact dashboard final fit */
   </style>
 </head>
 
@@ -1458,6 +1608,7 @@
   <script src="js/dashboard-live-data.js"></script>
 </body>
 </html>
+
 
 
 
