@@ -1,5 +1,5 @@
-/* ================================================================
-   HAIRINTEL AI — Utilities, Icons, Router
+﻿/* ================================================================
+   HAIRINTEL AI â€” Utilities, Icons, Router
    ================================================================ */
 
 /* ---- Toast ---- */
@@ -26,7 +26,7 @@ const hQsa = (s,c=document) => [...c.querySelectorAll(s)];
 
 /* ---- Format ---- */
 function hiCurrency(n) { return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n||0); }
-function hiDate(str)   { if (!str) return '—'; try { return new Date(str).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); } catch { return str; } }
+function hiDate(str)   { if (!str) return 'â€”'; try { return new Date(str).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); } catch { return str; } }
 function hiInitials(f='',l='') { return ((f[0]||'')+(l[0]||'')).toUpperCase(); }
 function hiCapitalize(s) { return s ? s.charAt(0).toUpperCase()+s.slice(1) : ''; }
 
@@ -128,7 +128,8 @@ const HIApp = {
     'alternatives': { render: p => renderS15Alternatives(p), init: p => initS15Alternatives(p) },
     'export':       { render: p => renderS16Export(p),       init: p => initS16Export(p)       },
     'clients':      { render: p => renderS17Clients(p),      init: p => initS17Clients(p)      },
-    'subscription': { render: p => renderS18Subscription(p), init: p => initS18Subscription(p) }
+    'subscription': { render: p => renderS18Subscription(p), init: p => initS18Subscription(p) },
+    'ai-preview':   { render: p => renderS19AIPreview(p),    init: p => initS19AIPreview(p)    }
   },
 
   go(name, params = {}, push = true) {
@@ -162,3 +163,4 @@ const HIApp = {
     this.go('welcome');
   }
 };
+
