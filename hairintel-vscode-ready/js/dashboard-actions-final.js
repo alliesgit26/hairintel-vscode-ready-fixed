@@ -39,6 +39,7 @@
 
   function toast(message) {
     let box = document.getElementById("hi-dashboard-toast");
+
     if (!box) {
       box = document.createElement("div");
       box.id = "hi-dashboard-toast";
@@ -73,6 +74,81 @@
       modal.classList.remove("show");
       modal.style.display = "none";
     });
+  }
+
+  function ensureInlinePanel() {
+    let panel = document.getElementById("hi-dashboard-inline-panel");
+
+    if (!panel) {
+      panel = document.createElement("section");
+      panel.id = "hi-dashboard-inline-panel";
+      panel.className = "panel dynamic-panel show";
+      panel.style.cssText = [
+        "display:block",
+        "margin:0 0 22px",
+        "padding:24px",
+        "border-radius:16px",
+        "border:1px solid rgba(206,183,171,.18)",
+        "background:linear-gradient(145deg, rgba(30,25,22,.88), rgba(12,9,7,.80))",
+        "box-shadow:0 18px 50px rgba(0,0,0,.30)"
+      ].join(";");
+
+      const content = document.querySelector(".content");
+      if (content) {
+        content.prepend(panel);
+      } else {
+        document.body.prepend(panel);
+      }
+    }
+
+    return panel;
+  }
+
+  function showProToolsPanel() {
+    closeDashboardModal();
+
+    const panel = ensureInlinePanel();
+    const sub = getSubscription();
+    const plan = String(sub.plan || "free").toUpperCase();
+    const status = String(sub.status || "inactive").toUpperCase();
+
+    panel.innerHTML = `
+      <p class="eyebrow" style="margin-bottom:10px;">Pro Tools</p>
+      <h3 style="margin:0 0 10px;font-family:Georgia,'Times New Roman',serif;font-size:30px;font-weight:500;color:var(--cream);">Professional Tool Suite</h3>
+      <p style="margin:0 0 18px;color:var(--muted);line-height:1.6;font-size:14px;max-width:820px;">
+        These tools support advanced extension planning, saved client records, load safety review, placement guidance, AI preview access, and client-ready exports.
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px;">
+        <div class="panel" style="padding:16px;">
+          <strong style="color:var(--gold);display:block;margin-bottom:6px;">Placement Mapping</strong>
+          <span style="color:var(--muted);font-size:12px;line-height:1.45;">Review top, side, and back placement guidance from the saved consultation.</span>
+        </div>
+        <div class="panel" style="padding:16px;">
+          <strong style="color:var(--gold);display:block;margin-bottom:6px;">Load Safety</strong>
+          <span style="color:var(--muted);font-size:12px;line-height:1.45;">Compare planned grams against recommended safe load and scalp risk.</span>
+        </div>
+        <div class="panel" style="padding:16px;">
+          <strong style="color:var(--gold);display:block;margin-bottom:6px;">AI Preview</strong>
+          <span style="color:var(--muted);font-size:12px;line-height:1.45;">Generate photorealistic extension previews when plan credits are available.</span>
+        </div>
+        <div class="panel" style="padding:16px;">
+          <strong style="color:var(--gold);display:block;margin-bottom:6px;">Client Reports</strong>
+          <span style="color:var(--muted);font-size:12px;line-height:1.45;">Save dashboard views and export client-facing consultation summaries.</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;">
+        <button class="gold-btn" data-action="consultations">Open Consultation Builder</button>
+        <button class="outline-btn" data-action="billing">Manage Billing</button>
+      </div>
+
+      <p style="margin:16px 0 0;color:var(--muted);font-size:12px;">
+        Current account: ${plan} / ${status}
+      </p>
+    `;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function openCheckout(plan = "pro") {
@@ -136,15 +212,6 @@
     toast("Dashboard saved.");
   }
 
-  function openConsultationBuilder() {
-    window.location.href = "/hairintel/index.html?from=dashboard&start=1";
-  }
-
-  function scrollToClientSummary() {
-    const card = document.querySelector(".client-card");
-    if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
   document.addEventListener("click", async function (event) {
     const target = event.target.closest("button, a");
     if (!target) return;
@@ -152,44 +219,26 @@
     const action = String(target.dataset.action || "").toLowerCase();
     const text = String(target.textContent || "").trim().toLowerCase();
 
-    const isStartConsultation =
-      action === "consultations" ||
-      action === "start-consultation" ||
-      text.includes("start consultation") ||
-      text.includes("new consultation");
-
-    const isClientsButton =
-      action === "clients" ||
-      text === "clients";
-
-    if (isStartConsultation) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      closeDashboardModal();
-      openConsultationBuilder();
-      return;
-    }
-
-    if (isClientsButton) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      closeDashboardModal();
-      scrollToClientSummary();
-      return;
-    }
+    const isProToolsButton =
+      action === "pro-tools" ||
+      text.includes("open pro tools");
 
     const isBillingButton =
-      action === "upgrade" ||
       action === "billing" ||
-      text.includes("manage tools") ||
-      text.includes("subscribed") ||
+      text === "subscribed" ||
+      text.includes("manage billing") ||
+      text.includes("billing portal") ||
+      text.includes("subscription settings");
+
+    const isSubscribeButton =
+      action === "subscribe" ||
       text.includes("start subscription");
 
     const isSaveButton =
       action === "save" ||
       text.includes("save dashboard");
 
-    if (!isBillingButton && !isSaveButton) return;
+    if (!isProToolsButton && !isBillingButton && !isSubscribeButton && !isSaveButton) return;
 
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -200,11 +249,23 @@
         return;
       }
 
+      if (isProToolsButton) {
+        showProToolsPanel();
+        return;
+      }
+
       closeDashboardModal();
 
-      if (isSubscribed()) {
-        await openBillingPortal();
-      } else {
+      if (isBillingButton) {
+        if (isSubscribed()) {
+          await openBillingPortal();
+        } else {
+          await openCheckout("pro");
+        }
+        return;
+      }
+
+      if (isSubscribeButton) {
         await openCheckout("pro");
       }
     } catch (err) {
@@ -213,4 +274,3 @@
     }
   }, true);
 })();
-
