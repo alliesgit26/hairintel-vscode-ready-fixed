@@ -33,22 +33,69 @@
     const style = document.createElement("style");
     style.id = "hi-auth-gate-styles";
     style.textContent = `
+      .topbar {
+        grid-template-columns: 240px minmax(320px, 1fr) minmax(520px, auto) !important;
+      }
+
+      .actions {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 10px !important;
+        flex-wrap: nowrap !important;
+        min-width: 520px !important;
+        overflow: visible !important;
+      }
+
       .hi-auth-controls {
         display: flex;
         align-items: center;
         justify-content: flex-end;
         gap: 10px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        flex: 0 0 auto;
       }
 
       .hi-auth-chip,
       .hi-auth-primary {
         border-radius: 999px;
-        padding: 11px 16px;
+        padding: 10px 15px;
         font-weight: 900;
         cursor: pointer;
         font-size: 13px;
         white-space: nowrap;
+        min-height: 42px;
+      }
+
+      .actions .export {
+        flex: 0 0 auto !important;
+        padding: 10px 16px !important;
+        font-size: 13px !important;
+        max-width: 180px !important;
+        min-height: 42px !important;
+      }
+
+      .actions .menu {
+        flex: 0 0 44px !important;
+        width: 44px !important;
+        min-height: 42px !important;
+        padding: 10px 0 !important;
+      }
+
+      @media (max-width: 1240px) {
+        .topbar {
+          grid-template-columns: 1fr !important;
+        }
+
+        .actions {
+          min-width: 0 !important;
+          justify-content: flex-start !important;
+          flex-wrap: wrap !important;
+        }
+
+        .hi-auth-controls {
+          flex-wrap: wrap;
+        }
       }
 
       .hi-auth-chip {
@@ -554,3 +601,4 @@
     renderControls();
   });
 })();
+
