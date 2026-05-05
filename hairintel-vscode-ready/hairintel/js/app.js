@@ -1,5 +1,5 @@
-/* ================================================================
-   HAIRINTEL AI — App Entry Point
+﻿/* ================================================================
+   HAIRINTEL AI â€” App Entry Point
    ================================================================ */
 
 async function startHIApp() {
@@ -30,8 +30,6 @@ async function startHIApp() {
       setTimeout(() => hiToast('Checkout cancelled.', 'info'), 350);
     }
 
-    HI.loadDemo();
-    console.log('[HIApp] Demo loaded');
     HIApp.go('welcome');
     console.log('[HIApp] Welcome screen rendered');
   } catch(e) {
@@ -46,3 +44,4 @@ if (document.readyState === 'loading') {
 } else {
   startHIApp();
 }
+

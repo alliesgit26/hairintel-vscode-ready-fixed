@@ -16,62 +16,77 @@
     }
   }
 
+  function isDemoClient(client) {
+    const fullName = `${client?.firstName || ""} ${client?.lastName || ""}`.trim().toLowerCase();
+    return DEMO_NAMES.has(fullName);
+  }
+
   function cleanDemoData() {
     const clients = readJson("hi_clients", []);
     const removedIds = new Set();
 
     if (Array.isArray(clients)) {
       const cleanedClients = clients.filter((client) => {
-        const fullName = `${client.firstName || ""} ${client.lastName || ""}`.trim().toLowerCase();
-        const isDemo = DEMO_NAMES.has(fullName);
-        if (isDemo && client.id) removedIds.add(client.id);
-        return !isDemo;
+        const demo = isDemoClient(client);
+        if (demo && client.id) removedIds.add(client.id);
+        return !demo;
       });
 
-      if (cleanedClients.length !== clients.length) {
-        localStorage.setItem("hi_clients", JSON.stringify(cleanedClients));
-      }
+      localStorage.setItem("hi_clients", JSON.stringify(cleanedClients));
     }
 
     const consults = readJson("hi_consultations", []);
-    if (Array.isArray(consults) && removedIds.size) {
+    if (Array.isArray(consults)) {
       const cleanedConsults = consults.filter((consult) => !removedIds.has(consult.clientId));
       localStorage.setItem("hi_consultations", JSON.stringify(cleanedConsults));
     }
 
-    localStorage.removeItem("hi_demo_v1");
+    localStorage.setItem("hi_demo_v1", JSON.stringify({
+      disabled: true,
+      clearedAt: new Date().toISOString()
+    }));
   }
 
-  cleanDemoData();
+  function patchHI() {
+    try {
+      if (typeof HI === "undefined" || !HI) return false;
 
-  Object.defineProperty(window, "HIRemoveDemoData", {
-    value: cleanDemoData,
-    configurable: true
-  });
-
-  const patchHI = setInterval(() => {
-    if (window.HI) {
-      window.HI.loadDemo = function () {
+      HI.loadDemo = function () {
         cleanDemoData();
         return false;
       };
 
-      const originalGetClients = window.HI.getClients?.bind(window.HI);
-      if (originalGetClients && !window.HI.__noDemoPatched) {
-        window.HI.getClients = function () {
+      if (!HI.__noDemoPatched && typeof HI.getClients === "function") {
+        const originalGetClients = HI.getClients.bind(HI);
+
+        HI.getClients = function () {
           cleanDemoData();
-          return originalGetClients().filter((client) => {
-            const fullName = `${client.firstName || ""} ${client.lastName || ""}`.trim().toLowerCase();
-            return !DEMO_NAMES.has(fullName);
-          });
+          return originalGetClients().filter((client) => !isDemoClient(client));
         };
-        window.HI.__noDemoPatched = true;
+
+        HI.__noDemoPatched = true;
       }
 
       cleanDemoData();
-      clearInterval(patchHI);
+      return true;
+    } catch (err) {
+      console.warn("[HairIntel] no-demo cleanup failed:", err);
+      return false;
     }
-  }, 25);
+  }
 
-  document.addEventListener("DOMContentLoaded", cleanDemoData);
+  cleanDemoData();
+
+  if (!patchHI()) {
+    const timer = setInterval(() => {
+      if (patchHI()) clearInterval(timer);
+    }, 25);
+
+    setTimeout(() => clearInterval(timer), 3000);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    cleanDemoData();
+    patchHI();
+  });
 })();
