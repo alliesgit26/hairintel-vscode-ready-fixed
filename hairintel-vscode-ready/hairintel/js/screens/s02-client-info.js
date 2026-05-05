@@ -1,5 +1,5 @@
-/* ================================================================
-   S02 — CLIENT INFO
+﻿/* ================================================================
+   S02 â€” CLIENT INFO
    ================================================================ */
 function renderS02ClientInfo(params = {}) {
   const clients = HI.getClients();
@@ -46,22 +46,22 @@ function renderS02ClientInfo(params = {}) {
         <div class="hi-field-row hi-mb-2">
           <div class="hi-field">
             <label class="hi-field-label">First Name *</label>
-            <input class="hi-input" id="ci-first" type="text" placeholder="Sienna" value="${preClient?.firstName || ''}" />
+            <input class="hi-input" id="ci-first" type="text" placeholder="First name" value="${preClient?.firstName || ''}" />
           </div>
           <div class="hi-field">
             <label class="hi-field-label">Last Name *</label>
-            <input class="hi-input" id="ci-last" type="text" placeholder="Rhodes" value="${preClient?.lastName || ''}" />
+            <input class="hi-input" id="ci-last" type="text" placeholder="Last name" value="${preClient?.lastName || ''}" />
           </div>
         </div>
 
         <div class="hi-field">
           <label class="hi-field-label">Phone (optional)</label>
-          <input class="hi-input" id="ci-phone" type="tel" placeholder="(404) 555-0000" value="${preClient?.phone || ''}" />
+          <input class="hi-input" id="ci-phone" type="tel" placeholder="Phone number" value="${preClient?.phone || ''}" />
         </div>
 
         <div class="hi-field">
           <label class="hi-field-label">Email (optional)</label>
-          <input class="hi-input" id="ci-email" type="email" placeholder="client@email.com" value="${preClient?.email || ''}" />
+          <input class="hi-input" id="ci-email" type="email" placeholder="Client email" value="${preClient?.email || ''}" />
         </div>
 
         <div class="hi-field" style="margin-bottom:0;">
@@ -71,7 +71,7 @@ function renderS02ClientInfo(params = {}) {
       </div>
 
       <div style="margin-top:20px;">
-        <button class="hi-btn hi-btn-gold" id="ci-next-btn">Continue →</button>
+        <button class="hi-btn hi-btn-gold" id="ci-next-btn">Continue â†’</button>
       </div>
     </div>
   </div>`;
@@ -134,3 +134,5 @@ function initS02ClientInfo(params = {}) {
     HIApp.go('photos');
   });
 }
+
+

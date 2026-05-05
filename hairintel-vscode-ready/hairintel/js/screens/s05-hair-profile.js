@@ -1,12 +1,12 @@
-/* ================================================================
-   S03 — PHOTOS (file is s02 for bundling but logically screen 3)
-   S04 — GOALS (same bundle)
+﻿/* ================================================================
+   S03 â€” PHOTOS (file is s02 for bundling but logically screen 3)
+   S04 â€” GOALS (same bundle)
    These are now co-located in s02-client-info.js
    This file holds S05 and S06
    ================================================================ */
 
 /* ================================================================
-   S05 — HAIR PROFILE
+   S05 â€” HAIR PROFILE
    ================================================================ */
 function renderS05HairProfile() {
   return `
@@ -89,7 +89,7 @@ function renderS05HairProfile() {
         </div>
       </div>
 
-      <button class="hi-btn hi-btn-gold" id="profile-next-btn">Continue →</button>
+      <button class="hi-btn hi-btn-gold" id="profile-next-btn">Continue â†’</button>
     </div>
   </div>`;
 }
@@ -111,7 +111,7 @@ function initS05HairProfile() {
 }
 
 /* ================================================================
-   S06 — HAIR HEALTH & CONCERN CHECK
+   S06 â€” HAIR HEALTH & CONCERN CHECK
    ================================================================ */
 function renderS06Concerns() {
   return `
@@ -210,14 +210,16 @@ function renderS06Concerns() {
       </div>
 
       <button class="hi-btn hi-btn-gold" id="concerns-next-btn">
-        ${HIcons.brain} &nbsp;Analyze Hair
+        Analyze Hair →
       </button>
     </div>
   </div>`;
 }
 
 function initS06Concerns() {
-  hiInitOptions(hEl('screen-concerns'), false);
+  hiInitOptions(hEl('sensitivity-group'), false);
+  hiInitOptions(hEl('prior-ext-group'), false);
+  hiInitOptions(hEl('shedding-group'), false);
   hiInitOptions(hEl('stylist-flags-group'), true);
   hiInitOptions(hEl('prior-issues-group'), true);
   hiInitOptions(hEl('sensitivity-loc-group'), true);
@@ -248,3 +250,4 @@ function initS06Concerns() {
     HIApp.go('analysis');
   });
 }
+
