@@ -1,0 +1,12 @@
+{
+  "appId": "com.hairintel.ai",
+  "appName": "HairIntel AI",
+  "webDir": ".",
+  "server": {
+    "url": "https://hairintel-ai.vercel.app",
+    "cleartext": false
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
