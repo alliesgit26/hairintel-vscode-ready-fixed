@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "android:sync": "npx cap sync android",
+    "android:prepare": "node scripts/prepare-android-assets.js",
+    "android:sync": "npm run android:prepare && npx cap sync android",
     "android:open": "npx cap open android",
-    "android:add": "npx cap add android",
+    "android:add": "npm run android:prepare && npx cap add android",
     "android:build:aab": "cd android && gradlew.bat bundleRelease"
   },
   "dependencies": {
