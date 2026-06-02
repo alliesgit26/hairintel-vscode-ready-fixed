@@ -1,0 +1,105 @@
+HAIRINTEL AUDIT REPORT
+Generated: 2026-05-03T21:27:46.089Z
+Project root: C:\Users\shewo\Desktop\hairintel-vscode-ready-fixed
+App root: C:\Users\shewo\Desktop\hairintel-vscode-ready-fixed\hairintel-vscode-ready
+
+1) REQUIRED FILES
+PASS  hairintel-vscode-ready/index.html exists
+PASS  hairintel-vscode-ready/public/placement-head.png exists
+PASS  hairintel-vscode-ready/js/app.js exists
+PASS  hairintel-vscode-ready/js/engine.js exists
+PASS  hairintel-vscode-ready/js/screens/s09-placement.js exists
+PASS  hairintel-vscode-ready/js/screens/s13-summary.js exists
+PASS  hairintel-vscode-ready/js/screens/s17-clients.js exists
+
+2) HOMEPAGE DASHBOARD CHECKS
+PASS  Luxury dashboard headline found
+PASS  Placement Map Preview found
+PASS  Placement head image is referenced
+PASS  Fake client name removed from dashboard
+PASS  Ava Morgan removed
+PASS  Sophia Carter removed
+PASS  Templates button removed
+PASS  Support button removed
+PASS  Dashboard action exists
+PASS  Consultations action exists
+PASS  Clients action exists
+PASS  Education action exists
+PASS  Review Plan action exists
+PASS  Share Results action exists
+PASS  Export Report action exists
+PASS  Start Consultation / Book action exists
+PASS  Save Dashboard action exists
+PASS  Consultation builder function exists
+PASS  Consultation builder points to hairintel/index.html
+
+3) IMAGE CHECK
+PASS  placement-head.png exists and is not tiny: 215540 bytes
+
+4) OLD / DANGEROUS ARTIFACT CHECKS
+PASS  vercel.json not present at root
+WARN  dashboard.html exists at root. This may be intentional, but it previously caused confusion.
+PASS  Old click-blocker script removed
+PASS  Old temporary dashboard action script not present
+PASS  No obvious visible newline artifact in index.html
+
+5) LINK SCAN
+PASS  No obvious placeholder/dead deployment references found
+
+6) JAVASCRIPT SYNTAX CHECK
+PASS  JS syntax OK: hairintel-vscode-ready\api\checkout-status.js
+PASS  JS syntax OK: hairintel-vscode-ready\api\config.js
+PASS  JS syntax OK: hairintel-vscode-ready\api\create-billing-portal-session.js
+PASS  JS syntax OK: hairintel-vscode-ready\api\create-checkout-session.js
+PASS  JS syntax OK: hairintel-vscode-ready\api\generate-hair-preview.js
+PASS  JS syntax OK: hairintel-vscode-ready\api\stripe-webhook.js
+PASS  JS syntax OK: hairintel-vscode-ready\api\subscription-status.js
+PASS  JS syntax OK: hairintel-vscode-ready\api\verify-checkout-session.js
+PASS  JS syntax OK: hairintel-vscode-ready\api\_supabase-admin.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\app.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\auth.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\engine.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\env.example.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\env.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s01-welcome.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s02-client-info.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s03-photos.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s05-hair-profile.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s07-analysis.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s08-readiness.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s09-placement.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s11-load-safety.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s13-summary.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s15-alternatives.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\screens\s17-clients.js
+PASS  JS syntax OK: hairintel-vscode-ready\hairintel\js\utils.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\app.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\auth.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\dashboard-luxe.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\engine.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\env.example.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\env.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\hairintel-dashboard-real.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\luxe-dashboard.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s01-welcome.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s02-client-info.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s03-photos.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s05-hair-profile.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s07-analysis.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s08-readiness.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s09-placement.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s11-load-safety.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s13-summary.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s15-alternatives.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s17-clients.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\screens\s19-ai-preview.js
+PASS  JS syntax OK: hairintel-vscode-ready\js\utils.js
+PASS  JS syntax OK: hairintel-vscode-ready\server.js
+PASS  All JavaScript files passed node --check
+
+7) PACKAGE / DEPLOYMENT ROOT CHECK
+PASS  Inner package.json exists
+WARN  Outer package.json exists. Verify Vercel root directory is hairintel-vscode-ready.
+
+8) FINAL VERDICT
+MOSTLY CLEAN: No hard failures. Review warnings.
