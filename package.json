@@ -8,7 +8,7 @@
     "android:sync": "npx cap sync android",
     "android:open": "npx cap open android",
     "android:add": "npx cap add android",
-    "android:build:aab": "cd android && ./gradlew bundleRelease"
+    "android:build:aab": "cd android && gradlew.bat bundleRelease"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.4",
