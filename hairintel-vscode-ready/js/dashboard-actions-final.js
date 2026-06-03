@@ -154,12 +154,30 @@
   async function openCheckout(plan = "pro") {
     const email = getEmail();
 
+    // Require sign-in via Supabase before starting checkout.
+    let userId = null;
+    try {
+      if (window.HAIRI && window.HAIRI.getClient) {
+        const client = window.HAIRI.getClient();
+        if (client) {
+          const { data } = await client.auth.getUser();
+          userId = data?.user?.id || null;
+        }
+      }
+    } catch (err) {}
+
+    if (!userId) {
+      toast('Please sign in before starting a subscription.');
+      if (window.HI && window.HI.openModal) window.HI.openModal && window.HI.openModal('signin');
+      return;
+    }
+
     toast("Opening Stripe checkout...");
 
     const res = await fetch("/api/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan, email })
+      body: JSON.stringify({ plan, email, userId })
     });
 
     const data = await res.json();
@@ -189,8 +207,7 @@
     const data = await res.json();
 
     if (!res.ok || !data.url) {
-      await openCheckout("pro");
-      return;
+      throw new Error(data.error || data.message || "No active Stripe customer/subscription was found for this account. Manage Billing cannot start a new checkout.");
     }
 
     window.location.href = data.url;
@@ -273,4 +290,40 @@
       toast(err.message || "Action failed. Check Stripe setup.");
     }
   }, true);
+
+  // Hide/disable subscription and billing controls when the user is not signed in.
+  (async function guardAuthButtons() {
+    try {
+      let signedIn = false;
+      if (window.HAIRI && window.HAIRI.getClient) {
+        const client = window.HAIRI.getClient();
+        if (client) {
+          const { data } = await client.auth.getUser();
+          signedIn = !!(data?.user?.id);
+        }
+      }
+
+      if (!signedIn) {
+        const hideSelectors = [
+          '[data-action="billing"]',
+          '[data-action="subscribe"]',
+          'button#hi-sub-btn',
+          'button[data-action="pro-tools"]',
+          '.hi-auth-primary',
+          '.hi-auth-chip'
+        ];
+
+        hideSelectors.forEach(sel => {
+          document.querySelectorAll(sel).forEach(el => {
+            el.dataset.authHidden = '1';
+            el.style.pointerEvents = 'none';
+            el.style.opacity = '0.45';
+          });
+        });
+      }
+    } catch (err) {
+      // no-op
+    }
+  })();
 })();
+
