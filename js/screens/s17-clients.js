@@ -309,34 +309,56 @@ function renderS18Subscription() {
 
 function initS18Subscription() {
   window.selectPlan = async (plan) => {
-    if (plan === 'starter' || plan === 'pro' || plan === 'studio') {
-      try {
-        if (window.HAIRI && typeof window.HAIRI.startCheckout === 'function') {
-          await window.HAIRI.startCheckout(plan);
-          return;
-        }
-
-        throw new Error('Checkout system is not available.');
-      } catch (err) {
-        console.error('[HairIntel] Checkout error:', err);
-        hiToast(err.message || 'Checkout could not be started.', 'error');
-        return;
-      }
+    if (plan !== 'starter' && plan !== 'pro' && plan !== 'studio') {
+      hiToast('Please choose Starter, Pro, or Studio.', 'error');
+      return;
     }
 
-    hiToast('Please choose Starter, Pro, or Studio.', 'error');
+    try {
+      const client = window.HAIRI && typeof window.HAIRI.ensureClient === 'function'
+        ? await window.HAIRI.ensureClient()
+        : null;
+
+      const userResult = client ? await client.auth.getUser() : null;
+      const user = userResult && userResult.data ? userResult.data.user : null;
+
+      if (!user || !user.email) {
+        hiToast('Please sign in or create an account before subscribing.', 'error');
+        HIApp.go('welcome');
+        return;
+      }
+
+      if (window.HAIRI && typeof window.HAIRI.startCheckout === 'function') {
+        await window.HAIRI.startCheckout(plan);
+        return;
+      }
+
+      throw new Error('Checkout system is not available.');
+    } catch (err) {
+      console.error('[HairIntel] Checkout error:', err);
+      hiToast(err.message || 'Checkout could not be started.', 'error');
+    }
   };
 
   window.manageBilling = async () => {
     try {
-      let email = prompt('Enter the email used for your HairIntel subscription:');
+      // Prefer a signed-in user for security. Try to get Supabase user.
+      const client = window.HAIRI ? window.HAIRI.getClient() : null;
+      let user = null;
+      try {
+        if (client) {
+          const { data } = await client.auth.getUser();
+          user = data?.user || null;
+        }
+      } catch (err) {}
 
-      email = String(email || '').trim().toLowerCase();
-
-      if (!email) {
-        hiToast('Subscription email is required to open billing.', 'error');
+      if (!user || !user.email) {
+        hiToast('Please sign in to manage billing.', 'error');
+        HIApp.go('welcome');
         return;
       }
+
+      const email = user.email;
 
       localStorage.setItem('hairintel_customer_email', email);
 
@@ -347,7 +369,7 @@ function initS18Subscription() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, userId: user.id }),
       });
 
       const raw = await response.text();
