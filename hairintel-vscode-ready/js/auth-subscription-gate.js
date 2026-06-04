@@ -518,12 +518,9 @@
     wrap.id = "hi-auth-controls";
     wrap.className = "hi-auth-controls";
 
-    const label = profile ? profile.name.split(" ")[0] : "Sign In";
-    const status = isSubscribed() ? "Subscribed" : "Start Subscription";
-
     wrap.innerHTML = `
-      <button class="hi-auth-chip" type="button" id="hi-signin-btn">${label}</button>
-      <button class="${isSubscribed() ? "hi-auth-chip" : "hi-auth-primary"}" type="button" id="hi-sub-btn">${status}</button>
+      <button class="hi-auth-chip" type="button" id="hi-signin-btn">Sign In</button>
+      <button class="hi-auth-primary" type="button" id="hi-sub-btn">Start Subscription</button>
     `;
 
     actions.prepend(wrap);
@@ -578,12 +575,6 @@
     const params = new URLSearchParams(window.location.search);
 
     if (params.get("checkout") === "success") {
-      setSub({
-        status: "trialing",
-        source: "checkout_return",
-        checkedAt: new Date().toISOString()
-      });
-
       history.replaceState({}, "", window.location.pathname);
     }
   }
