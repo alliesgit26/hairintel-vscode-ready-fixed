@@ -388,7 +388,7 @@ const HI = {
     if (currentLength === 'chin') grams = Math.min(grams, density === 'high' ? 110 : density === 'medium' ? 85 : 55);
     if (currentLength === 'pixie') grams = 0;
 
-    /* Extension length. These are recommended finished extension lengths, not â€œinches added.â€ */
+    /* Extension length. These are recommended finished extension lengths, not inches added. */
     const lengthMap = {
       maintain: { pixie: 'Consult only', chin: '10-12"', shoulder: '14"', chest: '16"', 'mid-back': '20"', waist: '24"' },
       '+2':     { pixie: 'Consult only', chin: '12"',    shoulder: '16"', chest: '18"', 'mid-back': '22"', waist: '26"' },

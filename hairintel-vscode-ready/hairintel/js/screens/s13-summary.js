@@ -150,13 +150,13 @@ function renderS13Summary(params = {}) {
         <div class="hi-label hi-mb-3">Full Consultation Report</div>
         <div style="display:flex;flex-direction:column;gap:6px;">
           ${[
-            { label:'Hair Readiness Score',  screen:'readiness',  icon:'â-‰' },
-            { label:'Placement Map',          screen:'placement',  icon:'âŠŸ' },
-            { label:'Install Plan',           screen:'install-plan',icon:'âŠž' },
-            { label:'Load Safety Score',      screen:'load-safety',icon:'â--' },
-            { label:'Projected Outcome',      screen:'outcome',    icon:'â-ˆ' },
+            { label:'Hair Readiness Score',  screen:'readiness',  icon:'%' },
+            { label:'Placement Map',          screen:'placement',  icon:'+' },
+            { label:'Install Plan',           screen:'install-plan',icon:'#' },
+            { label:'Load Safety Score',      screen:'load-safety',icon:'!' },
+            { label:'Projected Outcome',      screen:'outcome',    icon:'>' },
             { label:'Service Estimate',       screen:'estimate',   icon:'$' },
-            { label:'Alternative Options',    screen:'alternatives',icon:'âŠ™' }
+            { label:'Alternative Options',    screen:'alternatives',icon:'?' }
           ].map(r => `
           <div class="hi-card-raised" style="cursor:pointer;" onclick="HIApp.go('${r.screen}', { consultId: '${consultId}' })">
             <div style="display:flex;align-items:center;gap:12px;">

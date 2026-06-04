@@ -142,23 +142,23 @@ function renderS10InstallPlan(params = {}) {
 
   const methodIcons = {
     'Hand-Tied Wefts': '*',
-    'Tape-Ins': 'â-¬',
-    'I-Tips': 'âŠ™',
-    'K-Tips': 'âŠ¡',
-    'Hybrid': 'â-ˆ',
-    'Not recommended': 'âœ•'
+    'Tape-Ins': 'T',
+    'I-Tips': 'I',
+    'K-Tips': 'K',
+    'Hybrid': 'H',
+    'Not recommended': 'X'
   };
 
   const detailRows = [
-    { label: 'Method',              val: plan.method,              icon: 'âŠ¹' },
-    { label: 'Rows',                val: `${plan.rows} row${plan.rows !== 1 ? 's' : ''}`, icon: 'â‰¡' },
-    { label: 'Hair Weight',         val: `${plan.grams}g`,         icon: 'âŠœ' },
-    { label: 'Extension Length',    val: plan.extensionLength,      icon: 'â†•' },
+    { label: 'Method',              val: plan.method,              icon: '*' },
+    { label: 'Rows',                val: `${plan.rows} row${plan.rows !== 1 ? 's' : ''}`, icon: '=' },
+    { label: 'Hair Weight',         val: `${plan.grams}g`,         icon: 'g' },
+    { label: 'Extension Length',    val: plan.extensionLength,      icon: 'L' },
     { label: plan.method === 'Tape-Ins' ? 'Tape Pieces' : plan.method.includes('Tips') ? 'Strand Count' : 'Weft Count',
-                                    val: plan.wefts.toString(),     icon: 'âŠž' },
-    { label: 'Complexity',          val: plan.complexity,           icon: 'â-‡' },
-    { label: 'Maintenance Interval',val: plan.maintenance,          icon: 'â†º' },
-    { label: 'Estimated Duration',  val: plan.appointmentDuration,  icon: 'â--' }
+                                    val: plan.wefts.toString(),     icon: '#' },
+    { label: 'Complexity',          val: plan.complexity,           icon: '!' },
+    { label: 'Maintenance Interval',val: plan.maintenance,          icon: '~' },
+    { label: 'Estimated Duration',  val: plan.appointmentDuration,  icon: 'h' }
   ];
 
   return `
@@ -173,7 +173,7 @@ function renderS10InstallPlan(params = {}) {
 
       <!-- Status Banner -->
       <div class="hi-readiness-method-banner hi-mb-4" style="background:${isRed ? 'rgba(239,68,68,0.08)' : 'var(--gold-pale)'};border-color:${isRed ? 'rgba(239,68,68,0.3)' : 'var(--gold-border)'};">
-        <div style="font-size:30px;color:${isRed ? 'var(--danger)' : 'var(--gold)'};margin-bottom:8px;">${methodIcons[plan.method] || 'âŠ¹'}</div>
+        <div style="font-size:30px;color:${isRed ? 'var(--danger)' : 'var(--gold)'};margin-bottom:8px;">${methodIcons[plan.method] || '*'}</div>
         <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;">${plan.method}</div>
         ${isRed
           ? `<div style="font-size:13px;color:var(--danger);">Not recommended at this time</div>`

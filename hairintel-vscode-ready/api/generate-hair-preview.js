@@ -12,7 +12,10 @@ export default async function handler(req, res) {
   }
 
   if (!process.env.OPENAI_API_KEY) {
-    return send(500, { error: "OPENAI_API_KEY is missing on the server." });
+    console.error("[generate-hair-preview] OPENAI_API_KEY is missing");
+    return send(503, {
+      error: "AI preview is temporarily unavailable. Please try again later."
+    });
   }
 
   try {
@@ -144,10 +147,18 @@ export default async function handler(req, res) {
       } catch {}
 
       const accessMessage = /insufficient_quota|exceeded your current quota|billing details|check your plan/i.test(apiError)
-        ? "OpenAI project quota exceeded. Add credits or update billing/limits for the OpenAI API project used by OPENAI_API_KEY, then try again."
+        ? "AI preview is temporarily unavailable. Please try again later."
         : /organization must be verified|model.*not.*access|does not have access|unsupported model/i.test(apiError)
-          ? `OpenAI model access error for ${responseModel}. Set OPENAI_RESPONSES_MODEL to an enabled Responses image-generation model, or verify the OpenAI organization in Platform settings.`
+          ? "AI preview is temporarily unavailable. Please try again later."
           : `OpenAI API error: ${apiError}`;
+
+      if (accessMessage === "AI preview is temporarily unavailable. Please try again later.") {
+        console.error("[generate-hair-preview] OpenAI service configuration error:", {
+          model: responseModel,
+          status: oaRes.status,
+          message: apiError
+        });
+      }
 
       return send(oaRes.status, {
         error: accessMessage
