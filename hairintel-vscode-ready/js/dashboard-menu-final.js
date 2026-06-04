@@ -113,7 +113,7 @@
             <button class="outline-btn" id="hi-menu-save">Save Dashboard</button>
             <button class="outline-btn" id="hi-menu-export">Export PDF</button>
             <button class="outline-btn" id="hi-menu-tools">Open Pro Tools</button>
-            
+            <button class="outline-btn" id="hi-menu-billing">Manage Billing</button>
           </div>
 
           <div class="modal-actions">
