@@ -34,7 +34,18 @@
     style.id = "hi-auth-gate-styles";
     style.textContent = `
       .topbar {
-        grid-template-columns: 240px minmax(320px, 1fr) minmax(620px, auto) !important;
+        grid-template-columns: 170px minmax(520px, 1fr) max-content !important;
+        gap: 24px !important;
+      }
+
+      .topbar .back {
+        min-width: 0 !important;
+        white-space: nowrap !important;
+      }
+
+      .topbar .tabs {
+        justify-content: flex-start !important;
+        gap: clamp(20px, 2.2vw, 42px) !important;
       }
 
       .actions {
@@ -43,7 +54,7 @@
         justify-content: flex-end !important;
         gap: 10px !important;
         flex-wrap: nowrap !important;
-        min-width: 620px !important;
+        min-width: 0 !important;
         overflow: visible !important;
       }
 
