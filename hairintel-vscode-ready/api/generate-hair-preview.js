@@ -143,9 +143,11 @@ export default async function handler(req, res) {
         apiError = parsedError?.error?.message || raw;
       } catch {}
 
-      const accessMessage = /organization must be verified|model.*not.*access|does not have access|unsupported model/i.test(apiError)
-        ? `OpenAI model access error for ${responseModel}. Set OPENAI_RESPONSES_MODEL to an enabled Responses image-generation model, or verify the OpenAI organization in Platform settings.`
-        : `OpenAI API error: ${apiError}`;
+      const accessMessage = /insufficient_quota|exceeded your current quota|billing details|check your plan/i.test(apiError)
+        ? "OpenAI project quota exceeded. Add credits or update billing/limits for the OpenAI API project used by OPENAI_API_KEY, then try again."
+        : /organization must be verified|model.*not.*access|does not have access|unsupported model/i.test(apiError)
+          ? `OpenAI model access error for ${responseModel}. Set OPENAI_RESPONSES_MODEL to an enabled Responses image-generation model, or verify the OpenAI organization in Platform settings.`
+          : `OpenAI API error: ${apiError}`;
 
       return send(oaRes.status, {
         error: accessMessage
