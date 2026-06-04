@@ -34,7 +34,7 @@
     style.id = "hi-auth-gate-styles";
     style.textContent = `
       .topbar {
-        grid-template-columns: 240px minmax(320px, 1fr) minmax(520px, auto) !important;
+        grid-template-columns: 240px minmax(320px, 1fr) minmax(620px, auto) !important;
       }
 
       .actions {
@@ -43,7 +43,7 @@
         justify-content: flex-end !important;
         gap: 10px !important;
         flex-wrap: nowrap !important;
-        min-width: 520px !important;
+        min-width: 620px !important;
         overflow: visible !important;
       }
 
@@ -378,6 +378,31 @@
     if (modal) modal.remove();
   }
 
+  async function signOut() {
+    try {
+      if (window.HAIRI && typeof window.HAIRI.ensureClient === "function") {
+        const client = await window.HAIRI.ensureClient();
+        if (client?.auth) {
+          await client.auth.signOut();
+        }
+      }
+    } catch {
+      // Local dashboard profile cleanup should still complete.
+    }
+
+    localStorage.removeItem(PROFILE_KEY);
+    localStorage.removeItem(SUB_KEY);
+    localStorage.removeItem("hairintel_customer_email");
+    localStorage.setItem("hi_subscription", JSON.stringify({
+      plan: "free",
+      status: "inactive",
+      updatedAt: new Date().toISOString()
+    }));
+
+    closeModal();
+    renderControls();
+  }
+
   async function startCheckout(plan) {
     const profile = getProfile();
 
@@ -523,12 +548,15 @@
     wrap.innerHTML = `
       <button class="hi-auth-chip" type="button" id="hi-signin-btn">Sign In</button>
       <button class="hi-auth-primary" type="button" id="hi-sub-btn">Start Subscription</button>
+      ${profile ? `<button class="hi-auth-chip" type="button" id="hi-signout-btn">Sign Out</button>` : ""}
     `;
 
     actions.prepend(wrap);
 
     document.getElementById("hi-signin-btn").onclick = () => openModal("signin");
     document.getElementById("hi-sub-btn").onclick = () => openModal("subscription");
+    const signout = document.getElementById("hi-signout-btn");
+    if (signout) signout.onclick = signOut;
 
     renderBanner(profile, sub);
   }
