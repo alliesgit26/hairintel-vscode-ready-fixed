@@ -154,7 +154,6 @@
   async function openCheckout(plan = "pro") {
     const email = getEmail();
 
-    // Require sign-in via Supabase before starting checkout.
     let userId = null;
     try {
       if (window.HAIRI && window.HAIRI.getClient) {
@@ -166,7 +165,7 @@
       }
     } catch (err) {}
 
-    if (!userId) {
+    if (!email) {
       toast('Please sign in before starting a subscription.');
       if (window.HI && window.HI.openModal) window.HI.openModal && window.HI.openModal('signin');
       return;
@@ -200,7 +199,7 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email,
-        stripe_customer_id: sub.stripe_customer_id || sub.customerId || sub.customer_id || ""
+        stripe_customer_id: sub.stripeCustomerId || sub.stripe_customer_id || sub.customerId || sub.customer_id || ""
       })
     });
 
@@ -274,11 +273,7 @@
       closeDashboardModal();
 
       if (isBillingButton) {
-        if (isSubscribed()) {
-          await openBillingPortal();
-        } else {
-          await openCheckout("pro");
-        }
+        await openBillingPortal();
         return;
       }
 
@@ -291,39 +286,5 @@
     }
   }, true);
 
-  // Hide/disable subscription and billing controls when the user is not signed in.
-  (async function guardAuthButtons() {
-    try {
-      let signedIn = false;
-      if (window.HAIRI && window.HAIRI.getClient) {
-        const client = window.HAIRI.getClient();
-        if (client) {
-          const { data } = await client.auth.getUser();
-          signedIn = !!(data?.user?.id);
-        }
-      }
-
-      if (!signedIn) {
-        const hideSelectors = [
-          '[data-action="billing"]',
-          '[data-action="subscribe"]',
-          'button#hi-sub-btn',
-          'button[data-action="pro-tools"]',
-          '.hi-auth-primary',
-          '.hi-auth-chip'
-        ];
-
-        hideSelectors.forEach(sel => {
-          document.querySelectorAll(sel).forEach(el => {
-            el.dataset.authHidden = '1';
-            el.style.pointerEvents = 'none';
-            el.style.opacity = '0.45';
-          });
-        });
-      }
-    } catch (err) {
-      // no-op
-    }
-  })();
 })();
 

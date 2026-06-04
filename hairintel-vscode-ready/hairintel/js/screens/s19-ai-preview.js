@@ -122,47 +122,58 @@ function initS19AIPreview(params = {}) {
         return;
       }
 
+      const account = await (async () => {
+        let email = "";
+        let userId = "";
+
+        try {
+          if (window.HAIRI && typeof window.HAIRI.ensureClient === "function") {
+            const client = await window.HAIRI.ensureClient();
+            if (client) {
+              const { data } = await client.auth.getUser();
+              email = data?.user?.email || "";
+              userId = data?.user?.id || "";
+            }
+          }
+        } catch {}
+
+        if (!email) {
+          try {
+            const profile = JSON.parse(localStorage.getItem("hairintel_profile_v1") || "null");
+            email = profile?.email || "";
+          } catch {}
+        }
+
+        let subscription = typeof HI.getSub === "function" ? HI.getSub() : { plan: "free", status: "inactive" };
+
+        if (email && window.HAIRI && typeof window.HAIRI.refreshSubscription === "function") {
+          const serverSub = await window.HAIRI.refreshSubscription(email);
+          if (serverSub) subscription = typeof HI.getSub === "function" ? HI.getSub() : serverSub;
+        }
+
+        return {
+          email: String(email || "").trim().toLowerCase(),
+          userId,
+          subscription
+        };
+      })();
+
       if (typeof HI.canGenerateAIPreview === "function" && !HI.canGenerateAIPreview()) {
-        hiToast("AI preview limit reached for your current plan.", "warning");
+        const planName = String(account.subscription?.plan || "free").toLowerCase();
+        const statusName = String(account.subscription?.status || "inactive").toLowerCase();
+        const hasPreviewPlan = ["pro", "professional", "studio", "salon", "team"].includes(planName);
+        const hasActiveStatus = ["active", "trialing"].includes(statusName);
+        hiToast(
+          hasPreviewPlan && hasActiveStatus
+            ? "AI preview limit reached for your current plan."
+            : "AI previews require an active Pro or Studio subscription.",
+          "warning"
+        );
         return;
       }
 
       statusEl.textContent = "Generating photorealistic previews...";
       hiToast("Generating AI preview...", "info", 1400);
-
-      const subscription = (() => {
-        const isPaid = (sub) => {
-          const plan = String(sub?.plan || sub?.tier || "free").toLowerCase();
-          const status = String(sub?.status || "").toLowerCase();
-
-          return ["pro", "professional", "studio", "salon", "team"].includes(plan)
-            && ["active", "trialing", "paid", "complete"].includes(status);
-        };
-
-        try {
-          const hiSub = typeof HI !== "undefined" && typeof HI.getSub === "function"
-            ? HI.getSub()
-            : null;
-
-          if (isPaid(hiSub)) return hiSub;
-
-          const builderSub = JSON.parse(localStorage.getItem("hi_subscription") || "null");
-          if (isPaid(builderSub)) return builderSub;
-
-          const dashboardSub = JSON.parse(localStorage.getItem("hairintel_subscription_v1") || "null");
-          if (isPaid(dashboardSub)) return dashboardSub;
-        } catch {}
-
-        return { plan: "free", status: "inactive" };
-      })();
-      // include profile email so server can verify subscription from Supabase
-      const profile = (() => {
-        try {
-          const p1 = typeof HI !== "undefined" && typeof HI.getProfile === "function" ? HI.getProfile() : null;
-          if (p1 && p1.email) return p1;
-          return JSON.parse(localStorage.getItem("hairintel_profile_v1") || "null");
-        } catch { return null; }
-      })();
 
       const res = await fetch("/api/generate-hair-preview", {
         method: "POST",
@@ -171,8 +182,13 @@ function initS19AIPreview(params = {}) {
           consultId,
           photos,
           result,
-          subscription,
-          email: profile?.email || null
+          subscription: account.subscription,
+          email: account.email || null,
+          userId: account.userId || null,
+          stripeCustomerId:
+            account.subscription?.stripeCustomerId ||
+            account.subscription?.stripe_customer_id ||
+            null
         })
       });
 

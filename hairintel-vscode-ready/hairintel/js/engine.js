@@ -64,7 +64,7 @@ const HI = {
   },
 
   getAIPreviewLimit() {
-    const plan = this.getSub()?.plan || 'free';
+    const plan = String(this.getSub()?.plan || 'free').toLowerCase();
     if (plan === 'studio' || plan === 'salon' || plan === 'team') return 50;
     if (plan === 'pro' || plan === 'professional') return 10;
     return 0;
@@ -72,8 +72,11 @@ const HI = {
 
   canGenerateAIPreview() {
     const sub = this.getSub();
-    const active = ['active', 'trialing', 'paid', 'complete'].includes(String(sub.status || '').toLowerCase()) || sub.plan !== 'free';
-    return active && this.remainingAIPreviews() > 0;
+    const plan = String(sub.plan || 'free').toLowerCase();
+    const status = String(sub.status || '').toLowerCase();
+    const active = ['active', 'trialing'].includes(status);
+    const paidPreviewPlan = ['pro', 'professional', 'studio', 'salon', 'team'].includes(plan);
+    return active && paidPreviewPlan && this.remainingAIPreviews() > 0;
   },
 
   remainingAIPreviews() {

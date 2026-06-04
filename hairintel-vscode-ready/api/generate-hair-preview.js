@@ -1,4 +1,4 @@
-import { getSupabaseAdmin, normalizePlan, isActiveStripeStatus } from './_supabase-admin.js';
+import { getSupabaseAdmin, normalizePlan } from './_supabase-admin.js';
 
 export default async function handler(req, res) {
   const send = (status, payload) => {
@@ -26,12 +26,22 @@ export default async function handler(req, res) {
     const plan = result.plan || {};
     const sub = body.subscription || {};
 
-    // Server-side subscription verification via Supabase (preferred)
-    let effectiveSub = sub;
+    const allowedPlans = ["pro", "studio"];
+    const allowedStatuses = ["active", "trialing"];
+    const normalizeEmail = (value) => String(value || "").trim().toLowerCase();
+    const normalizeCustomerId = (value) => String(value || "").trim();
+
+    // Server-side subscription verification via Supabase is the billing authority.
+    let effectiveSub = null;
     try {
       const supabase = getSupabaseAdmin();
-      const email = String(body.email || sub.email || sub.customer_email || "" || "").trim().toLowerCase() || null;
-      const stripeCustomerId = sub?.stripeCustomerId || sub?.stripe_customer_id || null;
+      const email = normalizeEmail(body.email || body.customerEmail || body.customer_email || sub.email || sub.customer_email);
+      const stripeCustomerId = normalizeCustomerId(
+        body.stripeCustomerId ||
+        body.stripe_customer_id ||
+        sub.stripeCustomerId ||
+        sub.stripe_customer_id
+      );
 
       if (supabase && (email || stripeCustomerId)) {
         const query = supabase
@@ -41,13 +51,14 @@ export default async function handler(req, res) {
           .limit(1);
 
         const q = email ? query.eq('customer_email', email) : query.eq('stripe_customer_id', stripeCustomerId);
-        const { data } = await q.maybeSingle();
+        const { data, error } = await q.maybeSingle();
+        if (error) throw error;
         if (data) {
           effectiveSub = {
-            plan: data.plan || sub.plan,
-            status: data.status || sub.status,
-            stripeCustomerId: data.stripe_customer_id || stripeCustomerId,
-            email: data.customer_email || email
+            plan: normalizePlan(data.plan),
+            status: String(data.status || '').toLowerCase(),
+            stripeCustomerId: data.stripe_customer_id || null,
+            email: data.customer_email || null
           };
         }
       }
@@ -55,13 +66,11 @@ export default async function handler(req, res) {
       console.warn('[generate-hair-preview] supabase lookup failed:', err?.message || err);
     }
 
-    const activePlan = String(effectiveSub.plan || "free").toLowerCase();
-    const activeStatus = String(effectiveSub.status || "").toLowerCase();
-    const allowedPlans = ["pro", "professional", "studio", "salon", "team"];
-    const allowedStatuses = ["active", "trialing", "paid", "complete", ""];
+    const activePlan = normalizePlan(effectiveSub?.plan || "free");
+    const activeStatus = String(effectiveSub?.status || "inactive").toLowerCase();
     const hasPreviewAccess = allowedPlans.includes(activePlan) && allowedStatuses.includes(activeStatus);
 
-    // Test bypass (development only) — controlled by server env var
+    // Test bypass (development only). Production billing authority remains Supabase/Stripe.
     const bypass = String(process.env.ALLOW_AI_PREVIEW_TEST_BYPASS || "").toLowerCase() === 'true';
 
     if (!hasPreviewAccess && !bypass) {

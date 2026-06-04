@@ -79,7 +79,7 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email,
-        stripe_customer_id: sub.stripe_customer_id || sub.customerId || sub.customer_id || ""
+        stripe_customer_id: sub.stripeCustomerId || sub.stripe_customer_id || sub.customerId || sub.customer_id || ""
       })
     });
 

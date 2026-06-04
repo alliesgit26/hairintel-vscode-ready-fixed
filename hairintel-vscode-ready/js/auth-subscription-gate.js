@@ -460,6 +460,8 @@
         setSub({
           status: data.status || data.subscriptionStatus,
           plan: data.plan || data.priceId || "",
+          stripeCustomerId: data.stripeCustomerId || null,
+          stripeSubscriptionId: data.stripeSubscriptionId || null,
           checkedAt: new Date().toISOString()
         });
       }
@@ -571,18 +573,43 @@
     if (subBtn) subBtn.onclick = () => openModal("subscription");
   }
 
-  function handleCheckoutReturn() {
+  async function handleCheckoutReturn() {
     const params = new URLSearchParams(window.location.search);
 
-    if (params.get("checkout") === "success") {
-      history.replaceState({}, "", window.location.pathname);
+    if (params.get("checkout") !== "success") return;
+
+    const sessionId = params.get("session_id");
+
+    if (sessionId) {
+      try {
+        const res = await fetch("/api/checkout-status?session_id=" + encodeURIComponent(sessionId));
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok) {
+          setSub({
+            status: data.status || (data.active ? "active" : "inactive"),
+            plan: data.plan || "free",
+            stripeCustomerId: data.stripeCustomerId || null,
+            stripeSubscriptionId: data.stripeSubscriptionId || null,
+            checkedAt: new Date().toISOString()
+          });
+
+          if (data.email) {
+            localStorage.setItem("hairintel_customer_email", data.email);
+          }
+        }
+      } catch {
+        // The webhook and subscription-status route still provide the source of truth.
+      }
     }
+
+    history.replaceState({}, "", window.location.pathname);
   }
 
   document.addEventListener("click", gateConsultation, true);
 
   document.addEventListener("DOMContentLoaded", async function () {
-    handleCheckoutReturn();
+    await handleCheckoutReturn();
     await checkSubscription();
     renderControls();
   });
