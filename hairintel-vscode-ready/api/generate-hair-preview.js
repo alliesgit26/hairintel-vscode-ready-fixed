@@ -110,6 +110,8 @@ export default async function handler(req, res) {
     if (right) content.push({ type: "input_image", image_url: right });
     if (inspo) content.push({ type: "input_image", image_url: inspo });
 
+    const responseModel = process.env.OPENAI_RESPONSES_MODEL || "gpt-5";
+
     const oaRes = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -117,7 +119,7 @@ export default async function handler(req, res) {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: "gpt-4.1",
+        model: responseModel,
         input: [
           {
             role: "user",
@@ -135,8 +137,18 @@ export default async function handler(req, res) {
     const raw = await oaRes.text();
 
     if (!oaRes.ok) {
+      let apiError = raw;
+      try {
+        const parsedError = JSON.parse(raw);
+        apiError = parsedError?.error?.message || raw;
+      } catch {}
+
+      const accessMessage = /organization must be verified|model.*not.*access|does not have access|unsupported model/i.test(apiError)
+        ? `OpenAI model access error for ${responseModel}. Set OPENAI_RESPONSES_MODEL to an enabled Responses image-generation model, or verify the OpenAI organization in Platform settings.`
+        : `OpenAI API error: ${apiError}`;
+
       return send(oaRes.status, {
-        error: `OpenAI API error: ${raw}`
+        error: accessMessage
       });
     }
 
