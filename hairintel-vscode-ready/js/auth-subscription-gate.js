@@ -202,6 +202,22 @@
         outline: none;
       }
 
+      #hi-auth-controls,
+      #hi-auth-banner,
+      #hi-auth-modal,
+      #hi-signin-btn,
+      #hi-sub-btn,
+      #hi-banner-signin,
+      #hi-banner-subscribe,
+      #hi-manage-billing,
+      #hi-menu-billing,
+      [data-action="billing"],
+      [data-action="subscribe"] {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+
       .hi-auth-form input:focus,
       .hi-auth-form select:focus {
         border-color: rgba(244,201,93,.72);
