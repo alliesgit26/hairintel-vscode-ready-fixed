@@ -130,13 +130,49 @@ function initS19AIPreview(params = {}) {
       statusEl.textContent = "Generating photorealistic previews...";
       hiToast("Generating AI preview...", "info", 1400);
 
+      const subscription = (() => {
+        const isPaid = (sub) => {
+          const plan = String(sub?.plan || sub?.tier || "free").toLowerCase();
+          const status = String(sub?.status || "").toLowerCase();
+
+          return ["pro", "professional", "studio", "salon", "team"].includes(plan)
+            && ["active", "trialing", "paid", "complete"].includes(status);
+        };
+
+        try {
+          const hiSub = typeof HI !== "undefined" && typeof HI.getSub === "function"
+            ? HI.getSub()
+            : null;
+
+          if (isPaid(hiSub)) return hiSub;
+
+          const builderSub = JSON.parse(localStorage.getItem("hi_subscription") || "null");
+          if (isPaid(builderSub)) return builderSub;
+
+          const dashboardSub = JSON.parse(localStorage.getItem("hairintel_subscription_v1") || "null");
+          if (isPaid(dashboardSub)) return dashboardSub;
+        } catch {}
+
+        return { plan: "free", status: "inactive" };
+      })();
+      // include profile email so server can verify subscription from Supabase
+      const profile = (() => {
+        try {
+          const p1 = typeof HI !== "undefined" && typeof HI.getProfile === "function" ? HI.getProfile() : null;
+          if (p1 && p1.email) return p1;
+          return JSON.parse(localStorage.getItem("hairintel_profile_v1") || "null");
+        } catch { return null; }
+      })();
+
       const res = await fetch("/api/generate-hair-preview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           consultId,
           photos,
-          result
+          result,
+          subscription,
+          email: profile?.email || null
         })
       });
 

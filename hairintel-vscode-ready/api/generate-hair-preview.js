@@ -1,3 +1,5 @@
+import { getSupabaseAdmin, normalizePlan, isActiveStripeStatus } from './_supabase-admin.js';
+
 export default async function handler(req, res) {
   const send = (status, payload) => {
     res.status(status);
@@ -23,11 +25,46 @@ export default async function handler(req, res) {
     const result = body.result || {};
     const plan = result.plan || {};
     const sub = body.subscription || {};
-    const activePlan = String(sub.plan || "free").toLowerCase();
-    const activeStatus = String(sub.status || "").toLowerCase();
-    const hasPreviewAccess = ["pro", "professional", "studio", "salon", "team"].includes(activePlan) && ["active", "trialing", "paid", "complete", ""].includes(activeStatus);
 
-    if (!hasPreviewAccess) {
+    // Server-side subscription verification via Supabase (preferred)
+    let effectiveSub = sub;
+    try {
+      const supabase = getSupabaseAdmin();
+      const email = String(body.email || sub.email || sub.customer_email || "" || "").trim().toLowerCase() || null;
+      const stripeCustomerId = sub?.stripeCustomerId || sub?.stripe_customer_id || null;
+
+      if (supabase && (email || stripeCustomerId)) {
+        const query = supabase
+          .from('subscriptions')
+          .select('plan,status,stripe_customer_id,customer_email')
+          .order('updated_at', { ascending: false })
+          .limit(1);
+
+        const q = email ? query.eq('customer_email', email) : query.eq('stripe_customer_id', stripeCustomerId);
+        const { data } = await q.maybeSingle();
+        if (data) {
+          effectiveSub = {
+            plan: data.plan || sub.plan,
+            status: data.status || sub.status,
+            stripeCustomerId: data.stripe_customer_id || stripeCustomerId,
+            email: data.customer_email || email
+          };
+        }
+      }
+    } catch (err) {
+      console.warn('[generate-hair-preview] supabase lookup failed:', err?.message || err);
+    }
+
+    const activePlan = String(effectiveSub.plan || "free").toLowerCase();
+    const activeStatus = String(effectiveSub.status || "").toLowerCase();
+    const allowedPlans = ["pro", "professional", "studio", "salon", "team"];
+    const allowedStatuses = ["active", "trialing", "paid", "complete", ""];
+    const hasPreviewAccess = allowedPlans.includes(activePlan) && allowedStatuses.includes(activeStatus);
+
+    // Test bypass (development only) — controlled by server env var
+    const bypass = String(process.env.ALLOW_AI_PREVIEW_TEST_BYPASS || "").toLowerCase() === 'true';
+
+    if (!hasPreviewAccess && !bypass) {
       return send(403, { error: "AI previews require an active Pro or Studio subscription." });
     }
 
