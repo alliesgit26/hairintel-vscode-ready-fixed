@@ -548,7 +548,7 @@
     wrap.innerHTML = `
       <button class="hi-auth-chip" type="button" id="hi-signin-btn">Sign In</button>
       <button class="hi-auth-primary" type="button" id="hi-sub-btn">Start Subscription</button>
-      ${profile ? `<button class="hi-auth-chip" type="button" id="hi-signout-btn">Sign Out</button>` : ""}
+      <button class="hi-auth-chip" type="button" id="hi-signout-btn">Sign Out</button>
     `;
 
     actions.prepend(wrap);
