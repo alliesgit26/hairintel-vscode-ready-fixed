@@ -58,7 +58,7 @@ main, .main { background: linear-gradient(180deg, rgba(64,36,63,.20), rgba(33,19
     width: 58px;
     height: 48px;
     margin: 0 auto 2px;
-    background: url("/hi-monogram.png") center / contain no-repeat;
+    background: url("/public/hi-monogram.png") center / contain no-repeat;
     border-radius: 10px;
   }
   .topbar .back { text-align: center !important; }
@@ -279,3 +279,25 @@ main, .main {
 .score-ring, .ring, .small-ring, .load-ring {
   filter: saturate(.72) !important;
 }
+
+
+/* Airy theme contrast correction */
+.card, .panel, .card p, .panel p, .card span, .panel span,
+.card strong, .panel strong, .card h3, .panel h3,
+.readiness-main h3, .client-head h3, .load-main strong,
+.summary-list strong, .time-row strong, .load-stats strong,
+.plan-list strong, .map-legend strong, .legend strong {
+  color: #2B1B22 !important;
+}
+.card p, .panel p, .card span, .panel span,
+.readiness-main p, .load-main p, .load-main span,
+.summary-list span, .time-row span, .plan-list span,
+.load-stats, .map-legend span, .legend, .note {
+  color: #76656B !important;
+}
+.client-card, .client-card h3, .client-card p, .client-card span,
+.client-card strong, .client-card .panel-title {
+  color: #2B1B22 !important;
+}
+.card-label, .panel-title, .eyebrow { color: #8E5F58 !important; }
+.tabs button.active { color: #2B1B22 !important; border-bottom-color: #B87867 !important; }
