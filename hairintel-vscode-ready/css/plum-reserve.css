@@ -256,3 +256,84 @@ main { background:rgba(251,244,240,.76)!important; }
 
 /* Final label contrast */
 .hero .eyebrow,.hero .panel-title,.bottom-cta span { color:var(--atelier-rose)!important; }
+
+
+/* Mobile header repair — compact brand, rail control, and aligned navigation */
+@media (max-width:680px) {
+  .topbar {
+    position:relative!important;
+    display:grid!important;
+    grid-template-columns:1fr auto!important;
+    grid-template-rows:auto auto auto!important;
+    grid-template-areas:"brand brand" "back rail" "tabs tabs" "actions actions"!important;
+    min-height:0!important;
+    height:auto!important;
+    padding:14px 18px 12px!important;
+    gap:10px 12px!important;
+    align-items:center!important;
+  }
+  .topbar::before {
+    content:""!important;
+    display:block!important;
+    grid-area:brand!important;
+    width:42px!important;
+    height:36px!important;
+    margin:0 auto 1px!important;
+    background:url("../public/hi-monogram.png") center/contain no-repeat!important;
+    opacity:.78!important;
+  }
+  .topbar .back {
+    grid-area:back!important;
+    width:auto!important;
+    min-width:0!important;
+    padding:0!important;
+    text-align:left!important;
+    font-size:13px!important;
+    line-height:1.15!important;
+  }
+  .mobile-rail-trigger {
+    grid-area:rail!important;
+    display:inline-flex!important;
+    justify-self:end!important;
+    align-items:center!important;
+    width:auto!important;
+    padding:9px 13px!important;
+    font-size:12px!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+  .topbar .tabs {
+    grid-area:tabs!important;
+    width:100%!important;
+    min-width:0!important;
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    justify-content:space-between!important;
+    gap:10px!important;
+    overflow:visible!important;
+    padding:0 0 3px!important;
+  }
+  .topbar .tabs button {
+    flex:1 1 0!important;
+    min-width:0!important;
+    text-align:center!important;
+    padding:8px 0 10px!important;
+    font-size:9px!important;
+    letter-spacing:1px!important;
+    white-space:nowrap!important;
+  }
+  .topbar .actions {
+    grid-area:actions!important;
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 48px!important;
+    gap:10px!important;
+    justify-content:stretch!important;
+  }
+  .topbar .actions .export { width:100%!important; min-width:0!important; padding:11px 12px!important; font-size:13px!important; }
+  .topbar .actions .menu { width:48px!important; padding:11px 0!important; }
+  .content { padding-top:22px!important; }
+}
+@media (min-width:681px) and (max-width:1240px) {
+  .topbar { grid-template-columns:auto minmax(0,1fr) auto!important; }
+}
