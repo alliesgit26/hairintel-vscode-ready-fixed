@@ -543,33 +543,36 @@
   function renderControls() {
     ensureStyles();
 
-    let actions = document.querySelector(".actions");
+    const actions = document.querySelector(".actions");
     if (!actions) return;
 
-    let old = document.getElementById("hi-auth-controls");
+    const old = document.getElementById("hi-auth-controls");
     if (old) old.remove();
 
     const profile = getProfile();
-    const sub = getSub();
 
     const wrap = document.createElement("div");
     wrap.id = "hi-auth-controls";
     wrap.className = "hi-auth-controls";
 
-    wrap.innerHTML = `
-      <button class="hi-auth-chip" type="button" id="hi-signin-btn">Sign In</button>
-      <button class="hi-auth-primary" type="button" id="hi-sub-btn">Start Subscription</button>
-      <button class="hi-auth-chip" type="button" id="hi-signout-btn">Sign Out</button>
-    `;
+    if (profile) {
+      wrap.innerHTML = `
+        <button class="hi-auth-chip" type="button" id="hi-auth-button">Sign Out</button>
+      `;
+    } else {
+      wrap.innerHTML = `
+        <button class="hi-auth-primary" type="button" id="hi-auth-button">Sign In</button>
+      `;
+    }
 
     actions.prepend(wrap);
 
-    document.getElementById("hi-signin-btn").onclick = () => openModal("signin");
-    document.getElementById("hi-sub-btn").onclick = () => openModal("subscription");
-    const signout = document.getElementById("hi-signout-btn");
-    if (signout) signout.onclick = signOut;
+    const authButton = document.getElementById("hi-auth-button");
+    if (authButton) {
+      authButton.onclick = profile ? signOut : () => openModal("signin");
+    }
 
-    renderBanner(profile, sub);
+    renderBanner(profile, getSub());
   }
 
   function renderBanner(profile, sub) {
@@ -591,7 +594,7 @@
           <strong>Sign in required</strong>
           <p>Create a stylist profile before starting consultations or subscriptions.</p>
         </div>
-        <button class="hi-auth-primary" type="button" id="hi-banner-signin">Sign In</button>
+        <span class="hi-auth-chip" aria-hidden="true">Sign in from the top bar to continue</span>
       `;
     } else {
       banner.innerHTML = `
@@ -599,17 +602,13 @@
           <strong>Subscription required</strong>
           <p>Signed in as ${profile.name}. Start a trial or subscription to access the consultation builder.</p>
         </div>
-        <button class="hi-auth-primary" type="button" id="hi-banner-subscribe">Start Subscription</button>
+        <span class="hi-auth-chip" aria-hidden="true">Use the top-bar account button to continue</span>
       `;
     }
 
     content.prepend(banner);
 
-    const sign = document.getElementById("hi-banner-signin");
-    if (sign) sign.onclick = () => openModal("signin");
-
-    const subBtn = document.getElementById("hi-banner-subscribe");
-    if (subBtn) subBtn.onclick = () => openModal("subscription");
+    // The banner is informational; the single top-bar account button owns the flow.
   }
 
   async function handleCheckoutReturn() {
