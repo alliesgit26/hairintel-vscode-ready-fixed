@@ -849,3 +849,93 @@ button {
     align-items: flex-start;
   }
 }
+
+
+/* HairIntel Luxury Color System — Onyx, Espresso, Ivory, Antique Gold */
+:root {
+  --black: #160F0B;
+  --black2: #0B0B0C;
+  --panel: #2B1B16;
+  --panel2: #241712;
+  --line: rgba(232, 211, 165, .18);
+  --line2: rgba(201, 162, 74, .34);
+  --gold: #C9A24A;
+  --gold2: #E8D3A5;
+  --umber: #6B453B;
+  --vanilla: #B98F87;
+  --cream: #F7EFE9;
+  --muted: rgba(247, 239, 233, .60);
+  --soft: rgba(247, 239, 233, .82);
+  --green: #9BBE9B;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', Arial, sans-serif;
+}
+
+body {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(201, 162, 74, .13), transparent 28%),
+    radial-gradient(circle at 90% 10%, rgba(185, 143, 135, .10), transparent 25%),
+    linear-gradient(135deg, #0B0B0C 0%, #160F0B 46%, #2B1B16 100%);
+  color: var(--cream);
+}
+
+.sidebar {
+  background:
+    radial-gradient(circle at 30% 0%, rgba(201,162,74,.14), transparent 28%),
+    linear-gradient(180deg, rgba(22,15,11,.99), rgba(11,11,12,.99));
+}
+
+.topbar {
+  background: linear-gradient(180deg, rgba(22,15,11,.96), rgba(22,15,11,.80));
+}
+
+.card,
+.profile-card,
+.upgrade-card {
+  border-color: rgba(232,211,165,.18);
+}
+
+.card {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(201,162,74,.07), transparent 28%),
+    linear-gradient(145deg, rgba(255,255,255,.04), rgba(185,143,135,.06));
+}
+
+.client-card {
+  background:
+    linear-gradient(145deg, rgba(185,143,135,.28), rgba(107,69,59,.58)) !important;
+}
+
+.gold-btn {
+  background: linear-gradient(135deg, #E8D3A5, #C9A24A 52%, #8E682A);
+  border-color: rgba(255,240,194,.58);
+  color: #160F0B;
+}
+
+.outline-btn,
+.outline-wide,
+.export,
+.more {
+  border-color: rgba(232,211,165,.30);
+  background: rgba(22,15,11,.30);
+}
+
+.map-tabs,
+.map-legend {
+  background: rgba(22,15,11,.86);
+  border-color: rgba(232,211,165,.18);
+}
+
+.map-tabs button.active {
+  background: #F7EFE9;
+  color: #160F0B;
+}
+
+.next-strip {
+  background: linear-gradient(135deg, rgba(107,69,59,.36), rgba(185,143,135,.14));
+}
+
+h1, h2, h3, .hero h1, .next-strip h2, .brand-title, .ring strong, .load-ring span,
+.readiness-main h3, .client-head h3, .load-main strong {
+  font-family: var(--font-display);
+}
