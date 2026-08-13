@@ -4,8 +4,14 @@
   const CONSULT_URL = "hairintel/index.html";
 
   function getProfile() {
-    try { return JSON.parse(localStorage.getItem(PROFILE_KEY) || "null"); }
-    catch { return null; }
+    try {
+      const profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || "null");
+      if (profile && profile.name) {
+        delete profile.name;
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+      }
+      return profile;
+    } catch { return null; }
   }
 
   function setProfile(profile) {
@@ -310,7 +316,6 @@
         </div>
       `;
     } else {
-      const name = profile?.name || "Not signed in";
       const email = profile?.email || "Sign in first";
       const status = sub?.status || "No active subscription";
 
@@ -319,7 +324,7 @@
         <div class="hi-auth-card">
           <button class="hi-auth-close" type="button">×</button>
           <h2>Start Subscription</h2>
-          <p>Signed in as: <strong>${name}</strong><br>Email: ${email}<br>Status: <strong>${status}</strong></p>
+          <p>Your HairIntel account is connected.<br>Email: ${email}<br>Status: <strong>${status}</strong></p>
 
           <div class="hi-plan-grid">
             <div class="hi-plan">
@@ -356,8 +361,7 @@
 
     const finishAuth = (user) => {
       const email = user?.email || getCredentials().email;
-      const name = user?.user_metadata?.full_name || email.split("@")[0];
-      setProfile({ name, email, userId: user?.id || null, savedAt: new Date().toISOString() });
+      setProfile({ email, userId: user?.id || null, savedAt: new Date().toISOString() });
       closeModal();
       renderControls();
     };
@@ -454,7 +458,7 @@
         body: JSON.stringify({
           plan,
           email: profile.email,
-          name: profile.name,
+          name: "HairIntel User",
           successUrl: window.location.href + "?checkout=success",
           cancelUrl: window.location.href + "?checkout=cancel"
         })
@@ -625,7 +629,7 @@
       banner.innerHTML = `
         <div>
           <strong>Subscription required</strong>
-          <p>Signed in as ${profile.name}. Start a trial or subscription to access the consultation builder.</p>
+          <p>Your HairIntel account is signed in. Start a trial or subscription to access the consultation builder.</p>
         </div>
         <span class="hi-auth-chip" aria-hidden="true">Use the top-bar account button to continue</span>
       `;
