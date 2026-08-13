@@ -291,27 +291,21 @@
         <div class="hi-auth-card">
           <button class="hi-auth-close" type="button">×</button>
           <h2>Sign in to HairIntel</h2>
-          <p>Create your stylist profile before using the consultation builder.</p>
+          <p>Use your HairIntel account to continue.</p>
 
           <div class="hi-auth-form">
-            <label>Full Name
-              <input id="hi-name" value="${profile?.name || ""}" placeholder="Your name">
-            </label>
             <label>Email
               <input id="hi-email" value="${profile?.email || ""}" placeholder="you@example.com">
             </label>
-            <label>Role
-              <select id="hi-role">
-                <option value="Stylist">Stylist</option>
-                <option value="Salon Owner">Salon Owner</option>
-                <option value="Assistant">Assistant</option>
-              </select>
+            <label>Password
+              <input id="hi-password" type="password" placeholder="At least 6 characters">
             </label>
           </div>
 
           <div class="hi-auth-actions">
             <button class="hi-auth-chip" type="button" id="hi-cancel">Cancel</button>
-            <button class="hi-auth-primary" type="button" id="hi-save-profile">Save Profile</button>
+            <button class="hi-auth-chip" type="button" id="hi-create-account">Create Account</button>
+            <button class="hi-auth-primary" type="button" id="hi-save-profile">Sign In</button>
           </div>
         </div>
       `;
@@ -355,24 +349,55 @@
     modal.querySelector(".hi-auth-backdrop").onclick = closeModal;
     modal.querySelector("#hi-cancel") && (modal.querySelector("#hi-cancel").onclick = closeModal);
 
-    const saveBtn = modal.querySelector("#hi-save-profile");
-    if (saveBtn) {
-      saveBtn.onclick = function () {
-        const name = document.getElementById("hi-name").value.trim();
-        const email = document.getElementById("hi-email").value.trim();
-        const role = document.getElementById("hi-role").value;
+    const getCredentials = () => ({
+      email: document.getElementById("hi-email")?.value.trim() || "",
+      password: document.getElementById("hi-password")?.value || ""
+    });
 
-        if (!name || !email || !email.includes("@")) {
-          alert("Enter a valid name and email.");
-          return;
-        }
+    const finishAuth = (user) => {
+      const email = user?.email || getCredentials().email;
+      const name = user?.user_metadata?.full_name || email.split("@")[0];
+      setProfile({ name, email, userId: user?.id || null, savedAt: new Date().toISOString() });
+      closeModal();
+      renderControls();
+    };
 
-        setProfile({ name, email, role, savedAt: new Date().toISOString() });
-        closeModal();
-        renderControls();
-        openModal("subscription");
-      };
-    }
+    const signInBtn = modal.querySelector("#hi-save-profile");
+    if (signInBtn) signInBtn.onclick = async function () {
+      const { email, password } = getCredentials();
+      if (!email || !email.includes("@") || password.length < 6) {
+        alert("Enter a valid email and password.");
+        return;
+      }
+      signInBtn.disabled = true;
+      try {
+        const result = await window.HAIRI.signIn({ email, password });
+        finishAuth(result?.user);
+      } catch (err) {
+        alert(err?.message || "Sign-in failed.");
+      } finally {
+        signInBtn.disabled = false;
+      }
+    };
+
+    const createBtn = modal.querySelector("#hi-create-account");
+    if (createBtn) createBtn.onclick = async function () {
+      const { email, password } = getCredentials();
+      if (!email || !email.includes("@") || password.length < 6) {
+        alert("Enter a valid email and a password with at least 6 characters.");
+        return;
+      }
+      createBtn.disabled = true;
+      try {
+        const result = await window.HAIRI.signUp({ email, password });
+        if (result?.session) finishAuth(result.user);
+        else alert("Account created. Check your email to confirm it, then sign in.");
+      } catch (err) {
+        alert(err?.message || "Account creation failed.");
+      } finally {
+        createBtn.disabled = false;
+      }
+    };
 
     modal.querySelectorAll("[data-plan]").forEach((btn) => {
       btn.onclick = function () {
