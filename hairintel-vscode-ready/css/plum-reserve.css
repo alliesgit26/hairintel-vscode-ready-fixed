@@ -252,3 +252,7 @@ main { background:rgba(251,244,240,.76)!important; }
   .score-ring { margin:0 auto; }
   .bottom-cta { padding:22px!important; }
 }
+
+
+/* Final label contrast */
+.hero .eyebrow,.hero .panel-title,.bottom-cta span { color:var(--atelier-rose)!important; }
