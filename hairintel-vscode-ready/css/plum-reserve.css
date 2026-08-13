@@ -48,3 +48,18 @@ main, .main { background: linear-gradient(180deg, rgba(64,36,63,.20), rgba(33,19
 #hi-app h1, #hi-app h2, #hi-app h3, #hi-app .serif, #hi-app .hi-title { font-family: var(--plum-display) !important; }
 #hi-app button, #hi-app .hi-btn, #hi-app .btn { border-color: var(--plum-line) !important; }
 #hi-app .primary, #hi-app .hi-primary, #hi-app .btn-primary { background: linear-gradient(135deg, var(--ivory), var(--soft-gold), var(--rose-gold)) !important; color: var(--plum-night) !important; }
+
+
+/* Keep the HI monogram visible on mobile, where the sidebar is intentionally hidden. */
+@media (max-width: 1240px) {
+  .topbar::before {
+    content: "";
+    display: block;
+    width: 58px;
+    height: 48px;
+    margin: 0 auto 2px;
+    background: url("public/hi-monogram.png") center / contain no-repeat;
+    border-radius: 10px;
+  }
+  .topbar .back { text-align: center !important; }
+}
