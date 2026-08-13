@@ -58,7 +58,7 @@ main, .main { background: linear-gradient(180deg, rgba(64,36,63,.20), rgba(33,19
     width: 58px;
     height: 48px;
     margin: 0 auto 2px;
-    background: url("../public/hi-monogram.png") center / contain no-repeat;
+    background: url("/hi-monogram.png") center / contain no-repeat;
     border-radius: 10px;
   }
   .topbar .back { text-align: center !important; }
