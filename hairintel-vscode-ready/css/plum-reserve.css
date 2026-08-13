@@ -157,3 +157,33 @@ main, .main { background: linear-gradient(180deg, rgba(64,36,63,.20), rgba(33,19
     line-height: 1.45 !important;
   }
 }
+
+
+/* Final rendered luxury pass: deep aubergine velvet, restrained accents. */
+:root {
+  --plum-night: #160D18;
+  --plum: #241525;
+  --ivory: #FBF4F0;
+  --rose-gold: #B87867;
+  --soft-gold: #D8B487;
+  --mauve: #805A70;
+  --plum-line: rgba(216,180,135,.24);
+}
+html, body {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(128,90,112,.10), transparent 30%),
+    radial-gradient(circle at 86% 18%, rgba(216,180,135,.06), transparent 24%),
+    linear-gradient(135deg, #0E0910 0%, #160D18 48%, #241525 100%) !important;
+}
+aside, .sidebar { background: linear-gradient(180deg, #100912, #160D18) !important; }
+main, .main { background: linear-gradient(180deg, rgba(36,21,37,.32), rgba(14,9,16,.46)) !important; }
+.topbar { background: rgba(22,13,24,.92) !important; }
+.panel, .card, .profile-card, .upgrade-card, .consultant-card {
+  background: linear-gradient(145deg, rgba(36,21,37,.76), rgba(18,10,20,.92)) !important;
+}
+.client-card { background: linear-gradient(145deg, rgba(128,90,112,.28), rgba(36,21,37,.86)) !important; }
+.gold-btn, .hi-auth-primary {
+  background: linear-gradient(135deg, #FBF4F0, #D8B487 58%, #B87867) !important;
+  box-shadow: 0 10px 26px rgba(184,120,103,.16) !important;
+}
+.eyebrow, .card-label, .panel-title, .brand h1, .brand-title, .gold-text { color: #D8B487 !important; }
