@@ -110,21 +110,21 @@
       }
 
       .hi-auth-chip {
-        border: 1px solid rgba(185,143,135,.32);
-        background: rgba(22,15,11,.42);
-        color: #F7EFE9;
+        border: 1px solid rgba(216,178,140,.32);
+        background: rgba(42,23,18,.42);
+        color: #FFF8EC;
       }
 
       .hi-auth-primary {
-        border: 1px solid rgba(201,162,74,.66);
-        background: linear-gradient(135deg, #F7DE86, #B8862E);
-        color: #120B06;
+        border: 1px solid rgba(184,115,51,.66);
+        background: linear-gradient(135deg, #FFF8EC, #8B4F2F);
+        color: #2A1712;
       }
 
       .hi-auth-banner {
         grid-column: 1 / -1;
-        border: 1px solid rgba(201,162,74,.32);
-        background: linear-gradient(135deg, rgba(201,162,74,.09), rgba(22,15,11,.72));
+        border: 1px solid rgba(184,115,51,.32);
+        background: linear-gradient(135deg, rgba(184,115,51,.09), rgba(42,23,18,.72));
         color: rgba(247,239,233,.82);
         border-radius: 16px;
         padding: 16px 18px;
@@ -136,7 +136,7 @@
       }
 
       .hi-auth-banner strong {
-        color: #C9A24A;
+        color: #B87333;
       }
 
       .hi-auth-banner p {
@@ -169,15 +169,15 @@
         width: min(94vw, 560px);
         border-radius: 26px;
         padding: 30px;
-        background: linear-gradient(145deg, rgba(43,27,22,.98), rgba(22,15,11,.98));
-        border: 1px solid rgba(185,143,135,.28);
+        background: linear-gradient(145deg, rgba(74,36,29,.98), rgba(42,23,18,.98));
+        border: 1px solid rgba(216,178,140,.28);
         box-shadow: 0 40px 110px rgba(0,0,0,.70);
-        color: #F7EFE9;
+        color: #FFF8EC;
       }
 
       .hi-auth-card h2 {
         margin: 0 0 10px;
-        font-family: 'Playfair Display', Georgia, serif;
+        font-family: 'Cormorant Garamond', Georgia, serif;
         font-size: 34px;
       }
 
@@ -206,17 +206,17 @@
       .hi-auth-form select {
         height: 46px;
         border-radius: 14px;
-        border: 1px solid rgba(185,143,135,.24);
+        border: 1px solid rgba(216,178,140,.24);
         background: rgba(255,255,255,.07);
-        color: #F7EFE9;
+        color: #FFF8EC;
         padding: 0 14px;
         outline: none;
       }
 
       .hi-auth-form input:focus,
       .hi-auth-form select:focus {
-        border-color: rgba(201,162,74,.72);
-        box-shadow: 0 0 0 4px rgba(201,162,74,.12);
+        border-color: rgba(184,115,51,.72);
+        box-shadow: 0 0 0 4px rgba(184,115,51,.12);
       }
 
       .hi-plan-grid {
@@ -227,7 +227,7 @@
       }
 
       .hi-plan {
-        border: 1px solid rgba(185,143,135,.22);
+        border: 1px solid rgba(216,178,140,.22);
         background: rgba(255,255,255,.045);
         border-radius: 18px;
         padding: 16px;
@@ -235,7 +235,7 @@
 
       .hi-plan h3 {
         margin: 0 0 6px;
-        color: #C9A24A;
+        color: #B87333;
       }
 
       .hi-plan p {
@@ -257,7 +257,7 @@
         right: 18px;
         border: 0;
         background: transparent;
-        color: #B98F87;
+        color: #D9A49A;
         font-size: 30px;
         cursor: pointer;
       }
