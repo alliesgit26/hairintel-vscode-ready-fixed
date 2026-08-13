@@ -110,21 +110,21 @@
       }
 
       .hi-auth-chip {
-        border: 1px solid rgba(206,183,171,.32);
-        background: rgba(18,11,6,.42);
+        border: 1px solid rgba(185,143,135,.32);
+        background: rgba(22,15,11,.42);
         color: #F7EFE9;
       }
 
       .hi-auth-primary {
-        border: 1px solid rgba(244,201,93,.66);
+        border: 1px solid rgba(201,162,74,.66);
         background: linear-gradient(135deg, #F7DE86, #B8862E);
         color: #120B06;
       }
 
       .hi-auth-banner {
         grid-column: 1 / -1;
-        border: 1px solid rgba(244,201,93,.32);
-        background: linear-gradient(135deg, rgba(244,201,93,.09), rgba(18,11,6,.72));
+        border: 1px solid rgba(201,162,74,.32);
+        background: linear-gradient(135deg, rgba(201,162,74,.09), rgba(22,15,11,.72));
         color: rgba(247,239,233,.82);
         border-radius: 16px;
         padding: 16px 18px;
@@ -136,7 +136,7 @@
       }
 
       .hi-auth-banner strong {
-        color: #F4C95D;
+        color: #C9A24A;
       }
 
       .hi-auth-banner p {
@@ -169,15 +169,15 @@
         width: min(94vw, 560px);
         border-radius: 26px;
         padding: 30px;
-        background: linear-gradient(145deg, rgba(30,25,22,.98), rgba(18,11,6,.98));
-        border: 1px solid rgba(206,183,171,.28);
+        background: linear-gradient(145deg, rgba(43,27,22,.98), rgba(22,15,11,.98));
+        border: 1px solid rgba(185,143,135,.28);
         box-shadow: 0 40px 110px rgba(0,0,0,.70);
         color: #F7EFE9;
       }
 
       .hi-auth-card h2 {
         margin: 0 0 10px;
-        font-family: Georgia, "Times New Roman", serif;
+        font-family: 'Playfair Display', Georgia, serif;
         font-size: 34px;
       }
 
@@ -206,7 +206,7 @@
       .hi-auth-form select {
         height: 46px;
         border-radius: 14px;
-        border: 1px solid rgba(206,183,171,.24);
+        border: 1px solid rgba(185,143,135,.24);
         background: rgba(255,255,255,.07);
         color: #F7EFE9;
         padding: 0 14px;
@@ -215,8 +215,8 @@
 
       .hi-auth-form input:focus,
       .hi-auth-form select:focus {
-        border-color: rgba(244,201,93,.72);
-        box-shadow: 0 0 0 4px rgba(244,201,93,.12);
+        border-color: rgba(201,162,74,.72);
+        box-shadow: 0 0 0 4px rgba(201,162,74,.12);
       }
 
       .hi-plan-grid {
@@ -227,7 +227,7 @@
       }
 
       .hi-plan {
-        border: 1px solid rgba(206,183,171,.22);
+        border: 1px solid rgba(185,143,135,.22);
         background: rgba(255,255,255,.045);
         border-radius: 18px;
         padding: 16px;
@@ -235,7 +235,7 @@
 
       .hi-plan h3 {
         margin: 0 0 6px;
-        color: #F4C95D;
+        color: #C9A24A;
       }
 
       .hi-plan p {
@@ -257,7 +257,7 @@
         right: 18px;
         border: 0;
         background: transparent;
-        color: #CEB7AB;
+        color: #B98F87;
         font-size: 30px;
         cursor: pointer;
       }
