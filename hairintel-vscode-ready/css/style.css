@@ -365,3 +365,35 @@ button { cursor: pointer; }
   .hi-field-row, .hi-stat-grid { grid-template-columns: 1fr; }
   .hi-content { padding-left: var(--pad); padding-right: var(--pad); }
 }
+
+
+/* HairIntel Modern Heritage — exact final palette */
+:root {
+  --bg: #2A1712; --bg-card: #4A241D; --bg-raised: #5C2E24; --bg-input: #351B15;
+  --gold: #B87333; --gold-dim: #8B4F2F; --gold-pale: rgba(184,115,51,.14); --gold-border: rgba(216,178,140,.34);
+  --text: #FFF8EC; --text-sub: #F0D9C2; --text-muted: #D8B28C; --border: rgba(216,178,140,.25); --border-light: rgba(216,178,140,.16);
+  --success: #A9C39A; --warning: #D8B28C; --danger: #D77F73;
+  --font: 'Inter', Arial, sans-serif; --font-serif: 'Cormorant Garamond', Georgia, serif;
+}
+body { background: radial-gradient(circle at top left, rgba(184,115,51,.18), transparent 30%), linear-gradient(180deg, #2A1712 0%, #4A241D 100%); color: var(--text); }
+#hi-frame { background: rgba(42,23,18,.94); border-color: rgba(216,178,140,.30); box-shadow: 0 24px 60px rgba(27,14,11,.38); }
+.hi-header { background: rgba(42,23,18,.94); border-bottom-color: var(--border); }
+.hi-heading, .hi-stat-val { font-family: var(--font-serif); color: var(--cream); }
+.hi-header-title, .hi-field-label, .hi-label { color: var(--text); }
+.hi-header-sub, .hi-body, .hi-text-center, .hi-section-divider-text { color: var(--text-sub); }
+.hi-card, .hi-card-raised, .hi-client-card, .hi-consult-card, .hi-export-card, .hi-export-section, .hi-faq-item,
+.hi-stat-card, .hi-placement-map-wrap, .hi-readiness-hero, .hi-outcome-visual, .hi-analysis-step, .hi-banner { background: var(--bg-card); border-color: var(--border); color: var(--text); }
+.hi-card-raised { background: var(--bg-raised); }
+.hi-card-gold { background: linear-gradient(135deg, #7A3E30, #4A241D); border-color: var(--gold-border); }
+.hi-input { background: var(--bg-input); color: var(--text); border-color: var(--border); }
+.hi-option, .hi-tag, .hi-tab { background: #5C2E24; color: var(--text-sub); border-color: var(--border); }
+.hi-option.selected, .hi-tag.selected, .hi-analysis-step.done { background: var(--gold-pale); color: var(--cream); border-color: var(--gold); }
+.hi-btn-gold, .hi-btn-primary, .hi-analysis-orb-core { background: linear-gradient(135deg, #FFF8EC, #D8B28C 48%, #B87333); color: #2A1712; }
+.hi-btn-outline { background: transparent; color: var(--gold2); border-color: var(--gold-border); }
+.hi-btn-ghost { background: var(--bg-raised); color: var(--text-sub); border-color: var(--border); }
+.hi-progress-bar .hi-step-seg { background: rgba(216,178,140,.24); }
+.hi-progress-bar .hi-step-seg.active { background: var(--gold); }
+.hi-progress-bar .hi-step-seg.done { background: rgba(184,115,51,.48); }
+.hi-gold-line { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.hi-toast { background: #351B15; border-left-color: var(--gold); color: var(--cream); }
+.hi-avatar { background: linear-gradient(135deg, #D9A49A, #7A3E30); color: #FFF8EC; border-color: var(--gold-border); }
