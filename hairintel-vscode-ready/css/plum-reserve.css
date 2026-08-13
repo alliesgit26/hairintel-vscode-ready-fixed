@@ -63,3 +63,97 @@ main, .main { background: linear-gradient(180deg, rgba(64,36,63,.20), rgba(33,19
   }
   .topbar .back { text-align: center !important; }
 }
+
+
+/* Mobile alignment correction: compact, intentional header stack. */
+@media (max-width: 680px) {
+  .topbar {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "brand"
+      "back"
+      "tabs"
+      "actions" !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 14px 18px 16px !important;
+    gap: 12px !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+  }
+
+  .topbar::before {
+    grid-area: brand !important;
+    width: 52px !important;
+    height: 44px !important;
+    margin: 0 auto !important;
+  }
+
+  .topbar .back {
+    grid-area: back !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    padding: 0 !important;
+  }
+
+  .topbar .tabs {
+    grid-area: tabs !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    gap: 24px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    padding: 2px 0 8px !important;
+  }
+
+  .topbar .tabs::-webkit-scrollbar { display: none !important; }
+
+  .topbar .tabs button {
+    flex: 0 0 auto !important;
+    height: auto !important;
+    padding: 8px 0 12px !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+  }
+
+  .topbar .actions {
+    grid-area: actions !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .topbar .actions .export {
+    flex: 1 1 auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+
+  .topbar .actions .menu {
+    flex: 0 0 44px !important;
+  }
+
+  .content {
+    padding: 24px 22px 40px !important;
+  }
+
+  .dashboard-grid {
+    gap: 18px !important;
+  }
+
+  .hi-auth-banner {
+    margin: 0 0 18px !important;
+    padding: 16px !important;
+  }
+
+  .hi-auth-banner p {
+    line-height: 1.45 !important;
+  }
+}
