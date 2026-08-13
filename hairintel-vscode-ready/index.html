@@ -1235,7 +1235,8 @@
 
 <body>
   <div class="app">
-    <aside>
+    <aside id="sectionRail">
+    <button class="rail-collapse" id="railToggle" type="button" aria-expanded="true" aria-controls="sectionRail"><span class="rail-icon">‹</span><span class="rail-toggle-label">Collapse rail</span></button>
       <div class="brand">
         <img class="hi-brand-mark" src="public/hi-monogram.png" alt="HairIntel logo">
         <h1>HairIntel</h1>
@@ -1249,7 +1250,18 @@
         <button data-action="education">◇ Education</button>
       </nav>
 
-      <div class="consultant-card">
+      <div class="rail-sections" aria-label="Dashboard sections">
+      <p class="rail-heading">Workspace</p>
+      <button type="button" class="rail-section-link active" data-scroll-target="heroPanel"><span>01</span><b>Overview</b></button>
+      <button type="button" class="rail-section-link" data-scroll-target="placement"><span>02</span><b>Placement map</b></button>
+      <button type="button" class="rail-section-link" data-scroll-target="scorePanel"><span>03</span><b>Readiness</b></button>
+      <button type="button" class="rail-section-link" data-scroll-target="install"><span>04</span><b>Install plan</b></button>
+      <button type="button" class="rail-section-link" data-scroll-target="client"><span>05</span><b>Client profile</b></button>
+      <button type="button" class="rail-section-link" data-scroll-target="load"><span>06</span><b>Load safety</b></button>
+      <button type="button" class="rail-section-link" data-scroll-target="dynamicPanel"><span>07</span><b>Saved history</b></button>
+    </div>
+
+    <div class="consultant-card">
         <div class="avatar">HI</div>
         <div>
           <strong>Stylist Dashboard</strong>
@@ -1266,6 +1278,7 @@
 
     <main>
       <header class="topbar">
+      <button class="mobile-rail-trigger" id="mobileRailTrigger" type="button" aria-label="Open sections">☰ <span>Sections</span></button>
         <button class="back" data-action="consultations"> Start Consultation</button>
 
         <nav class="tabs">
@@ -1283,7 +1296,7 @@
 
       <section class="content">
         <div class="dashboard-grid">
-          <div class="hero">
+          <div class="hero" id="heroPanel">
             <p class="eyebrow">Consultation Results</p>
             <h2>Your Confidence,<br>Our Precision</h2>
             <p>A data-driven extension consultation dashboard designed for planning, placement safety, client review, and stylist decision support.</p>
@@ -1659,6 +1672,25 @@
     populateDashboard();
     wireButtons();
   </script>
+<script>
+(function(){
+  const body=document.body, rail=document.getElementById("sectionRail"), toggle=document.getElementById("railToggle"), mobile=document.getElementById("mobileRailTrigger");
+  function setCollapsed(value){
+    body.classList.toggle("rail-collapsed", value);
+    if(toggle){ toggle.setAttribute("aria-expanded", String(!value)); toggle.querySelector(".rail-toggle-label").textContent=value?"Expand rail":"Collapse rail"; toggle.querySelector(".rail-icon").textContent=value?"›":"‹"; }
+    localStorage.setItem("hairintel_rail_collapsed", value?"1":"0");
+  }
+  const saved=localStorage.getItem("hairintel_rail_collapsed")==="1";
+  setCollapsed(saved);
+  toggle?.addEventListener("click",()=>setCollapsed(!body.classList.contains("rail-collapsed")));
+  mobile?.addEventListener("click",()=>{ body.classList.toggle("rail-mobile-open"); });
+  document.querySelectorAll(".rail-section-link").forEach(btn=>btn.addEventListener("click",()=>{
+    const target=document.getElementById(btn.dataset.scrollTarget);
+    document.querySelectorAll(".rail-section-link").forEach(x=>x.classList.remove("active")); btn.classList.add("active");
+    target?.scrollIntoView({behavior:"smooth",block:"start"}); body.classList.remove("rail-mobile-open");
+  }));
+})();
+</script>
   <!-- Supabase auth must load before the dashboard gate. -->
   <script src="js/env.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
