@@ -1330,9 +1330,101 @@
   .atelier-nav .atelier-brand{margin-right:0!important}
 }
 </style>
+<style id="plum-dashboard-v2-style">
+/* HairIntel Plum Reserve dashboard — isolated from the legacy app underneath */
+html{scroll-behavior:smooth}
+.plum-v2{--pv-ivory:#fbf7f2;--pv-paper:#fffdfa;--pv-plum:#2b1724;--pv-cocoa:#37252c;--pv-gold:#c89b59;--pv-gold-light:#e7c991;--pv-rose:#bc7e70;--pv-ink:#281c20;--pv-muted:#796a69;--pv-line:rgba(79,52,60,.14);--pv-display:"Cormorant Garamond",Georgia,serif;--pv-body:"DM Sans",Inter,Arial,sans-serif;position:relative;z-index:100;min-height:100vh;background:var(--pv-ivory);color:var(--pv-ink);font-family:var(--pv-body);overflow-x:hidden}
+.plum-v2~.app{display:none!important}.plum-v2~#hi-app{display:none!important}
+.pv2-ghost{position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("public/hi-monogram.png") center 53%/min(44vw,620px) auto no-repeat;opacity:.052;filter:grayscale(1) sepia(.45) saturate(.55)}
+.pv2-shell{min-height:100vh;padding-left:250px;transition:padding-left .22s ease}
+.pv2-rail{position:fixed;z-index:50;inset:0 auto 0 0;width:250px;padding:19px 15px 18px;display:flex;flex-direction:column;background:linear-gradient(165deg,#2d1926 0%,#21131d 72%,#1a1017 100%);color:#fdf6ee;border-right:1px solid rgba(231,201,145,.18);box-shadow:18px 0 55px rgba(31,16,26,.13);transition:width .22s ease,transform .22s ease}
+.pv2-rail-top{height:26px;display:flex;justify-content:flex-end}.pv2-rail-toggle{width:30px;height:30px;border:1px solid rgba(255,255,255,.16);border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.06);color:#f8ecdf;font-size:19px;line-height:1}
+.pv2-logo{display:block;margin:7px 4px 27px;overflow:hidden;border-radius:5px;background:#190c15}.pv2-logo img{display:block;width:100%;height:61px;object-fit:cover;object-position:center}
+.pv2-label{margin:0 10px 9px;color:rgba(252,238,222,.52);font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+.pv2-rail-nav{display:grid;gap:5px}.pv2-rail-link{min-height:43px;padding:0 12px;border:1px solid transparent;border-radius:9px;display:flex;align-items:center;gap:12px;color:rgba(253,246,238,.78);font-size:13px;font-weight:500;text-decoration:none;transition:.18s ease}.pv2-rail-link i{width:18px;color:var(--pv-gold-light);font-style:normal;text-align:center;font-size:14px}.pv2-rail-link:hover,.pv2-rail-link.active{background:linear-gradient(90deg,rgba(202,144,129,.20),rgba(255,255,255,.05));border-color:rgba(230,191,133,.26);color:#fffdf9}.pv2-rail-link.active{box-shadow:inset -2px 0 0 var(--pv-gold-light)}
+.pv2-rail-spacer{flex:1}.pv2-rail-footer{display:flex;gap:10px;align-items:center;padding:12px 8px 0;border-top:1px solid rgba(255,255,255,.1);color:rgba(253,246,238,.75)}.pv2-avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#f7e3ca,#b77b66);color:var(--pv-plum);font:700 16px var(--pv-display)}.pv2-rail-footer b{display:block;font-size:11px}.pv2-rail-footer small{display:block;margin-top:2px;color:rgba(253,246,238,.48);font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+.pv2-topbar{position:sticky;top:0;z-index:30;min-height:80px;padding:0 clamp(22px,3vw,52px);display:flex;align-items:center;gap:28px;border-bottom:1px solid var(--pv-line);background:rgba(255,253,250,.88);backdrop-filter:blur(18px)}
+.pv2-mobile-toggle{display:none;width:42px;height:42px;border:1px solid var(--pv-line);border-radius:50%;background:var(--pv-paper);color:var(--pv-plum);font-size:20px}.pv2-top-brand{display:none;overflow:hidden;border-radius:4px;background:#190c15}.pv2-top-brand img{display:block;width:138px;height:42px;object-fit:cover;object-position:center}
+.pv2-topnav{display:flex;align-items:center;gap:clamp(16px,2.5vw,34px);margin:auto;overflow:auto;scrollbar-width:none}.pv2-topnav::-webkit-scrollbar{display:none}.pv2-topnav a{flex:0 0 auto;padding:30px 0 25px;border-bottom:2px solid transparent;color:#68585a;text-decoration:none;font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;transition:.18s}.pv2-topnav a:hover,.pv2-topnav a.active{color:var(--pv-plum);border-bottom-color:var(--pv-gold)}
+.pv2-actions{display:flex;align-items:center;gap:11px}.pv2-icon-btn{width:38px;height:38px;border:0;background:transparent;color:var(--pv-plum);font-size:18px}.pv2-export{border:1px solid var(--pv-line);background:var(--pv-paper);color:var(--pv-plum);border-radius:999px;padding:10px 15px;font-size:11px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
+.pv2-main{min-width:0}.pv2-hero{max-width:1460px;margin:0 auto;padding:clamp(36px,5vw,72px) clamp(20px,4.2vw,58px) 0;display:grid;grid-template-columns:minmax(360px,.92fr) minmax(520px,1.08fr);align-items:stretch}.pv2-copy{position:relative;min-height:490px;display:flex;flex-direction:column;justify-content:center;padding:28px 4vw 54px 0}.pv2-copy:before{content:"HI";position:absolute;z-index:-1;left:-8px;top:18%;color:rgba(200,155,89,.075);font:700 clamp(230px,24vw,390px)/.65 var(--pv-display);letter-spacing:-.16em}.pv2-eyebrow{margin:0 0 16px;color:#b67658;font-size:11px;font-weight:700;letter-spacing:.27em;text-transform:uppercase}.pv2-copy h1{max-width:620px;margin:0;color:var(--pv-ink);font:600 clamp(54px,5vw,82px)/.9 var(--pv-display);letter-spacing:-.045em}.pv2-copy>p:not(.pv2-eyebrow){max-width:470px;margin:22px 0 28px;color:var(--pv-muted);font-size:15px;line-height:1.7}.pv2-hero-actions{display:flex;align-items:center;gap:22px;flex-wrap:wrap}.pv2-primary{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:0 21px;border:1px solid #452132;border-radius:4px;background:linear-gradient(135deg,#3b1e2d,#23121d);color:#fff9f2;text-decoration:none;font-size:11px;letter-spacing:.1em;font-weight:700;text-transform:uppercase;box-shadow:0 12px 24px rgba(47,22,33,.14)}.pv2-text-link{display:inline-flex;align-items:center;gap:8px;padding:12px 0 8px;border-bottom:1px solid var(--pv-gold);color:#59394a;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}.pv2-proof{display:flex;gap:22px;margin-top:38px;color:#786565}.pv2-proof div{border-left:1px solid var(--pv-gold-light);padding-left:12px}.pv2-proof strong{display:block;color:var(--pv-plum);font:600 23px/1 var(--pv-display)}.pv2-proof span{display:block;margin-top:5px;font-size:10px;text-transform:uppercase;letter-spacing:.1em}
+.pv2-hero-photo{position:relative;min-height:510px;overflow:hidden;background:#eadfd9 url("public/hairintel-atelier-hero.png?v=5") center/cover no-repeat;box-shadow:0 22px 60px rgba(51,30,38,.11)}.pv2-hero-photo:after{content:"";position:absolute;inset:auto 0 0;height:28%;background:linear-gradient(transparent,rgba(28,16,22,.35));pointer-events:none}.pv2-caption{position:absolute;z-index:1;left:24px;bottom:22px;color:#fff9f1;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-shadow:0 2px 7px rgba(0,0,0,.5)}
+.pv2-workflow{position:sticky;top:80px;z-index:25;display:flex;gap:0;overflow:auto;padding:0 clamp(20px,4.2vw,58px);border-top:1px solid var(--pv-line);border-bottom:1px solid var(--pv-line);background:rgba(255,253,250,.94);box-shadow:0 10px 22px rgba(64,38,46,.04);scrollbar-width:none}.pv2-workflow::-webkit-scrollbar{display:none}.pv2-workflow a{flex:0 0 auto;display:flex;align-items:center;gap:10px;min-height:64px;padding:0 clamp(15px,2.2vw,31px);color:#776a69;text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;border-bottom:2px solid transparent}.pv2-workflow a:hover,.pv2-workflow a.active{color:var(--pv-plum);border-bottom-color:var(--pv-gold)}.pv2-workflow span{color:var(--pv-gold);font-size:15px}
+.pv2-content{max-width:1460px;margin:0 auto;padding:30px clamp(20px,4.2vw,58px) 70px}.pv2-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}.pv2-card{min-height:236px;padding:22px;border:1px solid var(--pv-line);background:rgba(255,253,250,.88);box-shadow:0 12px 33px rgba(54,31,39,.05)}.pv2-kicker{display:flex;align-items:center;gap:10px;color:#765c5d;font-size:11px;font-weight:600}.pv2-kicker i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#f7e8df;color:#b66f5e;font-style:normal}.pv2-card h2{margin:18px 0 12px;color:var(--pv-plum);font:600 26px/1 var(--pv-display)}.pv2-metric{display:flex;align-items:flex-end;gap:8px;margin:22px 0 13px}.pv2-metric strong{color:var(--pv-plum);font:600 54px/.8 var(--pv-display)}.pv2-metric span{color:var(--pv-muted);font-size:11px;padding-bottom:2px}.pv2-mini{display:grid;gap:9px;margin-top:10px}.pv2-mini div{display:flex;justify-content:space-between;gap:15px;padding-bottom:7px;border-bottom:1px solid rgba(79,52,60,.09);color:#756768;font-size:11px}.pv2-mini b{color:var(--pv-plum);font-weight:700}.pv2-card-link{display:inline-flex;gap:7px;align-items:center;margin-top:17px;color:#9d673f;border-bottom:1px solid rgba(200,155,89,.55);padding-bottom:4px;text-decoration:none;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.pv2-ring-layout{display:grid;grid-template-columns:118px 1fr;gap:19px;align-items:center;margin-top:22px}.pv2-ring{width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--pv-gold) 0 68%,#efdeda 68% 82%,#e3b5b1 82% 100%);display:grid;place-items:center;position:relative}.pv2-ring:before{content:"";position:absolute;width:84px;height:84px;border-radius:50%;background:var(--pv-paper)}.pv2-ring strong{position:relative;color:var(--pv-plum);font:600 30px var(--pv-display)}.pv2-legend{display:grid;gap:10px;color:#766767;font-size:11px}.pv2-legend div{display:flex;justify-content:space-between}.pv2-legend span:before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;background:#8ba982}.pv2-legend div:nth-child(2) span:before{background:#c99a5c}.pv2-legend div:nth-child(3) span:before{background:#d69a99}
+.pv2-heading{margin:54px 0 18px;display:flex;align-items:end;justify-content:space-between;gap:18px}.pv2-heading p{margin:0 0 7px;color:#ad765f;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}.pv2-heading h2{margin:0;color:var(--pv-plum);font:600 clamp(30px,3.4vw,47px)/.95 var(--pv-display)}.pv2-heading span{max-width:370px;color:var(--pv-muted);text-align:right;font-size:12px;line-height:1.55}.pv2-method{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.pv2-wide,.pv2-side{border:1px solid var(--pv-line);background:rgba(255,253,250,.88);box-shadow:0 12px 33px rgba(54,31,39,.05)}.pv2-wide{padding:24px;min-height:294px}.pv2-map{position:relative;height:170px;margin-top:18px;overflow:hidden;border-radius:3px;background:linear-gradient(120deg,#f4e6df,#e6d2ca)}.pv2-map:before{content:"";position:absolute;width:170px;height:170px;border-radius:50% 50% 45% 45%;background:radial-gradient(circle at 50% 30%,#624435 0 22%,#3c2824 23% 100%);left:50%;top:24px;transform:translateX(-50%)}.pv2-map:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 48% 45%,rgba(199,151,84,.78) 0 2px,transparent 3px) 0 0/22px 21px;mask-image:linear-gradient(transparent 0%,#000 32%,#000 85%,transparent);opacity:.82}.pv2-map-label{position:absolute;z-index:1;left:18px;top:16px;color:#61474a;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.pv2-stack{display:grid;gap:18px}.pv2-side{padding:21px;min-height:138px}.pv2-install{display:flex;align-items:center;gap:13px;margin-top:15px}.pv2-install i{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--pv-gold-light);color:#a66f4d;font-style:normal}.pv2-install b{display:block;color:var(--pv-plum);font-size:12px}.pv2-install span{display:block;margin-top:3px;color:var(--pv-muted);font-size:10px}.pv2-safety{height:9px;overflow:hidden;margin:20px 0 12px;border-radius:999px;background:#efe5df}.pv2-safety b{display:block;width:79%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#cfb56a,#ad7858)}.pv2-safety-meta{display:flex;justify-content:space-between;color:#766666;font-size:11px}.pv2-safety-meta strong{color:#648a69}
+.pv2-footer{padding:28px clamp(20px,4.2vw,58px);border-top:1px solid var(--pv-line);color:#887978;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.pv2-collapsed .pv2-shell{padding-left:82px}.pv2-collapsed .pv2-rail{width:82px;padding-left:12px;padding-right:12px}.pv2-collapsed .pv2-logo{height:46px;margin:7px 0 28px}.pv2-collapsed .pv2-logo img{width:147px;max-width:none;height:46px;object-position:left center}.pv2-collapsed .pv2-label,.pv2-collapsed .pv2-rail-link span:not(.pv2-rail-icon),.pv2-collapsed .pv2-rail-footer>div{display:none}.pv2-collapsed .pv2-rail-link{justify-content:center;padding:0}.pv2-collapsed .pv2-rail-footer{justify-content:center;padding-left:0;padding-right:0}
+@media(max-width:1100px){.pv2-shell{padding-left:222px}.pv2-rail{width:222px}.pv2-hero{grid-template-columns:minmax(320px,.88fr) minmax(420px,1.12fr)}.pv2-topnav{gap:17px}.pv2-topnav a{font-size:9px}}
+@media(max-width:870px){.pv2-shell{padding-left:0}.pv2-rail{width:min(275px,84vw);transform:translateX(-106%)}.pv2-mobile-open .pv2-rail{transform:translateX(0)}.pv2-mobile-open:after{content:"";position:fixed;z-index:45;inset:0;background:rgba(24,11,18,.32)}.pv2-mobile-toggle,.pv2-top-brand{display:block}.pv2-topbar{padding:0 17px;gap:12px;min-height:68px;flex-wrap:wrap;padding-bottom:0}.pv2-topnav{order:3;width:100%;margin:0;gap:24px}.pv2-topnav a{padding:12px 0 11px}.pv2-actions{margin-left:auto}.pv2-export{padding:9px 12px}.pv2-hero{grid-template-columns:1fr;padding:30px 16px 0}.pv2-copy{min-height:0;padding:29px 0 35px}.pv2-copy:before{top:4%;left:7%}.pv2-hero-photo{min-height:0;height:390px;background-position:56% center}.pv2-workflow{top:118px;padding:0 16px}.pv2-workflow a{min-height:55px;padding:0 15px}.pv2-content{padding:24px 16px 52px}.pv2-grid{grid-template-columns:1fr}.pv2-method{grid-template-columns:1fr}}
+@media(max-width:520px){.pv2-top-brand img{width:122px;height:38px}.pv2-actions .pv2-icon-btn{display:none}.pv2-export{font-size:9px}.pv2-copy h1{font-size:55px}.pv2-copy>p:not(.pv2-eyebrow){font-size:14px}.pv2-hero-actions{display:grid;grid-template-columns:1fr;gap:10px}.pv2-text-link{justify-content:center;width:max-content}.pv2-proof{gap:14px}.pv2-proof strong{font-size:19px}.pv2-proof span{font-size:8px}.pv2-hero-photo{height:330px;background-position:60% center}.pv2-workflow{top:109px}.pv2-heading{align-items:start;flex-direction:column;margin-top:40px}.pv2-heading span{text-align:left}}
+@media print{.pv2-rail,.pv2-topbar,.pv2-workflow,.pv2-hero-actions{display:none!important}.pv2-shell{padding-left:0!important}.pv2-ghost{display:none!important}}
+</style>
 </head>
 
 <body>
+<div class="plum-v2" id="plumDashboard">
+  <div class="pv2-ghost" aria-hidden="true"></div>
+  <div class="pv2-shell">
+    <aside class="pv2-rail" id="pv2Rail">
+      <div class="pv2-rail-top"><button class="pv2-rail-toggle" id="pv2RailToggle" type="button" aria-label="Collapse dashboard navigation">‹</button></div>
+      <a class="pv2-logo" href="#overview" aria-label="HairIntel Plum Reserve home"><img src="public/hairintel-plum-reserve-logo.jpg?v=5" alt="HairIntel Plum Reserve"></a>
+      <p class="pv2-label">Workspace</p>
+      <nav class="pv2-rail-nav" aria-label="Dashboard sections">
+        <a class="pv2-rail-link active" href="#overview"><i>◇</i><span>Overview</span></a>
+        <a class="pv2-rail-link" href="#consultations"><i>◫</i><span>Consultations</span></a>
+        <a class="pv2-rail-link" href="#placement"><i>⌖</i><span>Placement Map</span></a>
+        <a class="pv2-rail-link" href="#readiness"><i>◌</i><span>Readiness</span></a>
+        <a class="pv2-rail-link" href="#install-plan"><i>▧</i><span>Install Plan</span></a>
+        <a class="pv2-rail-link" href="#client-profile"><i>♙</i><span>Client Profile</span></a>
+        <a class="pv2-rail-link" href="#load-safety"><i>♢</i><span>Load Safety</span></a>
+      </nav>
+      <div class="pv2-rail-spacer"></div>
+      <div class="pv2-rail-footer"><div class="pv2-avatar">HI</div><div><b>Stylist Workspace</b><small>HairIntel Plum Reserve</small></div></div>
+    </aside>
+    <main class="pv2-main">
+      <header class="pv2-topbar">
+        <button class="pv2-mobile-toggle" id="pv2MobileToggle" type="button" aria-label="Open dashboard navigation">☰</button>
+        <a class="pv2-top-brand" href="#overview"><img src="public/hairintel-plum-reserve-logo.jpg?v=5" alt="HairIntel Plum Reserve"></a>
+        <nav class="pv2-topnav" aria-label="Primary navigation">
+          <a class="active" href="#overview">Overview</a><a href="#consultations">Consultations</a><a href="#placement">Placement</a><a href="#readiness">Readiness</a><a href="#install-plan">Install Plan</a><a href="#client-profile">Client Profile</a>
+        </nav>
+        <div class="pv2-actions"><button class="pv2-icon-btn" type="button" data-pv2-scroll="#consultations" aria-label="Open consultations">⌕</button><button class="pv2-icon-btn" type="button" data-pv2-scroll="#client-profile" aria-label="Open client profile">♡</button><button class="pv2-export" id="pv2Export" type="button">Export Report</button></div>
+      </header>
+      <section class="pv2-hero" id="overview">
+        <div class="pv2-copy">
+          <p class="pv2-eyebrow">HairIntel Plum Reserve</p>
+          <h1>Elevated Extensions.<br>Exceptional Results.</h1>
+          <p>Your complete consultation and planning suite for luxury hair extension transformations—built around beautiful placement and better hair protection.</p>
+          <div class="pv2-hero-actions"><a class="pv2-primary" href="#consultations">Start Consultation <span>→</span></a><a class="pv2-text-link" href="#consultations">View all consultations <span>→</span></a></div>
+          <div class="pv2-proof"><div><strong>01</strong><span>Placement-led</span></div><div><strong>02</strong><span>Hair-safe</span></div><div><strong>03</strong><span>Client-ready</span></div></div>
+        </div>
+        <div class="pv2-hero-photo" role="img" aria-label="Three hair models showing luxury hair extensions"><span class="pv2-caption">Precision placement · seamless blend · beautiful results</span></div>
+      </section>
+      <nav class="pv2-workflow" id="consultations" aria-label="Consultation workflow">
+        <a class="active" href="#consultations"><span>▦</span>All Consultations</a><a href="#placement"><span>⌖</span>Placement</a><a href="#readiness"><span>◌</span>Readiness</a><a href="#install-plan"><span>▧</span>Install Planning</a><a href="#client-profile"><span>♡</span>Client Profile</a><a href="#load-safety"><span>♢</span>Load Safety</a>
+      </nav>
+      <div class="pv2-content">
+        <section class="pv2-grid" aria-label="Consultation overview">
+          <article class="pv2-card" id="consultation-summary"><div class="pv2-kicker"><i>◫</i>Consultations</div><div class="pv2-metric"><strong>12</strong><span>active consultations</span></div><div class="pv2-mini"><div><span>In progress</span><b>5</b></div><div><span>Placement mapped</span><b>3</b></div><div><span>Ready to install</span><b>2</b></div></div><a class="pv2-card-link" href="#consultations">View consultations →</a></article>
+          <article class="pv2-card" id="appointments"><div class="pv2-kicker"><i>◷</i>Upcoming appointments</div><h2>Today’s Chair</h2><div class="pv2-mini"><div><span>10:00 AM · Extension consult</span><b>View</b></div><div><span>1:00 PM · Placement map</span><b>View</b></div><div><span>3:30 PM · Install plan</span><b>View</b></div></div><a class="pv2-card-link" href="#install-plan">View install plan →</a></article>
+          <article class="pv2-card" id="readiness"><div class="pv2-kicker"><i>◌</i>Readiness overview</div><div class="pv2-ring-layout"><div class="pv2-ring"><strong>68%</strong></div><div class="pv2-legend"><div><span>Optimal</span><b>7</b></div><div><span>Good</span><b>3</b></div><div><span>Needs attention</span><b>2</b></div></div></div><a class="pv2-card-link" href="#client-profile">Review readiness →</a></article>
+        </section>
+        <div class="pv2-heading"><div><p>Precision at every step</p><h2>Plan it beautifully.</h2></div><span>Every section is connected so a stylist can move from consultation to safe installation without losing the client story.</span></div>
+        <section class="pv2-method">
+          <article class="pv2-wide" id="placement"><div class="pv2-kicker"><i>⌖</i>Placement Map</div><h2>Visualize the install before the first strand.</h2><div class="pv2-map"><span class="pv2-map-label">Placement zone preview</span></div><a class="pv2-card-link" href="#install-plan">Open placement plan →</a></article>
+          <div class="pv2-stack">
+            <article class="pv2-side" id="install-plan"><div class="pv2-kicker"><i>▧</i>Install Plan</div><div class="pv2-install"><i>01</i><div><b>Build the foundation</b><span>Map density, direction, and safe zones.</span></div></div><a class="pv2-card-link" href="#client-profile">Continue to client profile →</a></article>
+            <article class="pv2-side" id="load-safety"><div class="pv2-kicker"><i>♢</i>Load Safety</div><div class="pv2-safety"><b></b></div><div class="pv2-safety-meta"><span>Weight distribution</span><strong>Balanced</strong></div><a class="pv2-card-link" href="#consultation-summary">Return to consultation →</a></article>
+          </div>
+        </section>
+        <div class="pv2-heading" id="client-profile"><div><p>Client relationship</p><h2>Client-ready clarity.</h2></div><span>Open any section from the rail or the top navigation. Every destination has a real anchor target.</span></div>
+        <section class="pv2-grid"><article class="pv2-card"><div class="pv2-kicker"><i>♙</i>Client Profile</div><h2>Hair history</h2><div class="pv2-mini"><div><span>Natural density</span><b>Medium</b></div><div><span>Priority</span><b>Blend</b></div><div><span>Extension goal</span><b>Length + fullness</b></div></div><a class="pv2-card-link" href="#placement">Open placement map →</a></article><article class="pv2-card"><div class="pv2-kicker"><i>✦</i>Recommendation</div><h2>Soft volume, precise placement.</h2><p style="color:#796a69;font-size:12px;line-height:1.6">A balanced installation plan that protects natural hair while creating a seamless, luxurious finish.</p><a class="pv2-card-link" href="#load-safety">Review load safety →</a></article><article class="pv2-card"><div class="pv2-kicker"><i>✓</i>Next Step</div><h2>Ready for consultation.</h2><p style="color:#796a69;font-size:12px;line-height:1.6">Begin with the client profile, review readiness, then move through the placement map.</p><a class="pv2-card-link" href="#consultations">Start consultation →</a></article></section>
+      </div>
+      <footer class="pv2-footer">HairIntel Plum Reserve · Beautiful hair begins with precise placement.</footer>
+    </main>
+  </div>
+</div>
   <div class="app">
     <aside id="sectionRail">
     <button class="rail-collapse" id="railToggle" type="button" aria-expanded="true" aria-controls="sectionRail"><span class="rail-icon">‹</span><span class="rail-toggle-label">Collapse rail</span></button>
@@ -1870,6 +1962,21 @@
   <script src="js/dashboard-actions-final.js"></script>
   <script src="js/dashboard-nav-final.js"></script>
   <script src="js/dashboard-menu-final.js"></script>
+<script id="plum-dashboard-v2-js">
+(() => {
+  const dash=document.getElementById('plumDashboard');
+  const railToggle=document.getElementById('pv2RailToggle');
+  const mobileToggle=document.getElementById('pv2MobileToggle');
+  const exportBtn=document.getElementById('pv2Export');
+  const links=[...dash.querySelectorAll('.pv2-rail-link,.pv2-topnav a,.pv2-workflow a')];
+  const setActive=(id)=>links.forEach(link=>link.classList.toggle('active',link.getAttribute('href')==='#'+id));
+  railToggle?.addEventListener('click',()=>{dash.classList.toggle('pv2-collapsed');railToggle.textContent=dash.classList.contains('pv2-collapsed')?'›':'‹';});
+  mobileToggle?.addEventListener('click',()=>dash.classList.toggle('pv2-mobile-open'));
+  links.forEach(link=>link.addEventListener('click',()=>{setActive(link.getAttribute('href').slice(1));if(innerWidth<=870)dash.classList.remove('pv2-mobile-open');}));
+  dash.querySelectorAll('[data-pv2-scroll]').forEach(btn=>btn.addEventListener('click',()=>document.querySelector(btn.dataset.pv2Scroll)?.scrollIntoView({behavior:'smooth'})));
+  exportBtn?.addEventListener('click',()=>window.print());
+})();
+</script>
 </body>
 </html>
 
