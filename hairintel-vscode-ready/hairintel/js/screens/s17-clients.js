@@ -1,4 +1,4 @@
-﻿/* ================================================================
+/* ================================================================
    S17 - SAVED CLIENTS / HISTORY
    ================================================================ */
 function renderS17Clients(params = {}) {
@@ -116,63 +116,50 @@ function initS17Clients() {
    ================================================================ */
 function renderS18Subscription() {
   const sub = HI.getSub();
-  const current = sub.plan;
-  const usage = HI.getUsage();
+  const current = String(sub.plan || '').toLowerCase() === 'salon' ? 'studio' : String(sub.plan || '').toLowerCase();
 
   const plans = [
     {
-      id: 'free',
-      name: 'Free',
-      price: '$0',
-      period: 'forever',
-      desc: 'Try HairIntel AI with limited access.',
-      color: 'var(--text-muted)',
+      id: 'starter',
+      name: 'Starter',
+      desc: 'Essential planning for an independent extension stylist.',
+      color: 'var(--gold)',
       features: [
-        { label:'3 consultations total', included: true },
-        { label:'Hair Readiness Score',  included: true },
-        { label:'Basic install plan',     included: true },
-        { label:'PDF export',             included: false },
-        { label:'Client sharing',         included: false },
-        { label:'Saved client history',   included: false },
-        { label:'Placement map',          included: false },
-        { label:'HairIntel watermark',    included: false }
+        { label:'Private stylist dashboard', included: true },
+        { label:'Client consultation workflow', included: true },
+        { label:'Hair readiness score', included: true },
+        { label:'Placement and load planning', included: true },
+        { label:'Saved client records', included: true },
+        { label:'AI hair previews', included: false }
       ]
     },
     {
       id: 'pro',
       name: 'Pro',
-      price: '$29',
-      period: '/month',
-      desc: 'Everything a solo stylist needs.',
+      desc: 'Advanced client planning and AI visualization.',
       color: 'var(--gold)',
       badge: 'Most Popular',
       features: [
-        { label:'Unlimited consultations',    included: true },
-        { label:'Full PDF export',            included: true },
-        { label:'Client version sharing',     included: true },
-        { label:'Full saved client history',  included: true },
-        { label:'Placement map & load score', included: true },
-        { label:'No watermark',               included: true },
-        { label:'Priority analysis engine',   included: true },
-        { label:'Team accounts',              included: false }
+        { label:'Everything in Starter', included: true },
+        { label:'Client photo uploads', included: true },
+        { label:'10 AI hair previews per month', included: true },
+        { label:'Professional client reports', included: true },
+        { label:'Placement map and load score', included: true },
+        { label:'Saved consultation history', included: true }
       ]
     },
     {
       id: 'studio',
       name: 'Studio',
-      price: '$79',
-      period: '/month',
-      desc: 'For salons and multi-stylist teams.',
+      desc: 'Higher-capacity AI planning for a growing studio.',
       color: 'var(--success)',
       features: [
-        { label:'Everything in Pro',           included: true },
-        { label:'Up to 5 stylist accounts',    included: true },
-        { label:'Shared client database',      included: true },
-        { label:'Branded PDF exports',         included: true },
-        { label:'Salon management tools',      included: true },
-        { label:'Priority support',            included: true },
-        { label:'Custom branding',             included: true },
-        { label:'Analytics dashboard',         included: true }
+        { label:'Everything in Pro', included: true },
+        { label:'50 AI hair previews per month', included: true },
+        { label:'Studio-scale client planning', included: true },
+        { label:'Professional client reports', included: true },
+        { label:'Saved consultation history', included: true },
+        { label:'Stripe billing portal access', included: true }
       ]
     }
   ];
@@ -187,24 +174,14 @@ function renderS18Subscription() {
 
     <div class="hi-content">
       <div style="text-align:center;margin-bottom:28px;">
-        <h2 class="hi-heading hi-mb-2">Upgrade HairIntel AI</h2>
-        <p class="hi-body">Unlock unlimited consultations, PDF exports, and advanced analysis features.</p>
+        <h2 class="hi-heading hi-mb-2">Your HairIntel Plan</h2>
+        <p class="hi-body">Compare the three live Stripe tiers and manage your subscription securely.</p>
       </div>
 
-      ${current === 'free' ? `
-      <div class="hi-banner hi-banner-warn hi-mb-4">
-        <span class="hi-banner-icon">${HIcons.info}</span>
-        <div style="font-size:13px;color:var(--text-sub);">
-          You have used <strong style="color:var(--text);">${usage.consultCount}</strong> of <strong style="color:var(--text);">${HI.FREE_LIMIT}</strong> free consultations.
-          ${HI.remainingFree() === 0 ? ' <strong style="color:var(--danger);">Limit reached - upgrade to continue.</strong>' : ''}
-        </div>
-      </div>
-      ` : `
       <div class="hi-banner" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:12px;display:flex;gap:12px;align-items:center;padding:14px;margin-bottom:20px;">
         <span style="color:var(--success);">${HIcons.check}</span>
-        <div style="font-size:13px;color:var(--text-sub);">You're on the <strong style="color:var(--success);">${hiCapitalize(current)}</strong> plan. Unlimited consultations active.</div>
+        <div style="font-size:13px;color:var(--text-sub);">You're on the <strong style="color:var(--success);">${hiCapitalize(current || 'paid')}</strong> plan. Your private stylist workspace is active.</div>
       </div>
-      `}
 
       <!-- Plan Cards -->
       ${plans.map(plan => `
@@ -218,8 +195,8 @@ function renderS18Subscription() {
             <div style="font-size:12px;color:var(--text-muted);">${plan.desc}</div>
           </div>
           <div style="text-align:right;">
-            <span style="font-size:26px;font-weight:800;color:var(--text);">${plan.price}</span>
-            <span style="font-size:12px;color:var(--text-muted);">${plan.period}</span>
+            <span style="font-size:26px;font-weight:800;color:var(--text);" data-inner-price="${plan.id}">Loading…</span>
+            <span style="font-size:12px;color:var(--text-muted);" data-inner-interval="${plan.id}"></span>
           </div>
         </div>
 
@@ -238,19 +215,17 @@ function renderS18Subscription() {
 
         ${current === plan.id
           ? `<button class="hi-btn" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--success);font-size:13px;" disabled>Current Plan</button>`
-          : plan.id === 'free'
-          ? `<button class="hi-btn hi-btn-ghost" style="font-size:13px;" onclick="selectPlan('free')">Downgrade to Free</button>`
           : `<button class="hi-btn ${plan.id === 'pro' ? 'hi-btn-gold' : 'hi-btn-outline'}" id="btn-${plan.id}" onclick="selectPlan('${plan.id}')">
-               ${plan.id === 'studio' ? 'Start Studio Trial' : 'Start Pro Trial'}
+               Manage or switch plan
              </button>`
         }
       </div>`).join('')}
 
-      <!-- Money-back guarantee -->
+      <!-- Trial terms -->
       <div style="text-align:center;padding:16px 0;">
         <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          7-day free trial - Cancel any time
+          New subscriptions include a 7-day trial. Cancel before renewal to avoid the first charge.
         </div>
       </div>
 
@@ -258,9 +233,9 @@ function renderS18Subscription() {
       <div class="hi-card hi-mb-4">
         <div class="hi-label hi-mb-3">Frequently Asked</div>
         ${[
-          { q:'Can I switch plans?', a:'Yes, you can upgrade or downgrade at any time. Changes take effect immediately.' },
-          { q:'Is client data stored in the cloud?', a:'Currently, all data is stored locally in your browser using localStorage. No cloud sync on Free or Pro.' },
-          { q:'What happens after my free consultations?', a:'After 3 consultations on the Free plan, you will need to upgrade to Pro or Studio to continue.' }
+          { q:'Can I switch plans?', a:'Use the secure Stripe billing portal to manage or change an existing subscription.' },
+          { q:'Is client data stored in the cloud?', a:'Current consultation records and uploaded photo previews are stored locally in this browser. Use a trusted stylist device.' },
+          { q:'Which plans include AI previews?', a:'Pro includes up to 10 AI previews per month; Studio includes up to 50. Starter does not include AI previews.' }
         ].map(faq => `
         <div class="hi-faq-item" style="padding:12px 0;border-bottom:1px solid var(--border-light);">
           <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${faq.q}</div>
@@ -273,22 +248,51 @@ function renderS18Subscription() {
 }
 
 function initS18Subscription() {
-  window.selectPlan = async (plan) => {
-    if (plan === 'pro' || plan === 'studio') {
-      try {
-        if (window.HAIRI && typeof window.HAIRI.startCheckout === 'function') {
-          await window.HAIRI.startCheckout(plan);
-          return;
-        }
-      } catch (err) {
-        console.error('[HairIntel] Checkout error:', err);
-        hiToast(err.message || 'Checkout could not be started.', 'error');
-        return;
-      }
+  const formatPrice = (plan) => {
+    if (!plan?.available || !Number.isFinite(Number(plan.unitAmount))) return null;
+    const amount = Number(plan.unitAmount) / 100;
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: String(plan.currency || 'usd').toUpperCase(),
+      minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
+      maximumFractionDigits: 2
+    }).format(amount);
+  };
+
+  fetch('/api/pricing')
+    .then(response => response.json().then(data => ({ response, data })))
+    .then(({ response, data }) => {
+      if (!response.ok || !Array.isArray(data?.plans)) throw new Error(data?.error || 'Pricing unavailable');
+      data.plans.forEach(plan => {
+        const display = formatPrice(plan);
+        const price = document.querySelector(`[data-inner-price="${plan.slug}"]`);
+        const interval = document.querySelector(`[data-inner-interval="${plan.slug}"]`);
+        if (price) price.textContent = display || 'Not configured';
+        if (interval) interval.textContent = display && plan.interval ? ` / ${plan.interval}` : '';
+      });
+    })
+    .catch(error => {
+      console.warn('[HairIntel] Live pricing unavailable:', error?.message || error);
+      document.querySelectorAll('[data-inner-price]').forEach(element => { element.textContent = 'Unavailable'; });
+    });
+
+  window.selectPlan = async () => {
+    try {
+      const client = await window.HAIRI?.ensureClient?.();
+      const { data } = client?.auth ? await client.auth.getUser() : { data: null };
+      const email = data?.user?.email;
+      if (!email) throw new Error('Sign in again to manage billing.');
+      const response = await fetch('/api/create-billing-portal-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, returnUrl: window.location.href })
+      });
+      const result = await response.json();
+      if (!response.ok || !result?.url) throw new Error(result?.error || 'Billing portal unavailable.');
+      window.location.href = result.url;
+    } catch (error) {
+      console.error('[HairIntel] Billing portal error:', error);
+      hiToast(error.message || 'Billing portal could not be opened.', 'error');
     }
-    HI.setSub({ plan, updatedAt: new Date().toISOString() });
-    hiToast(`${hiCapitalize(plan)} plan activated!`, 'success');
-    setTimeout(() => HIApp.go('welcome'), 1000);
   };
 }
-
