@@ -1438,6 +1438,16 @@ html{scroll-behavior:smooth}
   .plum-v2 .pv2-ghost{background-position:center center!important;opacity:.16!important}
 }
 </style>
+<style id="plum-dashboard-ghost-visibility-final">
+/* Final visibility pass: the fixed HI watermark is intentionally noticeable, not hidden. */
+.plum-v2 .pv2-ghost{
+  opacity:.36!important;
+  filter:sepia(.25) saturate(.92) contrast(1.1) drop-shadow(0 12px 30px rgba(172,107,91,.16))!important;
+}
+@media(max-width:870px){
+  .plum-v2 .pv2-ghost{opacity:.28!important}
+}
+</style>
 </head>
 
 <body>
