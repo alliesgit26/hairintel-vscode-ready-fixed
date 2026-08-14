@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   const PROFILE_KEY = "hairintel_profile_v1";
   const SUB_KEY = "hairintel_subscription_v1";
   const CONSULT_URL = "hairintel/index.html";
@@ -315,6 +315,26 @@
           </div>
         </div>
       `;
+    } else if (type === "account") {
+      const email = profile?.email || "Signed in";
+      const status = sub?.status || "No active subscription";
+
+      modal.innerHTML = `
+        <div class="hi-auth-backdrop"></div>
+        <div class="hi-auth-card">
+          <button class="hi-auth-close" type="button">×</button>
+          <h2>HairIntel account</h2>
+          <p>Email: ${email}<br>Subscription: <strong>${status}</strong></p>
+
+          <div class="hi-auth-actions">
+            ${isSubscribed()
+              ? '<button class="hi-auth-chip" type="button" id="hi-manage-billing">Manage Billing</button>'
+              : '<button class="hi-auth-primary" type="button" id="hi-open-subscription">View Plans</button>'}
+            <button class="hi-auth-chip" type="button" id="hi-sign-out">Sign Out</button>
+            <button class="hi-auth-chip" type="button" id="hi-cancel">Close</button>
+          </div>
+        </div>
+      `;
     } else {
       const email = profile?.email || "Sign in first";
       const status = sub?.status || "No active subscription";
@@ -411,6 +431,12 @@
 
     const manage = modal.querySelector("#hi-manage-billing");
     if (manage) manage.onclick = manageBilling;
+
+    const openSubscription = modal.querySelector("#hi-open-subscription");
+    if (openSubscription) openSubscription.onclick = () => openModal("subscription");
+
+    const signOutButton = modal.querySelector("#hi-sign-out");
+    if (signOutButton) signOutButton.onclick = signOut;
   }
 
   function closeModal() {
@@ -541,6 +567,14 @@
 
     const text = (target.textContent || "").toLowerCase();
     const action = target.dataset.action || "";
+    const authAction = target.dataset.authAction || "";
+
+    if (authAction) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      openModal(getProfile() ? "account" : "signin");
+      return;
+    }
 
     const wantsBuilder =
       action === "consultations" ||
@@ -569,16 +603,34 @@
     window.location.href = CONSULT_URL;
   }
 
+  function renderPv2AuthControls(profile) {
+    document.querySelectorAll(".pv2-login-top").forEach((button) => {
+      button.textContent = profile ? "Account" : "Sign in / Create account";
+      button.dataset.authAction = profile ? "account" : "signin";
+      button.setAttribute("aria-label", profile ? "Open your HairIntel account" : "Sign in or create your HairIntel account");
+    });
+
+    document.querySelectorAll(".pv2-account-cta").forEach((button) => {
+      button.dataset.authAction = profile ? "account" : "signin";
+      button.setAttribute("aria-label", profile ? "Open your HairIntel account" : "Sign in or create your HairIntel account");
+      const title = button.querySelector("b");
+      const detail = button.querySelector("small");
+      if (title) title.textContent = profile ? "Account" : "Sign in / Create account";
+      if (detail) detail.textContent = profile?.email || "Open your stylist workspace";
+    });
+  }
+
   function renderControls() {
     ensureStyles();
+
+    const profile = getProfile();
+    renderPv2AuthControls(profile);
 
     const actions = document.querySelector(".actions");
     if (!actions) return;
 
     const old = document.getElementById("hi-auth-controls");
     if (old) old.remove();
-
-    const profile = getProfile();
 
     const wrap = document.createElement("div");
     wrap.id = "hi-auth-controls";
