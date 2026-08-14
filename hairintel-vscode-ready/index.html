@@ -1310,6 +1310,26 @@
 .atelier-mark img{display:block!important;width:100%!important;height:auto!important;aspect-ratio:1536/400!important;object-fit:cover!important}
 @media(max-width:680px){.atelier-wordmark{width:150px!important;height:38px!important}.atelier-mark{min-width:112px!important;width:31%!important}.atelier-mark img{aspect-ratio:1536/400!important}}
 </style>
+<style id="hairintel-hero-rebuild">
+/* The campaign photo belongs to the hero itself; do not position nested logo images as hero media. */
+.atelier-visual{
+  background-image:url("public/hairintel-atelier-hero.png")!important;
+  background-size:cover!important;
+  background-position:center center!important;
+  background-repeat:no-repeat!important;
+  background-color:#2b2024!important;
+}
+.atelier-visual > img,
+.atelier-visual::after,
+.atelier-visual .atelier-mark{display:none!important}
+.atelier-visual-label{z-index:2!important}
+@media(max-width:680px){
+  .atelier-visual{height:340px!important;min-height:340px!important;background-position:58% center!important}
+  .atelier-visual-label{display:block!important;color:#fff!important;text-shadow:0 2px 10px rgba(0,0,0,.82)!important}
+  .atelier-nav{grid-template-columns:auto 1fr!important}
+  .atelier-nav .atelier-brand{margin-right:0!important}
+}
+</style>
 </head>
 
 <body>
@@ -1363,8 +1383,7 @@
   <nav class="atelier-nav">
     <div class="atelier-brand"><img class="atelier-wordmark" src="public/hairintel-plum-reserve-logo.jpg" alt="HairIntel Plum Reserve"></div>
     <div class="atelier-links"><a href="#atelierHome">Home</a><a href="#consultationWorkspace">Consultations</a><a href="#placement">Placement</a><a href="#scorePanel">Results</a><a href="#load">Safety</a></div>
-    <button class="gold-btn" data-action="consultations">Start Consultation</button>
-  </nav>
+    </nav>
   <div class="atelier-hero">
     <div class="atelier-copy"><p class="atelier-kicker">The HairIntel Atelier</p><h1>Beautiful hair begins with precise placement.</h1><p>Plan the blend, protect the hair, and create an extension result that looks effortless from every angle.</p><div class="atelier-cta"><button class="gold-btn" data-action="consultations">Start Consultation</button><button class="outline-btn" data-action="review">Explore the Method</button></div></div>
     <div class="atelier-visual"><img src="public/hairintel-atelier-hero.png" alt="Three hair models showcasing long luxury extensions"><div class="atelier-mark"><img src="public/hairintel-plum-reserve-logo.jpg" alt="HairIntel Plum Reserve"></div><span class="atelier-visual-label">Hair-first. Detail-led. Beautifully placed.</span></div>
