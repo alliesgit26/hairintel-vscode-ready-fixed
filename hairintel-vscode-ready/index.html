@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -1331,7 +1331,7 @@
 }
 </style>
 <style id="plum-dashboard-v2-style">
-/* HairIntel Plum Reserve dashboard — isolated from the legacy app underneath */
+/* HairIntel dashboard — isolated from the legacy app underneath */
 html{scroll-behavior:smooth}
 .plum-v2{--pv-ivory:#fbf7f2;--pv-paper:#fffdfa;--pv-plum:#2b1724;--pv-cocoa:#37252c;--pv-gold:#c89b59;--pv-gold-light:#e7c991;--pv-rose:#bc7e70;--pv-ink:#281c20;--pv-muted:#796a69;--pv-line:rgba(79,52,60,.14);--pv-display:"Cormorant Garamond",Georgia,serif;--pv-body:"DM Sans",Inter,Arial,sans-serif;position:relative;z-index:100;min-height:100vh;background:var(--pv-ivory);color:var(--pv-ink);font-family:var(--pv-body);overflow-x:hidden}
 .plum-v2~.app{display:none!important}.plum-v2~#hi-app{display:none!important}
@@ -1494,6 +1494,117 @@ html{scroll-behavior:smooth}
   .plum-v2 .pv2-login-top{min-height:34px;padding:0 10px;font-size:9px}
 }
 </style>
+
+<style id="hairintel-brand-navigation-cleanup">
+/* One HairIntel identity, one navigation system, and one visible fixed watermark. */
+.plum-v2 .pv2-ghost{
+  background:none!important;
+  opacity:1!important;
+  filter:none!important;
+  mix-blend-mode:normal!important;
+}
+.plum-v2 .pv2-ghost::before{
+  content:"HI";
+  position:fixed;
+  left:calc(50% + 80px);
+  top:52%;
+  transform:translate(-50%,-50%);
+  color:rgba(105,62,82,.15);
+  font:700 clamp(240px,34vw,520px)/.72 "Cormorant Garamond",Georgia,serif;
+  letter-spacing:-.15em;
+  text-shadow:0 16px 44px rgba(152,91,77,.12);
+  white-space:nowrap;
+}
+.plum-v2 .pv2-ghost::after{
+  content:"HAIRINTEL";
+  position:fixed;
+  left:calc(50% + 80px);
+  top:66%;
+  transform:translateX(-50%);
+  color:rgba(105,62,82,.12);
+  font:700 clamp(34px,6vw,88px)/1 "Cormorant Garamond",Georgia,serif;
+  letter-spacing:.12em;
+  white-space:nowrap;
+}
+.plum-v2 .pv2-copy::before{display:none!important}
+.plum-v2 .pv2-logo.pv2-wordmark,
+.plum-v2 .pv2-top-brand.pv2-wordmark{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:visible!important;
+  text-decoration:none!important;
+}
+.plum-v2 .pv2-logo.pv2-wordmark{
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  min-height:54px;
+  margin:7px 4px 24px!important;
+  padding:0 6px;
+}
+.plum-v2 .pv2-wordmark span{
+  color:#fff8f0;
+  font:600 27px/1 "Cormorant Garamond",Georgia,serif;
+  letter-spacing:.11em;
+  text-shadow:0 4px 18px rgba(0,0,0,.22);
+}
+.plum-v2 .pv2-top-brand.pv2-wordmark span{
+  color:var(--pv-plum);
+  font-size:23px;
+  text-shadow:none;
+}
+.plum-v2.pv2-collapsed .pv2-logo.pv2-wordmark span{font-size:0}
+.plum-v2.pv2-collapsed .pv2-logo.pv2-wordmark span::after{
+  content:"HI";
+  font:600 25px/1 "Cormorant Garamond",Georgia,serif;
+  letter-spacing:0;
+}
+.plum-v2 .pv2-topbar{
+  min-height:68px!important;
+  justify-content:flex-end!important;
+}
+.plum-v2 .pv2-actions{margin-left:auto!important}
+.plum-v2 .pv2-empty-copy{color:#796a69;font-size:12px;line-height:1.6}
+.plum-v2 .pv2-safety #pv2SafetyBar{width:0}
+.plum-v2 .pv2-heading{justify-content:flex-start!important}
+@media(max-width:870px){
+  .plum-v2 .pv2-ghost::before{
+    left:50%;
+    top:51%;
+    color:rgba(105,62,82,.17);
+    font-size:clamp(210px,66vw,380px);
+  }
+  .plum-v2 .pv2-ghost::after{
+    left:50%;
+    top:63%;
+    color:rgba(105,62,82,.14);
+    font-size:clamp(34px,11vw,64px);
+  }
+  .plum-v2 .pv2-topbar{
+    min-height:66px!important;
+    padding:0 16px!important;
+    display:grid!important;
+    grid-template-columns:42px minmax(96px,1fr) auto!important;
+    gap:12px!important;
+    align-items:center!important;
+    flex-wrap:nowrap!important;
+  }
+  .plum-v2 .pv2-mobile-toggle{display:block!important}
+  .plum-v2 .pv2-top-brand.pv2-wordmark{
+    display:flex!important;
+    align-items:center;
+    justify-content:flex-start;
+    min-width:0;
+  }
+  .plum-v2 .pv2-actions{margin-left:0!important}
+}
+@media(max-width:520px){
+  .plum-v2 .pv2-top-brand.pv2-wordmark span{font-size:19px}
+  .plum-v2 .pv2-login-top{font-size:9px!important;padding:0 10px!important}
+  .plum-v2 .pv2-export{display:none!important}
+}
+</style>
 </head>
 
 <body>
@@ -1502,7 +1613,7 @@ html{scroll-behavior:smooth}
   <div class="pv2-shell">
     <aside class="pv2-rail" id="pv2Rail">
       <div class="pv2-rail-top"><button class="pv2-rail-toggle" id="pv2RailToggle" type="button" aria-label="Collapse dashboard navigation">‹</button></div>
-      <a class="pv2-logo" href="#overview" aria-label="HairIntel Plum Reserve home"><img src="public/hairintel-plum-reserve-logo.jpg?v=5" alt="HairIntel Plum Reserve"></a>
+      <a class="pv2-logo pv2-wordmark" href="#overview" aria-label="HairIntel home"><span>HAIRINTEL</span></a>
       <p class="pv2-label">Workspace</p>
       <nav class="pv2-rail-nav" aria-label="Dashboard sections">
         <a class="pv2-rail-link active" href="#overview"><i>◇</i><span>Overview</span></a>
@@ -1514,20 +1625,17 @@ html{scroll-behavior:smooth}
         <a class="pv2-rail-link" href="#load-safety"><i>♢</i><span>Load Safety</span></a>
       </nav>
       <div class="pv2-rail-spacer"></div>
-      <button class="pv2-account-cta" type="button" data-action="consultations" aria-label="Sign in or create your HairIntel account"><span class="pv2-avatar">HI</span><span><b>Sign in / Create account</b><small>Open your stylist workspace</small></span><em>→</em></button>
+      <button class="pv2-account-cta" type="button" data-auth-action="signin" aria-label="Sign in or create your HairIntel account"><span class="pv2-avatar">HI</span><span><b>Sign in / Create account</b><small>Open your stylist workspace</small></span><em>→</em></button>
     </aside>
     <main class="pv2-main">
       <header class="pv2-topbar">
         <button class="pv2-mobile-toggle" id="pv2MobileToggle" type="button" aria-label="Open dashboard navigation">☰</button>
-        <a class="pv2-top-brand" href="#overview"><img src="public/hairintel-plum-reserve-logo.jpg?v=5" alt="HairIntel Plum Reserve"></a>
-        <nav class="pv2-topnav" aria-label="Primary navigation">
-          <a class="active" href="#overview">Overview</a><a href="#consultations">Consultations</a><a href="#placement">Placement</a><a href="#readiness">Readiness</a><a href="#install-plan">Install Plan</a><a href="#client-profile">Client Profile</a>
-        </nav>
-        <div class="pv2-actions"><button class="pv2-login-top" type="button" data-action="consultations" aria-label="Sign in or create your HairIntel account">Sign in / Create account</button><button class="pv2-icon-btn" type="button" data-pv2-scroll="#consultations" aria-label="Open consultations">⌕</button><button class="pv2-icon-btn" type="button" data-pv2-scroll="#client-profile" aria-label="Open client profile">♡</button><button class="pv2-export" id="pv2Export" type="button">Export Report</button></div>
+        <a class="pv2-top-brand pv2-wordmark" href="#overview" aria-label="HairIntel home"><span>HAIRINTEL</span></a>
+        <div class="pv2-actions"><button class="pv2-login-top" type="button" data-auth-action="signin" aria-label="Sign in or create your HairIntel account">Sign in / Create account</button><button class="pv2-export" id="pv2Export" type="button">Export Report</button></div>
       </header>
       <section class="pv2-hero" id="overview">
         <div class="pv2-copy">
-          <p class="pv2-eyebrow">HairIntel Plum Reserve</p>
+          <p class="pv2-eyebrow">Intelligent Hair Consultation</p>
           <h1>Elevated Extensions.<br>Exceptional Results.</h1>
           <p>Your complete consultation and planning suite for luxury hair extension transformations—built around beautiful placement and better hair protection.</p>
           <div class="pv2-hero-actions"><a class="pv2-primary" href="#consultations">Start Consultation <span>→</span></a><a class="pv2-text-link" href="#consultations">View all consultations <span>→</span></a></div>
@@ -1535,27 +1643,24 @@ html{scroll-behavior:smooth}
         </div>
         <div class="pv2-hero-photo" role="img" aria-label="Three hair models showing luxury hair extensions"><span class="pv2-caption">Precision placement · seamless blend · beautiful results</span></div>
       </section>
-      <nav class="pv2-workflow" id="consultations" aria-label="Consultation workflow">
-        <a class="active" href="#consultations"><span>▦</span>All Consultations</a><a href="#placement"><span>⌖</span>Placement</a><a href="#readiness"><span>◌</span>Readiness</a><a href="#install-plan"><span>▧</span>Install Planning</a><a href="#client-profile"><span>♡</span>Client Profile</a><a href="#load-safety"><span>♢</span>Load Safety</a>
-      </nav>
-      <div class="pv2-content">
+      <div class="pv2-content" id="consultations">
         <section class="pv2-grid" aria-label="Consultation overview">
-          <article class="pv2-card" id="consultation-summary"><div class="pv2-kicker"><i>◫</i>Consultations</div><div class="pv2-metric"><strong>12</strong><span>active consultations</span></div><div class="pv2-mini"><div><span>In progress</span><b>5</b></div><div><span>Placement mapped</span><b>3</b></div><div><span>Ready to install</span><b>2</b></div></div><a class="pv2-card-link" href="#consultations">View consultations →</a></article>
-          <article class="pv2-card" id="appointments"><div class="pv2-kicker"><i>◷</i>Upcoming appointments</div><h2>Today’s Chair</h2><div class="pv2-mini"><div><span>10:00 AM · Extension consult</span><b>View</b></div><div><span>1:00 PM · Placement map</span><b>View</b></div><div><span>3:30 PM · Install plan</span><b>View</b></div></div><a class="pv2-card-link" href="#install-plan">View install plan →</a></article>
-          <article class="pv2-card" id="readiness"><div class="pv2-kicker"><i>◌</i>Readiness overview</div><div class="pv2-ring-layout"><div class="pv2-ring"><strong>68%</strong></div><div class="pv2-legend"><div><span>Optimal</span><b>7</b></div><div><span>Good</span><b>3</b></div><div><span>Needs attention</span><b>2</b></div></div></div><a class="pv2-card-link" href="#client-profile">Review readiness →</a></article>
+          <article class="pv2-card" id="consultation-summary"><div class="pv2-kicker"><i>◫</i>Consultations</div><div class="pv2-metric"><strong id="pv2ConsultationTotal">0</strong><span>saved consultations</span></div><div class="pv2-mini"><div><span>In progress</span><b id="pv2InProgress">0</b></div><div><span>Placement mapped</span><b id="pv2PlacementMapped">0</b></div><div><span>Ready to install</span><b id="pv2ReadyToInstall">0</b></div></div><a class="pv2-card-link" href="#consultations">View consultations →</a></article>
+          <article class="pv2-card" id="recent-consultation"><div class="pv2-kicker"><i>◷</i>Recent consultation</div><h2 id="pv2RecentTitle">No saved consultations</h2><p id="pv2RecentDetail" class="pv2-empty-copy">Completed consultations will appear here.</p><a class="pv2-card-link" href="#consultations">Start a consultation →</a></article>
+          <article class="pv2-card" id="readiness"><div class="pv2-kicker"><i>◌</i>Readiness overview</div><div class="pv2-ring-layout"><div class="pv2-ring"><strong id="pv2ReadinessScore">--</strong></div><div class="pv2-legend"><div><span>Optimal</span><b id="pv2OptimalCount">0</b></div><div><span>Good</span><b id="pv2GoodCount">0</b></div><div><span>Needs attention</span><b id="pv2NeedsAttentionCount">0</b></div></div></div><a class="pv2-card-link" href="#client-profile">Review readiness →</a></article>
         </section>
-        <div class="pv2-heading"><div><p>Precision at every step</p><h2>Plan it beautifully.</h2></div><span>Every section is connected so a stylist can move from consultation to safe installation without losing the client story.</span></div>
+        <div class="pv2-heading"><div><p>Precision at every step</p><h2>Plan it beautifully.</h2></div></div>
         <section class="pv2-method">
           <article class="pv2-wide" id="placement"><div class="pv2-kicker"><i>⌖</i>Placement Map</div><h2>Visualize the install before the first strand.</h2><div class="pv2-map"><span class="pv2-map-label">Placement zone preview</span></div><a class="pv2-card-link" href="#install-plan">Open placement plan →</a></article>
           <div class="pv2-stack">
-            <article class="pv2-side" id="install-plan"><div class="pv2-kicker"><i>▧</i>Install Plan</div><div class="pv2-install"><i>01</i><div><b>Build the foundation</b><span>Map density, direction, and safe zones.</span></div></div><a class="pv2-card-link" href="#client-profile">Continue to client profile →</a></article>
-            <article class="pv2-side" id="load-safety"><div class="pv2-kicker"><i>♢</i>Load Safety</div><div class="pv2-safety"><b></b></div><div class="pv2-safety-meta"><span>Weight distribution</span><strong>Balanced</strong></div><a class="pv2-card-link" href="#consultation-summary">Return to consultation →</a></article>
+            <article class="pv2-side" id="install-plan"><div class="pv2-kicker"><i>▧</i>Install Plan</div><div class="pv2-install"><i>01</i><div><b id="pv2InstallTitle">Awaiting client data</b><span id="pv2InstallDetail">Complete a consultation to build the install plan.</span></div></div><a class="pv2-card-link" href="#client-profile">Continue to client profile →</a></article>
+            <article class="pv2-side" id="load-safety"><div class="pv2-kicker"><i>♢</i>Load Safety</div><div class="pv2-safety"><b id="pv2SafetyBar"></b></div><div class="pv2-safety-meta"><span>Weight distribution</span><strong id="pv2SafetyStatus">Pending</strong></div><a class="pv2-card-link" href="#consultation-summary">Return to consultation →</a></article>
           </div>
         </section>
-        <div class="pv2-heading" id="client-profile"><div><p>Client relationship</p><h2>Client-ready clarity.</h2></div><span>Open any section from the rail or the top navigation. Every destination has a real anchor target.</span></div>
-        <section class="pv2-grid"><article class="pv2-card"><div class="pv2-kicker"><i>♙</i>Client Profile</div><h2>Hair history</h2><div class="pv2-mini"><div><span>Natural density</span><b>Medium</b></div><div><span>Priority</span><b>Blend</b></div><div><span>Extension goal</span><b>Length + fullness</b></div></div><a class="pv2-card-link" href="#placement">Open placement map →</a></article><article class="pv2-card"><div class="pv2-kicker"><i>✦</i>Recommendation</div><h2>Soft volume, precise placement.</h2><p style="color:#796a69;font-size:12px;line-height:1.6">A balanced installation plan that protects natural hair while creating a seamless, luxurious finish.</p><a class="pv2-card-link" href="#load-safety">Review load safety →</a></article><article class="pv2-card"><div class="pv2-kicker"><i>✓</i>Next Step</div><h2>Ready for consultation.</h2><p style="color:#796a69;font-size:12px;line-height:1.6">Begin with the client profile, review readiness, then move through the placement map.</p><a class="pv2-card-link" href="#consultations">Open consultation workspace →</a></article></section>
+        <div class="pv2-heading" id="client-profile"><div><p>Client relationship</p><h2>Client-ready clarity.</h2></div></div>
+        <section class="pv2-grid"><article class="pv2-card"><div class="pv2-kicker"><i>♙</i>Client Profile</div><h2 id="pv2ClientName">No client selected</h2><div class="pv2-mini"><div><span>Natural density</span><b id="pv2ClientDensity">Not added</b></div><div><span>Priority</span><b id="pv2ClientPriority">Not added</b></div><div><span>Extension goal</span><b id="pv2ClientGoal">Not added</b></div></div><a class="pv2-card-link" href="#placement">Open placement map →</a></article><article class="pv2-card"><div class="pv2-kicker"><i>✦</i>Recommendation</div><h2 id="pv2RecommendationTitle">Awaiting consultation.</h2><p id="pv2RecommendationDetail" class="pv2-empty-copy">Complete a client consultation to generate a recommendation.</p><a class="pv2-card-link" href="#load-safety">Review load safety →</a></article><article class="pv2-card"><div class="pv2-kicker"><i>✓</i>Next Step</div><h2>Ready for consultation.</h2><p class="pv2-empty-copy">Begin with the client profile, then review readiness and placement.</p><a class="pv2-card-link" href="#consultations">Open consultation workspace →</a></article></section>
       </div>
-      <footer class="pv2-footer">HairIntel Plum Reserve · Beautiful hair begins with precise placement.</footer>
+      <footer class="pv2-footer">HairIntel · Beautiful hair begins with precise placement.</footer>
     </main>
   </div>
 </div>
@@ -1580,7 +1685,7 @@ html{scroll-behavior:smooth}
       <button type="button" class="rail-section-link active" data-scroll-target="atelierHome"><span>00</span><b>HairIntel Atelier</b></button>
       <button type="button" class="rail-section-link" data-scroll-target="consultationWorkspace"><span>01</span><b>Consultations</b></button>
       <button type="button" class="rail-section-link" data-scroll-target="heroPanel"><span>02</span><b>Overview</b></button>
-      <button type="button" class="rail-section-link" data-scroll-target="placement"><span>02</span><b>Placement map</b></button>
+      <button type="button" class="rail-section-link" data-scroll-target="legacy-placement"><span>02</span><b>Placement map</b></button>
       <button type="button" class="rail-section-link" data-scroll-target="scorePanel"><span>03</span><b>Readiness</b></button>
       <button type="button" class="rail-section-link" data-scroll-target="install"><span>04</span><b>Install plan</b></button>
       <button type="button" class="rail-section-link" data-scroll-target="client"><span>05</span><b>Client profile</b></button>
@@ -1607,12 +1712,12 @@ html{scroll-behavior:smooth}
       
 <section class="atelier-template" id="atelierHome" aria-label="HairIntel luxury storefront template">
   <nav class="atelier-nav">
-    <div class="atelier-brand"><img class="atelier-wordmark" src="public/hairintel-plum-reserve-logo.jpg" alt="HairIntel Plum Reserve"></div>
-    <div class="atelier-links"><a href="#atelierHome">Home</a><a href="#consultationWorkspace">Consultations</a><a href="#placement">Placement</a><a href="#scorePanel">Results</a><a href="#load">Safety</a></div>
+    <div class="atelier-brand"><img class="atelier-wordmark" src="public/hairintel-plum-reserve-logo.jpg" alt="HairIntel"></div>
+    <div class="atelier-links"><a href="#atelierHome">Home</a><a href="#consultationWorkspace">Consultations</a><a href="#legacy-placement">Placement</a><a href="#scorePanel">Results</a><a href="#load">Safety</a></div>
     </nav>
   <div class="atelier-hero">
     <div class="atelier-copy"><p class="atelier-kicker">The HairIntel Atelier</p><h1>Beautiful hair begins with precise placement.</h1><p>Plan the blend, protect the hair, and create an extension result that looks effortless from every angle.</p><div class="atelier-cta"><button class="gold-btn" data-action="consultations">Start Consultation</button><button class="outline-btn" data-action="review">Explore the Method</button></div></div>
-    <div class="atelier-visual"><img src="public/hairintel-atelier-hero.png" alt="Three hair models showcasing long luxury extensions"><div class="atelier-mark"><img src="public/hairintel-plum-reserve-logo.jpg" alt="HairIntel Plum Reserve"></div><span class="atelier-visual-label">Hair-first. Detail-led. Beautifully placed.</span></div>
+    <div class="atelier-visual"><img src="public/hairintel-atelier-hero.png" alt="Three hair models showcasing long luxury extensions"><div class="atelier-mark"><img src="public/hairintel-plum-reserve-logo.jpg" alt="HairIntel"></div><span class="atelier-visual-label">Hair-first. Detail-led. Beautifully placed.</span></div>
   </div>
   <div class="atelier-ticker">Blending • Density • Placement • Safety • Beautiful Results</div>
   <div class="atelier-collections"><h2>Explore the method</h2><p>Every recommendation is designed around the finish your client actually wants.</p><div class="atelier-cards"><article class="atelier-card"><b>01 / Map</b><strong>Placement Mapping</strong><span>See the extension zones before the first install.</span></article><article class="atelier-card"><b>02 / Balance</b><strong>Readiness Score</strong><span>Match density, length, and hair strength with clarity.</span></article><article class="atelier-card"><b>03 / Protect</b><strong>Load Safety</strong><span>Build a beautiful result that respects the natural hair.</span></article></div></div>
@@ -1648,7 +1753,7 @@ html{scroll-behavior:smooth}
               <button class="outline-btn" data-action="share">Share Results </button>
             </div>
 
-            <div class="panel placement" id="placement">
+            <div class="panel placement" id="legacy-placement">
               <h3 class="panel-title">Placement Map Preview</h3>
 
               <div class="pill-tabs">
@@ -2096,6 +2201,63 @@ html{scroll-behavior:smooth}
   <script src="js/dashboard-actions-final.js"></script>
   <script src="js/dashboard-nav-final.js"></script>
   <script src="js/dashboard-menu-final.js"></script>
+
+<script id="hairintel-v2-real-data">
+(() => {
+  const root=document.getElementById("plumDashboard");
+  if(!root)return;
+  const read=(key,fallback)=>{try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback}catch{return fallback}};
+  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+  const consults=read("hi_consultations",[]);
+  const rows=Array.isArray(consults)?consults.filter(Boolean):[];
+  const statusOf=(row)=>String(row?.status||"").trim().toLowerCase();
+  const inProgress=rows.filter(row=>["in progress","in-progress","draft"].includes(statusOf(row))).length;
+  const placementMapped=rows.filter(row=>Boolean(row?.placementMap||row?.result?.placementMap||row?.analysis?.placementMap)).length;
+  const ready=rows.filter(row=>["ready","ready to install","approved"].includes(statusOf(row))).length;
+  set("pv2ConsultationTotal",String(rows.length));
+  set("pv2InProgress",String(inProgress));
+  set("pv2PlacementMapped",String(placementMapped));
+  set("pv2ReadyToInstall",String(ready));
+  const latest=[...rows].sort((a,b)=>new Date(b.updatedAt||b.analyzedAt||b.createdAt||b.savedAt||0)-new Date(a.updatedAt||a.analyzedAt||a.createdAt||a.savedAt||0))[0];
+  if(!latest)return;
+  const result=latest.result||latest.analysis||{};
+  const plan=result.plan||latest.plan||{};
+  const capacity=result.capacity||latest.capacity||{};
+  const client=latest.clientInfo||latest.client||{};
+  const profile=latest.hairProfile||{};
+  const goals=latest.goals||{};
+  const name=[client.firstName,client.lastName].filter(Boolean).join(" ").trim();
+  set("pv2RecentTitle",name||"Latest consultation");
+  const dateValue=latest.updatedAt||latest.analyzedAt||latest.createdAt||latest.savedAt;
+  const date=dateValue?new Date(dateValue):null;
+  set("pv2RecentDetail",date&&!Number.isNaN(date.getTime())?"Last updated "+date.toLocaleDateString():"Saved consultation");
+  const score=result.readinessScore??result.integrityScore??capacity.score;
+  set("pv2ReadinessScore",Number.isFinite(Number(score))?Math.round(Number(score))+"%":"--");
+  const band=String(result.readiness||capacity.status||"").toLowerCase();
+  set("pv2OptimalCount",band==="green"||band==="optimal"?"1":"0");
+  set("pv2GoodCount",band==="yellow"||band==="good"?"1":"0");
+  set("pv2NeedsAttentionCount",band==="red"||band.includes("attention")?"1":"0");
+  set("pv2ClientName",name||"Client selected");
+  set("pv2ClientDensity",profile.density||"Not added");
+  set("pv2ClientPriority",goals.priority||goals.primaryGoal||"Not added");
+  set("pv2ClientGoal",goals.extensionGoal||goals.primaryGoal||"Not added");
+  set("pv2InstallTitle",plan.method||"Install plan pending");
+  set("pv2InstallDetail",plan.method?"Plan loaded from the saved consultation.":"Complete the consultation to build the install plan.");
+  const safety=capacity.status||"Pending";
+  set("pv2SafetyStatus",safety);
+  const bar=document.getElementById("pv2SafetyBar");
+  if(bar){
+    const safe=/safe|balanced|green|optimal/i.test(String(safety));
+    const caution=/risk|overload|red|unsafe/i.test(String(safety));
+    bar.style.width=caution?"100%":safe?"72%":"0";
+  }
+  const recommendation=result.recommendation||plan.recommendation;
+  if(recommendation){
+    set("pv2RecommendationTitle","Consultation recommendation");
+    set("pv2RecommendationDetail",String(recommendation));
+  }
+})();
+</script>
 <script id="plum-dashboard-v2-js">
 (() => {
   const dash=document.getElementById('plumDashboard');
