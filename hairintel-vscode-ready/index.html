@@ -1723,6 +1723,8 @@ html{scroll-behavior:smooth}
 </style>
 <style id="hairintel-public-private-shell">
 /* Public marketing and private stylist workspace are intentionally separate. */
+.plum-v2 [hidden]{display:none!important}
+.plum-v2 [data-private-shell]{visibility:visible}
 .plum-v2 .pv2-rail-nav{min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(231,201,145,.28) transparent}
 .plum-v2 .pv2-rail-top{height:auto;min-height:36px}
 .plum-v2 .pv2-rail-toggle{
@@ -1745,9 +1747,11 @@ html{scroll-behavior:smooth}
 .plum-v2 .pv2-member-actions{display:flex}
 .plum-v2 .pv2-guest-experience{display:none}
 .plum-v2 .pv2-hero-photo{
-  background-image:url("public/hairintel-atelier-hero-clean.webp?v=20260814")!important;
+  background-image:url("public/hairintel-atelier-hero-retouched-smoother.webp?v=20260814b")!important;
   image-rendering:auto
 }
+.plum-v2 #overview,.plum-v2 #consultations,.plum-v2 #placement,.plum-v2 #readiness,
+.plum-v2 #install-plan,.plum-v2 #client-profile,.plum-v2 #load-safety{scroll-margin-top:96px}
 
 html.hi-guest .plum-v2 .pv2-shell{padding-left:0!important}
 html.hi-guest .plum-v2 .pv2-rail,
@@ -1781,6 +1785,12 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
 .plum-v2 .pv2-public-heading .pv2-eyebrow{margin-bottom:12px}
 .plum-v2 .pv2-public-heading h2{margin:0;color:var(--pv-plum);font:600 clamp(38px,5.3vw,65px)/.94 var(--pv-display);letter-spacing:-.035em}
 .plum-v2 .pv2-public-heading p{max-width:620px;margin:18px auto 0;color:var(--pv-muted);font-size:14px;line-height:1.7}
+.plum-v2 .pv2-public-features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1080px;margin:36px auto 0}
+.plum-v2 .pv2-public-feature{min-height:210px;padding:28px;border:1px solid var(--pv-line);background:rgba(255,253,250,.92);box-shadow:0 16px 42px rgba(54,31,39,.06)}
+.plum-v2 .pv2-public-feature i{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:#f6e6dc;color:#aa704f;font-style:normal;font-size:17px}
+.plum-v2 .pv2-public-feature h3{margin:24px 0 10px;color:var(--pv-plum);font:600 28px/1 var(--pv-display)}
+.plum-v2 .pv2-public-feature p{margin:0;color:var(--pv-muted);font-size:11px;line-height:1.65}
+.plum-v2 .pv2-private-note{max-width:760px;margin:22px auto 0;color:#887775;text-align:center;font-size:10px;line-height:1.65}
 .plum-v2 .pv2-preview-frame{
   position:relative;display:grid;grid-template-columns:185px 1fr;min-height:410px;overflow:hidden;
   border:1px solid rgba(79,52,60,.16);background:#fffdfa;box-shadow:0 28px 70px rgba(49,25,37,.12)
@@ -1840,6 +1850,7 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
   .plum-v2 .pv2-preview-main{padding:68px 18px 22px}
   .plum-v2 .pv2-preview-grid{grid-template-columns:1fr 1fr}
   .plum-v2 .pv2-preview-card:last-child{grid-column:1/-1}
+  .plum-v2 .pv2-public-features{grid-template-columns:1fr;max-width:560px}
   .plum-v2 .pv2-price-grid{grid-template-columns:1fr;max-width:560px;margin-left:auto;margin-right:auto}
   .plum-v2 .pv2-price-card.featured{transform:none}
 }
@@ -1860,20 +1871,20 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
 <div class="plum-v2" id="plumDashboard">
   <div class="pv2-ghost" aria-hidden="true"></div>
   <div class="pv2-shell">
-    <aside class="pv2-rail" id="pv2Rail">
+    <aside class="pv2-rail" id="pv2Rail" data-private-shell hidden aria-hidden="true">
       <div class="pv2-rail-top"><button class="pv2-rail-toggle" id="pv2RailToggle" type="button" aria-label="Collapse dashboard navigation" aria-expanded="true"><span class="pv2-rail-toggle-icon" aria-hidden="true">‹</span><span class="pv2-rail-toggle-label">Collapse</span></button></div>
-      <a class="pv2-logo pv2-wordmark" href="#overview" aria-label="HairIntel home"><span class="pv2-wordmark-text">HAIR<span class="pv2-sparkle-i">I</span>NTEL</span></a>
+      <a class="pv2-logo pv2-wordmark" href="#overview" data-scroll-target="overview" aria-label="HairIntel dashboard overview"><span class="pv2-wordmark-text">HAIR<span class="pv2-sparkle-i">I</span>NTEL</span></a>
       <p class="pv2-label">Workspace</p>
       <nav class="pv2-rail-nav" aria-label="Dashboard sections">
-        <a class="pv2-rail-link active" href="#overview"><i>◇</i><span>Overview</span></a>
-        <a class="pv2-rail-link" href="hairintel/index.html" data-action="consultations"><i>＋</i><span>New Consultation</span></a>
+        <a class="pv2-rail-link active" href="#overview" data-scroll-target="overview"><i>◇</i><span>Overview</span></a>
+        <a class="pv2-rail-link" href="hairintel/index.html?screen=client-info" data-action="consultations"><i>＋</i><span>New Consultation</span></a>
         <a class="pv2-rail-link" href="hairintel/index.html?screen=clients" data-action="consultations"><i>◫</i><span>Clients &amp; Consultations</span></a>
         <a class="pv2-rail-link" href="hairintel/index.html?screen=client-info&amp;flow=ai" data-action="consultations" data-feature="ai"><i>✦</i><span>AI + Client Photos</span></a>
-        <a class="pv2-rail-link" href="#placement"><i>⌖</i><span>Placement Map</span></a>
-        <a class="pv2-rail-link" href="#readiness"><i>◌</i><span>Readiness</span></a>
-        <a class="pv2-rail-link" href="#install-plan"><i>▧</i><span>Install Plan</span></a>
-        <a class="pv2-rail-link" href="#client-profile"><i>♙</i><span>Client Profile</span></a>
-        <a class="pv2-rail-link" href="#load-safety"><i>♢</i><span>Load Safety</span></a>
+        <a class="pv2-rail-link" href="#placement" data-scroll-target="placement"><i>⌖</i><span>Placement Map</span></a>
+        <a class="pv2-rail-link" href="#readiness" data-scroll-target="readiness"><i>◌</i><span>Readiness</span></a>
+        <a class="pv2-rail-link" href="#install-plan" data-scroll-target="install-plan"><i>▧</i><span>Install Plan</span></a>
+        <a class="pv2-rail-link" href="#client-profile" data-scroll-target="client-profile"><i>♙</i><span>Client Profile</span></a>
+        <a class="pv2-rail-link" href="#load-safety" data-scroll-target="load-safety"><i>♢</i><span>Load Safety</span></a>
         <a class="pv2-rail-link" href="#" data-auth-action="account"><i>◈</i><span>Plans &amp; Billing</span></a>
       </nav>
       <div class="pv2-rail-spacer"></div>
@@ -1881,18 +1892,18 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
     </aside>
     <main class="pv2-main">
       <header class="pv2-topbar">
-        <button class="pv2-mobile-toggle" id="pv2MobileToggle" type="button" aria-label="Open stylist dashboard menu" aria-expanded="false">☰</button>
+        <button class="pv2-mobile-toggle" id="pv2MobileToggle" type="button" data-private-shell hidden aria-hidden="true" aria-label="Open stylist dashboard menu" aria-expanded="false">☰</button>
         <a class="pv2-top-brand pv2-wordmark" href="#overview" aria-label="HairIntel home"><span class="pv2-wordmark-text">HAIR<span class="pv2-sparkle-i">I</span>NTEL</span></a>
         <div class="pv2-topbar-magic" aria-hidden="true"><span>✦</span><b>Artistry · Intelligence · Precision</b><span>✦</span></div>
-        <div class="pv2-actions"><button class="pv2-login-top" type="button" data-auth-action="signin" aria-label="Sign in or create your HairIntel account">Sign in / Create account</button><button class="pv2-export" id="pv2Export" type="button">Export Report</button></div>
+        <div class="pv2-actions"><button class="pv2-login-top" type="button" data-auth-action="signin" aria-label="Sign in or create your HairIntel account">Sign in / Create account</button><button class="pv2-export" id="pv2Export" type="button" data-private-shell hidden aria-hidden="true">Export Report</button></div>
       </header>
       <section class="pv2-hero" id="overview">
         <div class="pv2-copy">
           <p class="pv2-eyebrow">Intelligent Hair Consultation</p>
           <h1>Elevated Extensions.<br>Exceptional Results.</h1>
           <p>Your complete consultation and planning suite for luxury hair extension transformations—built around beautiful placement and better hair protection.</p>
-          <div class="pv2-hero-actions pv2-guest-actions"><button class="pv2-primary" type="button" data-auth-action="subscribe">Start your 7-day trial <span>→</span></button><a class="pv2-text-link" href="#workspace-preview">Preview the stylist workspace <span>↓</span></a></div>
-          <div class="pv2-hero-actions pv2-member-actions"><a class="pv2-primary" href="hairintel/index.html" data-action="consultations">Start New Consultation <span>→</span></a></div>
+          <div class="pv2-hero-actions pv2-guest-actions"><button class="pv2-primary" type="button" data-auth-action="subscribe">Start your 7-day trial <span>→</span></button><a class="pv2-text-link" href="#pricing">View plans &amp; pricing <span>↓</span></a></div>
+          <div class="pv2-hero-actions pv2-member-actions" data-private-shell hidden aria-hidden="true"><a class="pv2-primary" href="hairintel/index.html?screen=client-info" data-action="consultations">Start New Consultation <span>→</span></a></div>
           <div class="pv2-proof"><div><strong>01</strong><span>Placement-led</span></div><div><strong>02</strong><span>Hair-safe</span></div><div><strong>03</strong><span>Client-ready</span></div></div>
         </div>
         <div class="pv2-hero-photo" role="img" aria-label="Three hair models showing luxury hair extensions"><span class="pv2-caption">Precision placement · seamless blend · beautiful results</span></div>
@@ -1900,25 +1911,15 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
       <section class="pv2-guest-experience" id="workspace-preview" aria-label="HairIntel stylist workspace preview">
         <div class="pv2-public-heading">
           <p class="pv2-eyebrow">Inside HairIntel</p>
-          <h2>Your private stylist workspace.</h2>
-          <p>This is a visual preview only. Client photos, consultations, placement plans, AI previews, and reports remain private and unlock after you create your stylist account.</p>
+          <h2>Built for extension professionals.</h2>
+          <p>The public page explains the tools. The working dashboard, client records, photo uploads, AI previews, placement plans, and reports appear only after account sign-in.</p>
         </div>
-        <div class="pv2-preview-frame" aria-label="Non-interactive dashboard preview">
-          <div class="pv2-preview-rail" aria-hidden="true">
-            <div class="pv2-preview-logo">HAIRINTEL</div>
-            <div class="pv2-preview-nav"><span><i>◇</i> Overview</span><span><i>◫</i> Consultations</span><span><i>✦</i> AI + Client Photos</span><span><i>⌖</i> Placement Map</span><span><i>▧</i> Install Plan</span></div>
-          </div>
-          <div class="pv2-preview-main" aria-hidden="true">
-            <h3 class="pv2-preview-title">The day, beautifully organized.</h3>
-            <div class="pv2-preview-grid">
-              <div class="pv2-preview-card"><small>Consultations</small><strong>Private</strong><span>Keep every client plan organized in one secure stylist workspace.</span></div>
-              <div class="pv2-preview-card"><small>Photo + AI Studio</small><strong>Visualize</strong><span>Upload client views and create an extension preview from an approved plan.</span></div>
-              <div class="pv2-preview-card"><small>Readiness</small><strong>Hair-safe</strong><span>Review density, tension, placement, and load before installation.</span></div>
-            </div>
-            <div class="pv2-preview-map"></div>
-            <p class="pv2-preview-note">No live client information is shown in this preview.</p>
-          </div>
+        <div class="pv2-public-features" aria-label="HairIntel member features">
+          <article class="pv2-public-feature"><i>◫</i><h3>Private consultations</h3><p>Organize client goals, hair history, photos, recommendations, and saved consultation records inside the signed-in workspace.</p></article>
+          <article class="pv2-public-feature"><i>✦</i><h3>AI visualization</h3><p>Eligible plans include a guided client-photo workflow for visualizing an extension result after the consultation is prepared.</p></article>
+          <article class="pv2-public-feature"><i>⌖</i><h3>Safer planning</h3><p>Review readiness, placement, install strategy, and load guidance before beginning the extension service.</p></article>
         </div>
+        <p class="pv2-private-note">These are feature descriptions only. No dashboard navigation, client information, consultation controls, or reports are exposed on the public page.</p>
 
         <section class="pv2-pricing" id="pricing" aria-labelledby="pv2PricingTitle">
           <div class="pv2-public-heading">
@@ -1953,7 +1954,7 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
           <p class="pv2-trial-terms">A payment method is required to begin the trial. There is no charge today. Your selected subscription renews automatically after seven days unless you cancel before the trial ends; payments are non-refundable once processed.</p>
         </section>
       </section>
-      <div class="pv2-content" id="consultations">
+      <div class="pv2-content" id="consultations" data-private-shell hidden aria-hidden="true">
         <section class="pv2-grid" aria-label="Consultation overview">
           <article class="pv2-card" id="consultation-summary"><div class="pv2-kicker"><i>◫</i>Consultations</div><div class="pv2-metric"><strong id="pv2ConsultationTotal">0</strong><span>saved consultations</span></div><div class="pv2-mini"><div><span>In progress</span><b id="pv2InProgress">0</b></div><div><span>Placement mapped</span><b id="pv2PlacementMapped">0</b></div><div><span>Ready to install</span><b id="pv2ReadyToInstall">0</b></div></div><a class="pv2-card-link" href="#consultations">View consultations →</a></article>
           <article class="pv2-card" id="recent-consultation"><div class="pv2-kicker"><i>◷</i>Recent consultation</div><h2 id="pv2RecentTitle">No saved consultations</h2><p id="pv2RecentDetail" class="pv2-empty-copy">Completed consultations will appear here.</p><a class="pv2-card-link" href="#consultations">Start a consultation →</a></article>
@@ -1970,7 +1971,7 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
         <div class="pv2-heading" id="client-profile"><div><p>Client relationship</p><h2>Client-ready clarity.</h2></div></div>
         <section class="pv2-grid"><article class="pv2-card"><div class="pv2-kicker"><i>♙</i>Client Profile</div><h2 id="pv2ClientName">No client selected</h2><div class="pv2-mini"><div><span>Natural density</span><b id="pv2ClientDensity">Not added</b></div><div><span>Priority</span><b id="pv2ClientPriority">Not added</b></div><div><span>Extension goal</span><b id="pv2ClientGoal">Not added</b></div></div><a class="pv2-card-link" href="#placement">Open placement map →</a></article><article class="pv2-card"><div class="pv2-kicker"><i>✦</i>Recommendation</div><h2 id="pv2RecommendationTitle">Awaiting consultation.</h2><p id="pv2RecommendationDetail" class="pv2-empty-copy">Complete a client consultation to generate a recommendation.</p><a class="pv2-card-link" href="#load-safety">Review load safety →</a></article><article class="pv2-card"><div class="pv2-kicker"><i>✓</i>Next Step</div><h2>Ready for consultation.</h2><p class="pv2-empty-copy">Begin with the client profile, then review readiness and placement.</p><a class="pv2-card-link" href="#consultations">Open consultation workspace →</a></article></section>
       </div>
-      <footer class="pv2-footer">HairIntel · Beautiful hair begins with precise placement.</footer>
+      <footer class="pv2-footer" data-private-shell hidden aria-hidden="true">HairIntel · Beautiful hair begins with precise placement.</footer>
     </main>
   </div>
 </div>
@@ -2582,10 +2583,17 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
   const railToggle=document.getElementById('pv2RailToggle');
   const mobileToggle=document.getElementById('pv2MobileToggle');
   const exportBtn=document.getElementById('pv2Export');
-  const links=[...dash.querySelectorAll('.pv2-rail-link,.pv2-topnav a,.pv2-workflow a')];
+  const links=[...dash.querySelectorAll('.pv2-rail-link,.pv2-topnav a,.pv2-workflow a,.pv2-logo[data-scroll-target]')];
   const railStateKey='hairintel_pv2_rail_collapsed';
   const isMobile=()=>window.matchMedia('(max-width:870px)').matches;
-  const setActive=(id)=>links.forEach(link=>link.classList.toggle('active',link.getAttribute('href')==='#'+id));
+  const setActive=(id)=>links.forEach(link=>{
+    const active=link.dataset.scrollTarget===id||link.getAttribute('href')==='#'+id;
+    link.classList.toggle('active',active);
+    if(link.classList.contains('pv2-rail-link')){
+      if(active)link.setAttribute('aria-current','page');
+      else link.removeAttribute('aria-current');
+    }
+  });
   const updateRailButton=()=>{
     const collapsed=dash.classList.contains('pv2-collapsed');
     const icon=railToggle?.querySelector('.pv2-rail-toggle-icon');
@@ -2614,9 +2622,17 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
     setCollapsed(!dash.classList.contains('pv2-collapsed'));
   });
   mobileToggle?.addEventListener('click',()=>setMobileOpen(!dash.classList.contains('pv2-mobile-open')));
-  links.forEach(link=>link.addEventListener('click',()=>{
-    const href=link.getAttribute('href')||'';
-    if(href.startsWith('#')&&href.length>1)setActive(href.slice(1));
+  links.forEach(link=>link.addEventListener('click',(event)=>{
+    const targetId=link.dataset.scrollTarget;
+    if(targetId){
+      event.preventDefault();
+      const target=document.getElementById(targetId);
+      if(target&&!target.hidden){
+        setActive(targetId);
+        history.replaceState(null,'',window.location.pathname+window.location.search+'#'+targetId);
+        target.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    }
     if(isMobile())setMobileOpen(false);
   }));
   document.addEventListener('keydown',(event)=>{if(event.key==='Escape')setMobileOpen(false)});
@@ -2634,6 +2650,3 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
 </script>
 </body>
 </html>
-
-
-
