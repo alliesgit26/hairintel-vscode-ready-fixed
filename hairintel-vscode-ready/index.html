@@ -1402,6 +1402,42 @@ html{scroll-behavior:smooth}
 .plum-v2 .pv2-account-cta em{margin-left:auto;color:var(--pv-gold-light);font-size:18px;font-style:normal}
 @media(max-width:870px){.plum-v2 .pv2-ghost{background-size:min(82vw,500px) auto!important;opacity:.13!important}}
 </style>
+<style id="plum-dashboard-composition-and-rail-fix">
+/* Restore the intentional dark-Plum navigation rail over legacy global styles. */
+.plum-v2 .pv2-rail{
+  background:linear-gradient(165deg,#2d1926 0%,#21131d 72%,#1a1017 100%)!important;
+  color:#fdf6ee!important;
+  border-right:1px solid rgba(231,201,145,.18)!important;
+  box-shadow:14px 0 36px rgba(51,24,39,.13)!important;
+}
+.plum-v2 .pv2-rail .pv2-label{color:rgba(253,246,238,.48)!important}
+.plum-v2 .pv2-rail .pv2-rail-link{color:rgba(253,246,238,.80)!important}
+.plum-v2 .pv2-rail .pv2-rail-link i{color:var(--pv-gold-light)!important}
+.plum-v2 .pv2-rail .pv2-rail-link:hover,.plum-v2 .pv2-rail .pv2-rail-link.active{
+  color:#fffdf9!important;
+  background:linear-gradient(90deg,rgba(202,144,129,.20),rgba(255,255,255,.05))!important;
+  border-color:rgba(230,191,133,.26)!important;
+}
+.plum-v2 .pv2-account-cta{color:rgba(253,246,238,.96)!important}
+.plum-v2 .pv2-account-cta small{color:rgba(253,246,238,.66)!important}
+/* Keep the full three-model composition intact rather than cropping it into a portrait block. */
+@media(min-width:871px){
+  .plum-v2 .pv2-hero{align-items:center!important}
+  .plum-v2 .pv2-copy{min-height:0!important;padding:46px 4vw 48px 0!important}
+  .plum-v2 .pv2-hero-photo{
+    min-height:0!important;height:auto!important;aspect-ratio:16/9!important;align-self:center!important;
+    background-position:center center!important;
+  }
+  .plum-v2 .pv2-ghost{
+    background-position:calc(50% + 125px) center!important;
+    background-size:min(52vw,680px) auto!important;
+    opacity:.21!important;
+  }
+}
+@media(max-width:870px){
+  .plum-v2 .pv2-ghost{background-position:center center!important;opacity:.16!important}
+}
+</style>
 </head>
 
 <body>
