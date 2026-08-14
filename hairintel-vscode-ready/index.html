@@ -1290,6 +1290,20 @@
  .atelier-ticker{padding:10px 12px!important}
 }
 </style>
+<style id="hairintel-mobile-hero-fix">
+/* Mobile hero: show the actual campaign image, never a solid overlay */
+.atelier-visual{isolation:isolate}
+.atelier-visual img{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover}
+.atelier-visual::after{z-index:1;pointer-events:none}
+.atelier-visual-label{z-index:2;text-shadow:0 2px 8px rgba(0,0,0,.65)}
+@media(max-width:680px){
+  .atelier-visual{height:320px!important;min-height:320px!important;background:#302327!important}
+  .atelier-visual::after{display:none!important}
+  .atelier-visual img{display:block!important;visibility:visible!important;opacity:1!important}
+  .atelier-visual-label{left:16px!important;right:16px!important;bottom:18px!important;font-size:9px!important;line-height:1.35!important;letter-spacing:.12em!important;text-align:center!important}
+  .atelier-ticker{padding:14px 16px!important;line-height:1.5!important;white-space:normal!important;word-spacing:6px!important}
+}
+</style>
 </head>
 
 <body>
