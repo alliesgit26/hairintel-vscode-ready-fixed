@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HairIntel AI Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -1605,6 +1605,78 @@ html{scroll-behavior:smooth}
   .plum-v2 .pv2-export{display:none!important}
 }
 </style>
+
+<style id="hairintel-luxe-wordmark-sparkle">
+/* HairIntel's signature wordmark: editorial serif with one precise sparkle above the second I. */
+.plum-v2 .pv2-wordmark .pv2-wordmark-text{
+  position:relative;
+  display:inline-block;
+  font-family:"Bodoni Moda","Cormorant Garamond",Georgia,serif!important;
+  font-size:31px!important;
+  font-weight:700!important;
+  font-style:normal!important;
+  line-height:.88!important;
+  letter-spacing:.048em!important;
+  color:#ffe2b4!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.2),0 4px 18px rgba(0,0,0,.28)!important;
+  white-space:nowrap;
+}
+.plum-v2 .pv2-top-brand.pv2-wordmark .pv2-wordmark-text{
+  font-size:22px!important;
+  color:#452334!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.72),0 3px 12px rgba(105,62,82,.14)!important;
+}
+.plum-v2 .pv2-wordmark .pv2-sparkle-i{
+  position:relative;
+  display:inline-block;
+  font:inherit!important;
+  letter-spacing:inherit!important;
+  color:inherit!important;
+  text-shadow:inherit!important;
+}
+.plum-v2 .pv2-wordmark .pv2-sparkle-i::after{
+  content:"✦";
+  position:absolute;
+  z-index:2;
+  left:50%;
+  top:-.58em;
+  transform:translateX(-50%) rotate(8deg);
+  color:#fff8e7!important;
+  font-family:Georgia,serif!important;
+  font-size:.48em!important;
+  font-weight:400!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+  text-shadow:0 0 3px #fffdf4,0 0 10px rgba(255,222,158,.96),0 0 22px rgba(219,148,92,.78)!important;
+  pointer-events:none;
+}
+.plum-v2 .pv2-top-brand.pv2-wordmark .pv2-sparkle-i::after{
+  color:#c18456!important;
+  text-shadow:0 0 3px rgba(255,248,231,.98),0 0 10px rgba(215,164,104,.65)!important;
+}
+.plum-v2.pv2-collapsed .pv2-logo.pv2-wordmark span::after{content:none!important}
+.plum-v2.pv2-collapsed .pv2-logo.pv2-wordmark .pv2-wordmark-text{
+  font-size:0!important;
+  letter-spacing:0!important;
+  color:transparent!important;
+  text-shadow:none!important;
+}
+.plum-v2.pv2-collapsed .pv2-logo.pv2-wordmark .pv2-wordmark-text::after{
+  content:"HI"!important;
+  display:block;
+  color:#ffe2b4!important;
+  font:700 25px/1 "Bodoni Moda","Cormorant Garamond",Georgia,serif!important;
+  letter-spacing:-.04em!important;
+  text-shadow:0 4px 18px rgba(0,0,0,.22)!important;
+}
+.plum-v2.pv2-collapsed .pv2-logo.pv2-wordmark .pv2-sparkle-i::after{display:none!important}
+@media(max-width:870px){
+  .plum-v2 .pv2-top-brand.pv2-wordmark .pv2-wordmark-text{font-size:clamp(19px,5.4vw,22px)!important;letter-spacing:.03em!important}
+}
+@media(max-width:520px){
+  .plum-v2 .pv2-top-brand.pv2-wordmark .pv2-wordmark-text{font-size:19px!important}
+}
+</style>
 </head>
 
 <body>
@@ -1613,7 +1685,7 @@ html{scroll-behavior:smooth}
   <div class="pv2-shell">
     <aside class="pv2-rail" id="pv2Rail">
       <div class="pv2-rail-top"><button class="pv2-rail-toggle" id="pv2RailToggle" type="button" aria-label="Collapse dashboard navigation">‹</button></div>
-      <a class="pv2-logo pv2-wordmark" href="#overview" aria-label="HairIntel home"><span>HAIRINTEL</span></a>
+      <a class="pv2-logo pv2-wordmark" href="#overview" aria-label="HairIntel home"><span class="pv2-wordmark-text" aria-hidden="true">HAIR<span class="pv2-sparkle-i">I</span>NTEL</span></a>
       <p class="pv2-label">Workspace</p>
       <nav class="pv2-rail-nav" aria-label="Dashboard sections">
         <a class="pv2-rail-link active" href="#overview"><i>◇</i><span>Overview</span></a>
@@ -1630,7 +1702,7 @@ html{scroll-behavior:smooth}
     <main class="pv2-main">
       <header class="pv2-topbar">
         <button class="pv2-mobile-toggle" id="pv2MobileToggle" type="button" aria-label="Open dashboard navigation">☰</button>
-        <a class="pv2-top-brand pv2-wordmark" href="#overview" aria-label="HairIntel home"><span>HAIRINTEL</span></a>
+        <a class="pv2-top-brand pv2-wordmark" href="#overview" aria-label="HairIntel home"><span class="pv2-wordmark-text" aria-hidden="true">HAIR<span class="pv2-sparkle-i">I</span>NTEL</span></a>
         <div class="pv2-actions"><button class="pv2-login-top" type="button" data-auth-action="signin" aria-label="Sign in or create your HairIntel account">Sign in / Create account</button><button class="pv2-export" id="pv2Export" type="button">Export Report</button></div>
       </header>
       <section class="pv2-hero" id="overview">
