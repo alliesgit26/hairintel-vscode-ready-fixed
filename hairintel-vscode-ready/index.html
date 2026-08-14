@@ -1360,6 +1360,20 @@ html{scroll-behavior:smooth}
 @media(max-width:520px){.pv2-top-brand img{width:122px;height:38px}.pv2-actions .pv2-icon-btn{display:none}.pv2-export{font-size:9px}.pv2-copy h1{font-size:55px}.pv2-copy>p:not(.pv2-eyebrow){font-size:14px}.pv2-hero-actions{display:grid;grid-template-columns:1fr;gap:10px}.pv2-text-link{justify-content:center;width:max-content}.pv2-proof{gap:14px}.pv2-proof strong{font-size:19px}.pv2-proof span{font-size:8px}.pv2-hero-photo{height:330px;background-position:60% center}.pv2-workflow{top:109px}.pv2-heading{align-items:start;flex-direction:column;margin-top:40px}.pv2-heading span{text-align:left}}
 @media print{.pv2-rail,.pv2-topbar,.pv2-workflow,.pv2-hero-actions{display:none!important}.pv2-shell{padding-left:0!important}.pv2-ghost{display:none!important}}
 </style>
+<style id="plum-dashboard-ghost-logo-fix">
+/* Fixed translucent HI monogram: above the page background, below all dashboard content. */
+.plum-v2 .pv2-ghost{
+  z-index:0!important;
+  opacity:.105!important;
+  background-position:center center!important;
+  background-size:min(52vw,720px) auto!important;
+  mix-blend-mode:multiply!important;
+}
+.plum-v2 .pv2-shell{position:relative!important;z-index:1!important;background:transparent!important}
+@media(max-width:870px){
+  .plum-v2 .pv2-ghost{background-size:min(88vw,520px) auto!important;opacity:.09!important;background-position:center 54%!important}
+}
+</style>
 </head>
 
 <body>
