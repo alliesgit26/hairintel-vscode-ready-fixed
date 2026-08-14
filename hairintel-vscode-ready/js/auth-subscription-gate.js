@@ -2,6 +2,8 @@
   const PROFILE_KEY = "hairintel_profile_v1";
   const SUB_KEY = "hairintel_subscription_v1";
   const CONSULT_URL = "hairintel/index.html";
+  let pendingPlan = null;
+  let openPlansAfterAuth = false;
 
   function getProfile() {
     try {
@@ -31,6 +33,92 @@
     const sub = getSub();
     if (!sub) return false;
     return ["active", "trialing", "trial"].includes(String(sub.status || "").toLowerCase());
+  }
+
+  function applyShellState(profile = getProfile()) {
+    const html = document.documentElement;
+    const authenticated = Boolean(profile?.email);
+    html.classList.toggle("hi-authenticated", authenticated);
+    html.classList.toggle("hi-guest", !authenticated);
+    html.classList.remove("hi-auth-pending");
+    if (!authenticated) {
+      document.getElementById("plumDashboard")?.classList.remove("pv2-mobile-open", "pv2-collapsed");
+    }
+    window.HairIntelDashboardData?.();
+    document.dispatchEvent(new CustomEvent("hairintel:auth-state", { detail: { authenticated } }));
+  }
+
+  async function syncAuthSession() {
+    if (!window.HAIRI || typeof window.HAIRI.ensureClient !== "function") {
+      localStorage.removeItem(PROFILE_KEY);
+      localStorage.removeItem(SUB_KEY);
+      return null;
+    }
+
+    try {
+      const client = await window.HAIRI.ensureClient();
+      if (!client?.auth) {
+        localStorage.removeItem(PROFILE_KEY);
+        localStorage.removeItem(SUB_KEY);
+        return null;
+      }
+      const { data } = await client.auth.getUser();
+      const user = data?.user;
+      if (!user?.email) {
+        localStorage.removeItem(PROFILE_KEY);
+        localStorage.removeItem(SUB_KEY);
+        return null;
+      }
+      const profile = { email: user.email, userId: user.id || null, savedAt: new Date().toISOString() };
+      setProfile(profile);
+      return profile;
+    } catch (error) {
+      console.warn("[HairIntel] Could not validate the signed-in session:", error?.message || error);
+      localStorage.removeItem(PROFILE_KEY);
+      localStorage.removeItem(SUB_KEY);
+      return null;
+    }
+  }
+
+  function formatPrice(plan) {
+    if (!plan?.available || !Number.isFinite(Number(plan.unitAmount))) return null;
+    const amount = Number(plan.unitAmount) / 100;
+    const currency = String(plan.currency || "usd").toUpperCase();
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency,
+      minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
+      maximumFractionDigits: 2
+    }).format(amount);
+  }
+
+  async function loadPricing() {
+    try {
+      const response = await fetch("/api/pricing", { headers: { Accept: "application/json" } });
+      const data = await response.json();
+      if (!response.ok || !Array.isArray(data?.plans)) throw new Error(data?.error || "Pricing unavailable");
+      data.plans.forEach((plan) => {
+        const slug = String(plan.slug || "").toLowerCase();
+        const display = formatPrice(plan);
+        document.querySelectorAll(`[data-price-value="${slug}"]`).forEach((element) => {
+          element.textContent = display || "Not configured";
+        });
+        document.querySelectorAll(`[data-price-interval="${slug}"]`).forEach((element) => {
+          element.textContent = display && plan.interval ? ` / ${plan.interval}` : "";
+        });
+        document.querySelectorAll(`[data-plan="${slug}"], [data-public-plan="${slug}"]`).forEach((button) => {
+          button.disabled = !display;
+          if (!display) button.title = `${plan.name || slug} checkout is not configured yet.`;
+        });
+      });
+    } catch (error) {
+      console.warn("[HairIntel] Live pricing could not be loaded:", error?.message || error);
+      document.querySelectorAll("[data-price-value]").forEach((element) => { element.textContent = "Unavailable"; });
+      document.querySelectorAll("[data-plan], [data-public-plan]").forEach((button) => {
+        button.disabled = true;
+        button.title = "Checkout pricing is temporarily unavailable.";
+      });
+    }
   }
 
   function ensureStyles() {
@@ -181,6 +269,10 @@
         color: #FFF8EC;
       }
 
+      .hi-auth-card.hi-auth-card-plans {
+        width: min(96vw, 900px);
+      }
+
       .hi-auth-card h2 {
         margin: 0 0 10px;
         font-family: 'Cormorant Garamond', Georgia, serif;
@@ -227,7 +319,7 @@
 
       .hi-plan-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
         gap: 12px;
         margin-top: 14px;
       }
@@ -247,6 +339,24 @@
       .hi-plan p {
         margin: 0 0 12px;
         font-size: 13px;
+      }
+
+      .hi-plan-price {
+        min-height: 36px;
+        margin: 12px 0;
+        color: #FFF8EC;
+        font: 600 28px/1 'Cormorant Garamond', Georgia, serif;
+      }
+
+      .hi-plan-price small {
+        color: rgba(247,239,233,.58);
+        font: 600 11px/1 Inter, sans-serif;
+      }
+
+      .hi-plan-trial-terms {
+        margin: 18px 0 0 !important;
+        color: rgba(247,239,233,.58) !important;
+        font-size: 11px !important;
       }
 
       .hi-auth-actions {
@@ -341,24 +451,35 @@
 
       modal.innerHTML = `
         <div class="hi-auth-backdrop"></div>
-        <div class="hi-auth-card">
+        <div class="hi-auth-card hi-auth-card-plans">
           <button class="hi-auth-close" type="button">×</button>
-          <h2>Start Subscription</h2>
-          <p>Your HairIntel account is connected.<br>Email: ${email}<br>Status: <strong>${status}</strong></p>
+          <h2>Choose your HairIntel plan</h2>
+          <p>Your stylist account is connected.<br>Email: ${email}<br>Status: <strong>${status}</strong></p>
 
           <div class="hi-plan-grid">
             <div class="hi-plan">
               <h3>Starter</h3>
-              <p>7-day trial. Basic consultation reports and dashboard access.</p>
+              <div class="hi-plan-price"><span data-price-value="starter">Loading…</span><small data-price-interval="starter"></small></div>
+              <p>Private dashboard, client records, consultations, readiness, and placement planning.</p>
               <button class="hi-auth-primary" type="button" data-plan="starter">Start Starter Trial</button>
             </div>
 
             <div class="hi-plan">
               <h3>Pro</h3>
-              <p>Advanced consultation workflow, saved reports, and pro tools.</p>
+              <div class="hi-plan-price"><span data-price-value="pro">Loading…</span><small data-price-interval="pro"></small></div>
+              <p>Advanced reports plus client-photo uploads and AI hair preview access.</p>
               <button class="hi-auth-primary" type="button" data-plan="pro">Start Pro Trial</button>
             </div>
+
+            <div class="hi-plan">
+              <h3>Studio</h3>
+              <div class="hi-plan-price"><span data-price-value="studio">Loading…</span><small data-price-interval="studio"></small></div>
+              <p>Studio-scale planning with HairIntel’s highest AI preview allowance.</p>
+              <button class="hi-auth-primary" type="button" data-plan="studio">Start Studio Trial</button>
+            </div>
           </div>
+
+          <p class="hi-plan-trial-terms">A payment method is required. No charge today; your selected plan renews after seven days unless canceled before the trial ends. Payments are non-refundable once processed.</p>
 
           <div class="hi-auth-actions">
             <button class="hi-auth-chip" type="button" id="hi-manage-billing">Manage Billing</button>
@@ -369,6 +490,7 @@
     }
 
     document.body.appendChild(modal);
+    if (type === "subscription") loadPricing();
 
     modal.querySelector(".hi-auth-close").onclick = closeModal;
     modal.querySelector(".hi-auth-backdrop").onclick = closeModal;
@@ -384,6 +506,14 @@
       setProfile({ email, userId: user?.id || null, savedAt: new Date().toISOString() });
       closeModal();
       renderControls();
+      if (pendingPlan) {
+        const selectedPlan = pendingPlan;
+        pendingPlan = null;
+        setTimeout(() => startCheckout(selectedPlan), 0);
+      } else if (openPlansAfterAuth) {
+        openPlansAfterAuth = false;
+        setTimeout(() => openModal("subscription"), 0);
+      }
     };
 
     const signInBtn = modal.querySelector("#hi-save-profile");
@@ -568,11 +698,32 @@
     const text = (target.textContent || "").toLowerCase();
     const action = target.dataset.action || "";
     const authAction = target.dataset.authAction || "";
+    const publicPlan = target.dataset.publicPlan || "";
+
+    if (publicPlan) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (!getProfile()) {
+        pendingPlan = publicPlan;
+        openModal("signin");
+      } else {
+        startCheckout(publicPlan);
+      }
+      return;
+    }
 
     if (authAction) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      openModal(getProfile() ? "account" : "signin");
+      if (authAction === "subscribe") {
+        if (getProfile()) openModal("subscription");
+        else {
+          openPlansAfterAuth = true;
+          openModal("signin");
+        }
+      } else {
+        openModal(getProfile() ? "account" : "signin");
+      }
       return;
     }
 
@@ -600,7 +751,8 @@
       return;
     }
 
-    window.location.href = CONSULT_URL;
+    const href = target.getAttribute("href") || "";
+    window.location.href = href.startsWith("hairintel/") ? href : CONSULT_URL;
   }
 
   function renderPv2AuthControls(profile) {
@@ -624,6 +776,7 @@
     ensureStyles();
 
     const profile = getProfile();
+    applyShellState(profile);
     renderPv2AuthControls(profile);
 
     const actions = document.querySelector(".actions");
@@ -725,12 +878,25 @@
     history.replaceState({}, "", window.location.pathname);
   }
 
+  function handleAccessReturn() {
+    const params = new URLSearchParams(window.location.search);
+    const authRequired = params.get("auth") === "required";
+    const subscriptionRequired = params.get("subscription") === "required";
+    if (!authRequired && !subscriptionRequired) return;
+    history.replaceState({}, "", window.location.pathname);
+    if (subscriptionRequired && getProfile()) openModal("subscription");
+    else openModal("signin");
+  }
+
   document.addEventListener("click", gateConsultation, true);
 
   document.addEventListener("DOMContentLoaded", async function () {
     await handleCheckoutReturn();
+    await syncAuthSession();
     await checkSubscription();
     renderControls();
+    loadPricing();
+    handleAccessReturn();
   });
 
   window.addEventListener("load", async function () {
@@ -738,4 +904,3 @@
     renderControls();
   });
 })();
-
