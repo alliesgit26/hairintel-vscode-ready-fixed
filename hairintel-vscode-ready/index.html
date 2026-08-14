@@ -1448,6 +1448,52 @@ html{scroll-behavior:smooth}
   .plum-v2 .pv2-ghost{opacity:.28!important}
 }
 </style>
+<style id="plum-dashboard-account-and-watermark-visible">
+/* Keep the HI mark visibly present in the open hero space—never hidden behind the model image. */
+.plum-v2{isolation:isolate!important}
+.plum-v2 .pv2-ghost{
+  z-index:0!important;
+  opacity:.42!important;
+  background-image:url("public/hi-monogram-ghost.png?v=20260814-2")!important;
+  background-position:calc(50% - 155px) 48%!important;
+  background-size:min(47vw,650px) auto!important;
+  mix-blend-mode:normal!important;
+  filter:sepia(.38) saturate(1.05) contrast(1.15) drop-shadow(0 16px 34px rgba(139,77,67,.18))!important;
+}
+.plum-v2 .pv2-shell{position:relative!important;z-index:1!important;background:transparent!important}
+.plum-v2 .pv2-rail-spacer{display:none!important}
+.plum-v2 .pv2-account-cta{
+  display:flex!important;visibility:visible!important;opacity:1!important;
+  flex:0 0 auto!important;margin-top:auto!important;min-height:74px!important;padding:12px!important;
+  border:1px solid rgba(231,201,145,.32)!important;border-radius:12px!important;
+  background:linear-gradient(135deg,rgba(244,227,202,.17),rgba(185,117,99,.25))!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.19)!important;
+}
+.plum-v2 .pv2-account-cta b{font-size:12px!important;color:#fffaf4!important}
+.plum-v2 .pv2-account-cta small{font-size:9px!important;color:rgba(253,246,238,.78)!important}
+.plum-v2 .pv2-login-top{
+  display:inline-flex!important;align-items:center;justify-content:center;min-height:38px;padding:0 14px;
+  border:1px solid rgba(91,57,74,.24);border-radius:999px;
+  background:linear-gradient(135deg,#3b1e2d,#5b3348);color:#fff9f2;
+  font:700 10px/1 var(--pv-body);letter-spacing:.055em;white-space:nowrap;cursor:pointer;
+  box-shadow:0 8px 18px rgba(55,25,40,.12);
+}
+.plum-v2 .pv2-login-top:hover,.plum-v2 .pv2-login-top:focus-visible{background:linear-gradient(135deg,#52293c,#744761);outline:2px solid rgba(200,155,89,.5);outline-offset:2px}
+.plum-v2.pv2-collapsed .pv2-account-cta{width:52px!important;min-height:52px!important;justify-content:center!important;padding:8px!important}
+.plum-v2.pv2-collapsed .pv2-account-cta>span:not(.pv2-avatar),.plum-v2.pv2-collapsed .pv2-account-cta em{display:none!important}
+@media(max-width:870px){
+  .plum-v2 .pv2-ghost{
+    opacity:.34!important;
+    background-position:center 46%!important;
+    background-size:min(92vw,520px) auto!important;
+  }
+  .plum-v2 .pv2-login-top{min-height:36px;padding:0 11px;font-size:10px}
+}
+@media(max-width:520px){
+  .plum-v2 .pv2-icon-btn,.plum-v2 .pv2-export{display:none!important}
+  .plum-v2 .pv2-login-top{min-height:34px;padding:0 10px;font-size:9px}
+}
+</style>
 </head>
 
 <body>
@@ -1477,7 +1523,7 @@ html{scroll-behavior:smooth}
         <nav class="pv2-topnav" aria-label="Primary navigation">
           <a class="active" href="#overview">Overview</a><a href="#consultations">Consultations</a><a href="#placement">Placement</a><a href="#readiness">Readiness</a><a href="#install-plan">Install Plan</a><a href="#client-profile">Client Profile</a>
         </nav>
-        <div class="pv2-actions"><button class="pv2-icon-btn" type="button" data-pv2-scroll="#consultations" aria-label="Open consultations">⌕</button><button class="pv2-icon-btn" type="button" data-pv2-scroll="#client-profile" aria-label="Open client profile">♡</button><button class="pv2-export" id="pv2Export" type="button">Export Report</button></div>
+        <div class="pv2-actions"><button class="pv2-login-top" type="button" data-action="consultations" aria-label="Sign in or create your HairIntel account">Sign in / Create account</button><button class="pv2-icon-btn" type="button" data-pv2-scroll="#consultations" aria-label="Open consultations">⌕</button><button class="pv2-icon-btn" type="button" data-pv2-scroll="#client-profile" aria-label="Open client profile">♡</button><button class="pv2-export" id="pv2Export" type="button">Export Report</button></div>
       </header>
       <section class="pv2-hero" id="overview">
         <div class="pv2-copy">
