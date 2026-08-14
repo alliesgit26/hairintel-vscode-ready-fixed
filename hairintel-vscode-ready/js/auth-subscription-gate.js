@@ -41,10 +41,17 @@
     html.classList.toggle("hi-authenticated", authenticated);
     html.classList.toggle("hi-guest", !authenticated);
     html.classList.remove("hi-auth-pending");
+
+    document.querySelectorAll("[data-private-shell]").forEach((element) => {
+      element.hidden = !authenticated;
+      element.setAttribute("aria-hidden", String(!authenticated));
+    });
+
     if (!authenticated) {
       document.getElementById("plumDashboard")?.classList.remove("pv2-mobile-open", "pv2-collapsed");
     }
-    window.HairIntelDashboardData?.();
+
+    if (authenticated) window.HairIntelDashboardData?.();
     document.dispatchEvent(new CustomEvent("hairintel:auth-state", { detail: { authenticated } }));
   }
 
