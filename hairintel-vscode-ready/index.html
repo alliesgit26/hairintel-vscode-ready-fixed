@@ -1797,9 +1797,6 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
 .plum-v2 .pv2-teaser-copy h2{
   margin:0;color:#fff8ef;font:600 clamp(40px,5.8vw,72px)/.94 var(--pv-display);letter-spacing:-.035em
 }
-.plum-v2 .pv2-teaser-copy p:last-child{
-  max-width:650px;margin:20px auto 0;color:rgba(255,248,239,.66);font-size:13px;line-height:1.75
-}
 .plum-v2 .pv2-teaser-shell{
   position:relative;z-index:2;width:min(1120px,100%);height:clamp(390px,51vw,590px);margin:0 auto;overflow:hidden;
   border:1px solid rgba(231,201,145,.28);border-radius:22px;background:#f8f2ec;
@@ -1847,16 +1844,8 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
 }
 .plum-v2 .pv2-preview-stack{display:grid;gap:clamp(8px,1.5vw,17px)}
 .plum-v2 .pv2-preview-line{min-height:0;border:1px solid rgba(85,54,65,.1);border-radius:10px;background:linear-gradient(105deg,rgba(255,255,255,.88),rgba(239,224,217,.72))}
-.plum-v2 .pv2-teaser-veil{
-  position:absolute;z-index:6;left:clamp(22px,4.3vw,52px);bottom:clamp(22px,4.3vw,52px);width:min(48%,510px);padding:clamp(24px,3.3vw,38px);
-  border:1px solid rgba(245,218,171,.42);border-radius:18px;text-align:left;color:#fff8ef;
-  background:linear-gradient(145deg,rgba(37,17,29,.91),rgba(18,10,15,.86));backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);
-  box-shadow:0 28px 70px rgba(17,8,13,.52)
-}
-.plum-v2 .pv2-teaser-sparkle{display:block;margin:0 0 8px;color:#e7c991;font-size:18px;text-shadow:0 0 14px rgba(231,201,145,.78)}
-.plum-v2 .pv2-teaser-veil>span{display:block;color:#d9b77d;font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
-.plum-v2 .pv2-teaser-veil strong{display:block;margin:13px 0 22px;font:600 clamp(29px,3.8vw,47px)/.98 var(--pv-display);letter-spacing:-.025em}
-.plum-v2 .pv2-teaser-veil .pv2-primary{min-width:230px;justify-content:center}
+.plum-v2 .pv2-teaser-action{position:relative;z-index:2;display:flex;justify-content:center;width:min(1120px,100%);margin:30px auto 0}
+.plum-v2 .pv2-teaser-action .pv2-primary{min-width:260px;justify-content:center;border-color:rgba(231,201,145,.34);box-shadow:0 18px 42px rgba(0,0,0,.26)}
 
 @keyframes hairintel-wordmark-twinkle{
   0%,100%{opacity:.58;transform:translateX(-54%) scale(.84) rotate(0deg)}
@@ -1872,11 +1861,10 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
   html.hi-guest .plum-v2 .pv2-topbar{grid-template-columns:minmax(150px,1fr) auto!important;min-height:76px!important;padding:0 16px!important}
   html.hi-guest .plum-v2 .pv2-top-brand.pv2-wordmark>.pv2-wordmark-text{font-size:24px!important}
   html.hi-guest .plum-v2 .pv2-actions{justify-self:end}
-  .plum-v2 .pv2-teaser-shell{height:clamp(370px,69vw,520px)}
+  .plum-v2 .pv2-teaser-shell{height:auto;aspect-ratio:1.86/1}
   .plum-v2 .pv2-teaser-screen{grid-template-columns:120px 1fr}
   .plum-v2 .pv2-preview-main{padding:34px 22px}
   .plum-v2 .pv2-preview-topline{margin-bottom:24px}
-  .plum-v2 .pv2-teaser-veil{width:min(62%,500px)}
 }
 @media(max-width:520px){
   html.hi-guest .plum-v2 .pv2-login-top{min-width:0!important;font-size:0!important;width:42px;padding:0!important}
@@ -1885,15 +1873,15 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
   .plum-v2 .pv2-guest-actions{display:grid!important;grid-template-columns:1fr;gap:8px!important}
   .plum-v2 .pv2-guest-experience{padding-left:14px;padding-right:14px}
   .plum-v2 .pv2-teaser-copy{padding:0 6px}
-  .plum-v2 .pv2-teaser-shell{height:390px;border-radius:15px}
+  .plum-v2 .pv2-teaser-shell{height:auto;aspect-ratio:1.7/1;border-radius:15px}
   .plum-v2 .pv2-teaser-screen{inset:0 auto auto 0;width:142.86%;height:142.86%;grid-template-columns:112px minmax(0,1fr);transform:scale(.7);transform-origin:left top}
   .plum-v2 .pv2-preview-rail{padding:22px 8px}
   .plum-v2 .pv2-preview-logo{font-size:14px;letter-spacing:.08em}
   .plum-v2 .pv2-preview-nav span{padding:8px 6px;font-size:6px}
   .plum-v2 .pv2-preview-main{padding:28px 18px}
   .plum-v2 .pv2-preview-title{font-size:28px}
-  .plum-v2 .pv2-teaser-veil{left:14px;right:14px;bottom:14px;width:auto;padding:25px 18px;text-align:center}
-  .plum-v2 .pv2-teaser-veil .pv2-primary{width:100%;min-width:0}
+  .plum-v2 .pv2-teaser-action{margin-top:22px}
+  .plum-v2 .pv2-teaser-action .pv2-primary{width:100%;min-width:0}
 }
 </style>
 </head>
@@ -1943,7 +1931,6 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
         <div class="pv2-teaser-copy">
           <p class="pv2-eyebrow">The private stylist workspace</p>
           <h2>The private app for extension stylists.</h2>
-          <p>HairIntel brings consultations, client photos, AI hair previews, placement planning, and install guidance into one polished professional app.</p>
         </div>
         <div class="pv2-teaser-shell">
           <div class="pv2-teaser-screen" aria-hidden="true">
@@ -1960,7 +1947,7 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
             </aside>
             <div class="pv2-preview-main">
               <div class="pv2-preview-topline">HairIntel Professional</div>
-              <h3 class="pv2-preview-title">Stylist Studio</h3>
+              <h3 class="pv2-preview-title">HairIntel Workspace</h3>
               <div class="pv2-preview-grid">
                 <div class="pv2-preview-card"><small>Client work</small><strong>Consultations</strong><span>Private records and guided intake</span></div>
                 <div class="pv2-preview-card"><small>Visualization</small><strong>AI Preview</strong><span>Client-photo extension concepts</span></div>
@@ -1972,13 +1959,8 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
               </div>
             </div>
           </div>
-          <div class="pv2-teaser-veil">
-            <i class="pv2-teaser-sparkle" aria-hidden="true">✦</i>
-            <span>HairIntel · Private stylist app</span>
-            <strong>Precision behind every transformation.</strong>
-            <button class="pv2-primary" type="button" data-auth-action="subscribe">Begin your 7-day trial <span>→</span></button>
-          </div>
         </div>
+        <div class="pv2-teaser-action"><button class="pv2-primary" type="button" data-auth-action="subscribe">Begin your 7-day trial <span>→</span></button></div>
       </section>
       <div class="pv2-content" id="consultations" data-private-shell hidden aria-hidden="true">
         <section class="pv2-grid" aria-label="Consultation overview">
