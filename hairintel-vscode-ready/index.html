@@ -1977,7 +1977,11 @@ html.hi-guest .plum-v2 .pv2-ghost{
     radial-gradient(circle at 20% 34%,rgba(220,184,125,.11),transparent 22%),
     radial-gradient(circle at 82% 78%,rgba(106,57,78,.055),transparent 25%)!important;
 }
-html.hi-guest .plum-v2 .pv2-ghost::before,
+html.hi-guest .plum-v2 .pv2-ghost::before{
+  content:""!important;display:block!important;position:absolute!important;inset:0!important;
+  background:url("public/hi-monogram-ghost.png?v=20260815") clamp(24px,6vw,104px) 56%/clamp(310px,32vw,520px) auto no-repeat!important;
+  opacity:.12!important;filter:saturate(.72) sepia(.08)!important;pointer-events:none!important
+}
 html.hi-guest .plum-v2 .pv2-ghost::after{display:none!important}
 
 html.hi-guest .plum-v2 .pv2-topbar{
@@ -2077,6 +2081,9 @@ html.hi-guest .plum-v2 .pv2-caption{left:28px!important;bottom:23px!important;fo
   html.hi-guest .plum-v2 .pv2-copy h1{font-size:clamp(54px,9vw,72px)!important}
   html.hi-guest .plum-v2 .pv2-copy>p:not(.pv2-eyebrow){max-width:590px!important}
   html.hi-guest .plum-v2 .pv2-hero-photo{box-shadow:0 22px 54px rgba(51,28,39,.15),0 0 0 7px rgba(255,255,255,.42)!important}
+  html.hi-guest .plum-v2 .pv2-ghost::before{
+    background-position:center 31%!important;background-size:min(72vw,430px) auto!important;opacity:.085!important
+  }
 }
 
 @media(max-width:520px){
@@ -2097,6 +2104,9 @@ html.hi-guest .plum-v2 .pv2-caption{left:28px!important;bottom:23px!important;fo
   html.hi-guest .plum-v2 .pv2-hero-photo{box-shadow:0 18px 42px rgba(51,28,39,.15),0 0 0 4px rgba(255,255,255,.5)!important}
   html.hi-guest .plum-v2 .pv2-hero-photo::before{inset:6px!important}
   html.hi-guest .plum-v2 .pv2-caption{left:14px!important;right:10px!important;bottom:12px!important;font-size:6.5px!important;line-height:1.35!important;letter-spacing:.11em!important}
+  html.hi-guest .plum-v2 .pv2-ghost::before{
+    background-position:center 24%!important;background-size:min(82vw,330px) auto!important;opacity:.065!important
+  }
 }
 </style>
 </head>
