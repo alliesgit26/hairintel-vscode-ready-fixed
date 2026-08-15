@@ -1724,7 +1724,12 @@ html{scroll-behavior:smooth}
 <style id="hairintel-public-private-shell">
 /* Public marketing and private stylist workspace are intentionally separate. */
 .plum-v2 [hidden]{display:none!important}
-.plum-v2 [data-private-shell]{visibility:visible}
+/* Private workspace content is fail-closed. Only a server-validated Supabase session may reveal it. */
+.plum-v2 [data-private-shell]{visibility:hidden!important}
+html:not(.hi-session-verified) .plum-v2 [data-private-shell]{display:none!important}
+html.hi-session-verified.hi-authenticated .plum-v2 [data-private-shell]:not([hidden]){
+  visibility:visible!important
+}
 .plum-v2 .pv2-rail-nav{min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(231,201,145,.28) transparent}
 .plum-v2 .pv2-rail-top{height:auto;min-height:36px}
 .plum-v2 .pv2-rail-toggle{

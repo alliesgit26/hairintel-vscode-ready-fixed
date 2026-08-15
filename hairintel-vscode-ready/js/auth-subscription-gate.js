@@ -4,20 +4,30 @@
   const CONSULT_URL = "hairintel/index.html";
   let pendingPlan = null;
   let openPlansAfterAuth = false;
+  let verifiedProfile = null;
+  let authResolved = false;
 
   function getProfile() {
-    try {
-      const profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || "null");
-      if (profile && profile.name) {
-        delete profile.name;
-        localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
-      }
-      return profile;
-    } catch { return null; }
+    return authResolved && verifiedProfile?.email ? verifiedProfile : null;
   }
 
   function setProfile(profile) {
     localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+  }
+
+  function setVerifiedProfile(profile) {
+    const validProfile = profile?.email ? profile : null;
+    verifiedProfile = validProfile;
+    authResolved = true;
+    document.documentElement.classList.toggle("hi-session-verified", Boolean(validProfile));
+
+    if (validProfile) setProfile(validProfile);
+    else {
+      localStorage.removeItem(PROFILE_KEY);
+      localStorage.removeItem(SUB_KEY);
+    }
+
+    return validProfile;
   }
 
   function getSub() {
@@ -37,7 +47,12 @@
 
   function applyShellState(profile = getProfile()) {
     const html = document.documentElement;
-    const authenticated = Boolean(profile?.email);
+    const authenticated = Boolean(
+      authResolved &&
+      verifiedProfile?.email &&
+      profile?.email === verifiedProfile.email &&
+      html.classList.contains("hi-session-verified")
+    );
     html.classList.toggle("hi-authenticated", authenticated);
     html.classList.toggle("hi-guest", !authenticated);
     html.classList.remove("hi-auth-pending");
@@ -56,33 +71,33 @@
   }
 
   async function syncAuthSession() {
+    verifiedProfile = null;
+    authResolved = false;
+    document.documentElement.classList.remove("hi-session-verified");
+    applyShellState(null);
+
     if (!window.HAIRI || typeof window.HAIRI.ensureClient !== "function") {
-      localStorage.removeItem(PROFILE_KEY);
-      localStorage.removeItem(SUB_KEY);
+      setVerifiedProfile(null);
       return null;
     }
 
     try {
       const client = await window.HAIRI.ensureClient();
       if (!client?.auth) {
-        localStorage.removeItem(PROFILE_KEY);
-        localStorage.removeItem(SUB_KEY);
+        setVerifiedProfile(null);
         return null;
       }
       const { data } = await client.auth.getUser();
       const user = data?.user;
       if (!user?.email) {
-        localStorage.removeItem(PROFILE_KEY);
-        localStorage.removeItem(SUB_KEY);
+        setVerifiedProfile(null);
         return null;
       }
       const profile = { email: user.email, userId: user.id || null, savedAt: new Date().toISOString() };
-      setProfile(profile);
-      return profile;
+      return setVerifiedProfile(profile);
     } catch (error) {
       console.warn("[HairIntel] Could not validate the signed-in session:", error?.message || error);
-      localStorage.removeItem(PROFILE_KEY);
-      localStorage.removeItem(SUB_KEY);
+      setVerifiedProfile(null);
       return null;
     }
   }
@@ -508,9 +523,13 @@
       password: document.getElementById("hi-password")?.value || ""
     });
 
-    const finishAuth = (user) => {
-      const email = user?.email || getCredentials().email;
-      setProfile({ email, userId: user?.id || null, savedAt: new Date().toISOString() });
+    const finishAuth = (authData) => {
+      const user = authData?.user;
+      if (!authData?.session || !user?.email) {
+        throw new Error("HairIntel could not verify the signed-in session.");
+      }
+      const email = user.email;
+      setVerifiedProfile({ email, userId: user?.id || null, savedAt: new Date().toISOString() });
       closeModal();
       renderControls();
       if (pendingPlan) {
@@ -533,7 +552,7 @@
       signInBtn.disabled = true;
       try {
         const result = await window.HAIRI.signIn({ email, password });
-        finishAuth(result?.user);
+        finishAuth(result);
       } catch (err) {
         alert(err?.message || "Sign-in failed.");
       } finally {
@@ -551,7 +570,7 @@
       createBtn.disabled = true;
       try {
         const result = await window.HAIRI.signUp({ email, password });
-        if (result?.session) finishAuth(result.user);
+        if (result?.session) finishAuth(result);
         else alert("Account created. Check your email to confirm it, then sign in.");
       } catch (err) {
         alert(err?.message || "Account creation failed.");
@@ -601,6 +620,7 @@
       status: "inactive",
       updatedAt: new Date().toISOString()
     }));
+    setVerifiedProfile(null);
 
     closeModal();
     renderControls();
