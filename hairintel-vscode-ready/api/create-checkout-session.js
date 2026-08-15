@@ -5,8 +5,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const PRICE_MAP = {
   starter: process.env.STRIPE_PRICE_STARTER,
   pro: process.env.STRIPE_PRICE_PRO,
-  studio: process.env.STRIPE_PRICE_SALON,
-  salon: process.env.STRIPE_PRICE_SALON,
+  studio: process.env.STRIPE_PRICE_STUDIO || process.env.STRIPE_PRICE_SALON,
+  salon: process.env.STRIPE_PRICE_STUDIO || process.env.STRIPE_PRICE_SALON,
 };
 
 export default async function handler(req, res) {
@@ -133,7 +133,6 @@ export default async function handler(req, res) {
     });
   }
 }
-
 
 
 

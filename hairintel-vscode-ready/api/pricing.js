@@ -1,9 +1,9 @@
 import Stripe from "stripe";
 
 const PLAN_CONFIG = [
-  { slug: "starter", name: "Starter", envKey: "STRIPE_PRICE_STARTER" },
-  { slug: "pro", name: "Pro", envKey: "STRIPE_PRICE_PRO" },
-  { slug: "studio", name: "Studio", envKey: "STRIPE_PRICE_SALON" },
+  { slug: "starter", name: "Starter", envKeys: ["STRIPE_PRICE_STARTER"] },
+  { slug: "pro", name: "Pro", envKeys: ["STRIPE_PRICE_PRO"] },
+  { slug: "studio", name: "Studio", envKeys: ["STRIPE_PRICE_STUDIO", "STRIPE_PRICE_SALON"] },
 ];
 
 export default async function handler(req, res) {
@@ -18,8 +18,8 @@ export default async function handler(req, res) {
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-  const plans = await Promise.all(PLAN_CONFIG.map(async ({ slug, name, envKey }) => {
-    const priceId = process.env[envKey];
+  const plans = await Promise.all(PLAN_CONFIG.map(async ({ slug, name, envKeys }) => {
+    const priceId = envKeys.map((key) => process.env[key]).find(Boolean);
     if (!priceId) {
       return { slug, name, available: false, reason: "missing_price" };
     }

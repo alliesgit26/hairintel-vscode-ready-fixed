@@ -2405,6 +2405,12 @@ html.hi-authenticated.hi-no-consults .plum-v2 .pv2-content .pv2-card-link{displa
         const el = e.target.closest("[data-action], [data-panel], [data-placement]");
         if (!el) return;
 
+        // The luxury public/private shell owns its own authenticated routing.
+        // Do not let this legacy dashboard listener intercept its sidebar links
+        // and replace specific destinations (Clients, AI Photos, etc.) with the
+        // generic consultation start screen.
+        if (el.closest("#plumDashboard")) return;
+
         e.preventDefault();
 
         if (el.dataset.panel) return showPanel(el.dataset.panel);
