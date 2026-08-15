@@ -19,7 +19,7 @@ create table if not exists public.profiles (
 
 create table if not exists public.subscriptions (
   id uuid primary key default gen_random_uuid(),
-  customer_email text unique,
+  customer_email text not null unique,
   plan text not null default 'free',
   status text not null default 'inactive',
   stripe_customer_id text,
@@ -38,21 +38,38 @@ create index if not exists idx_subscriptions_customer on public.subscriptions(st
 alter table public.profiles enable row level security;
 alter table public.subscriptions enable row level security;
 
--- Public clients should not read all records directly. Server-side Vercel functions use the service-role key.
--- These policies allow a signed-in Supabase user to read/update only their own profile row by email.
+-- Public visitors receive no table privileges. Vercel functions use the server-only service role.
+revoke all on public.profiles from anon;
+revoke all on public.subscriptions from anon;
+grant select, insert, update on public.profiles to authenticated;
+grant select on public.subscriptions to authenticated;
+grant all on public.profiles to service_role;
+grant all on public.subscriptions to service_role;
+
+-- Signed-in stylists may only access rows matching the verified email claim in their JWT.
+-- raw_user_meta_data is intentionally not used for authorization.
 
 drop policy if exists "Users can read own profile" on public.profiles;
 create policy "Users can read own profile"
   on public.profiles for select
-  using (auth.email() = email);
+  to authenticated
+  using (lower(email) = lower(coalesce((select auth.jwt() ->> 'email'), '')));
+
+drop policy if exists "Users can insert own profile" on public.profiles;
+create policy "Users can insert own profile"
+  on public.profiles for insert
+  to authenticated
+  with check (lower(email) = lower(coalesce((select auth.jwt() ->> 'email'), '')));
 
 drop policy if exists "Users can update own profile" on public.profiles;
 create policy "Users can update own profile"
   on public.profiles for update
-  using (auth.email() = email)
-  with check (auth.email() = email);
+  to authenticated
+  using (lower(email) = lower(coalesce((select auth.jwt() ->> 'email'), '')))
+  with check (lower(email) = lower(coalesce((select auth.jwt() ->> 'email'), '')));
 
 drop policy if exists "Users can read own subscription" on public.subscriptions;
 create policy "Users can read own subscription"
   on public.subscriptions for select
-  using (auth.email() = customer_email);
+  to authenticated
+  using (lower(customer_email) = lower(coalesce((select auth.jwt() ->> 'email'), '')));
