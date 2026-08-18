@@ -288,3 +288,103 @@
 
 })();
 
+/* ================================================================
+   INTERNAL PRO QA LAUNCHER
+   Visible only on the Vercel branch-preview hostname and only after a
+   verified sign-in. Production subscription enforcement is untouched.
+   ================================================================ */
+(function () {
+  const QA_FLAG = "hairintel_qa_pro_preview";
+
+  function isInternalQaHost() {
+    const host = String(window.location.hostname || "").toLowerCase();
+    return /^hairintel-ai-git-[a-z0-9-]+-alliesgithub26-6006s-projects\.vercel\.app$/.test(host);
+  }
+
+  function readJson(key, fallback = null) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function getSignedInEmail() {
+    return String(
+      localStorage.getItem("hairintel_customer_email") ||
+      readJson("hairintel_profile_v1", {})?.email ||
+      ""
+    ).trim().toLowerCase();
+  }
+
+  function ensureStyles() {
+    if (document.getElementById("hi-pro-qa-styles")) return;
+    const style = document.createElement("style");
+    style.id = "hi-pro-qa-styles";
+    style.textContent = `
+      #hi-pro-qa-control{
+        position:fixed;right:22px;bottom:22px;z-index:99990;display:flex;align-items:center;gap:12px;
+        padding:10px 12px 10px 16px;border:1px solid rgba(174,121,71,.34);border-radius:999px;
+        background:rgba(255,250,245,.96);box-shadow:0 18px 52px rgba(61,34,45,.18);backdrop-filter:blur(18px);
+        color:#432432;font:700 11px/1.25 Inter,Arial,sans-serif;letter-spacing:.03em
+      }
+      #hi-pro-qa-control strong{display:block;color:#9b6a43;font-size:9px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2px}
+      #hi-pro-qa-control button{
+        border:1px solid rgba(151,99,57,.44);border-radius:999px;padding:10px 14px;cursor:pointer;
+        background:linear-gradient(135deg,#3a1c2e,#6d3b54);color:#fff9f0;font-weight:800;font-size:11px;
+        box-shadow:0 9px 24px rgba(67,36,50,.16)
+      }
+      #hi-pro-qa-control button:hover{transform:translateY(-1px)}
+      @media(max-width:640px){
+        #hi-pro-qa-control{left:12px;right:12px;bottom:12px;justify-content:space-between;padding-left:14px}
+        #hi-pro-qa-control button{padding:9px 12px}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function removeControl() {
+    document.getElementById("hi-pro-qa-control")?.remove();
+  }
+
+  function launchProQa() {
+    const email = getSignedInEmail();
+    if (!email) return;
+
+    const qaSub = {
+      plan: "pro",
+      status: "trialing",
+      qaPreview: true,
+      qaEmail: email,
+      updatedAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(QA_FLAG, "1");
+    localStorage.setItem("hairintel_customer_email", email);
+    localStorage.setItem("hairintel_subscription_v1", JSON.stringify(qaSub));
+    localStorage.setItem("hi_subscription", JSON.stringify(qaSub));
+    window.location.href = "hairintel/index.html?qa=pro&screen=welcome";
+  }
+
+  function renderControl() {
+    removeControl();
+    if (!isInternalQaHost()) return;
+    if (!document.documentElement.classList.contains("hi-authenticated")) return;
+    if (!getSignedInEmail()) return;
+
+    ensureStyles();
+    const control = document.createElement("div");
+    control.id = "hi-pro-qa-control";
+    control.innerHTML = `
+      <span><strong>Internal QA</strong>Signed-in Pro workspace preview</span>
+      <button type="button" id="hi-pro-qa-launch">Open Pro QA</button>
+    `;
+    document.body.appendChild(control);
+    document.getElementById("hi-pro-qa-launch")?.addEventListener("click", launchProQa);
+  }
+
+  document.addEventListener("DOMContentLoaded", renderControl);
+  document.addEventListener("hairintel:auth-state", renderControl);
+  window.addEventListener("pageshow", renderControl);
+})();
