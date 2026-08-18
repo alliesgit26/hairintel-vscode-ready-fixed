@@ -7,9 +7,24 @@ function redirectToHairIntelHome(reason) {
   window.location.replace(`../?${query}`);
 }
 
+function isHairIntelInternalQaHost() {
+  const host = String(window.location.hostname || "").toLowerCase();
+  return /^hairintel-ai-git-[a-z0-9-]+-alliesgithub26-6006s-projects\.vercel\.app$/.test(host);
+}
+
+function isHairIntelProQaPreview() {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    isHairIntelInternalQaHost() &&
+    params.get("qa") === "pro" &&
+    localStorage.getItem("hairintel_qa_pro_preview") === "1"
+  );
+}
+
 async function startHIApp() {
   console.log("[HIApp] Starting protected workspace init...");
   try {
+    const qaProPreview = isHairIntelProQaPreview();
     const user = window.HAIRI && typeof window.HAIRI.init === "function"
       ? await window.HAIRI.init()
       : null;
@@ -40,10 +55,28 @@ async function startHIApp() {
       setTimeout(() => hiToast("Checkout cancelled.", "info"), 350);
     }
 
+    /*
+      INTERNAL QA MODE
+      ----------------
+      This can only activate on the Vercel branch-preview hostname, never on
+      hairintel-ai.vercel.app. A verified Supabase sign-in is still required.
+      It lets the owner exercise the real Pro UI without creating a paid Stripe
+      subscription. It is intentionally local to that browser and preview host.
+    */
+    if (qaProPreview && typeof HI?.setSub === "function") {
+      HI.setSub({
+        plan: "pro",
+        status: "trialing",
+        qaPreview: true,
+        qaEmail: user.email,
+        updatedAt: new Date().toISOString()
+      });
+    }
+
     const subscription = typeof HI?.getSub === "function" ? HI.getSub() : null;
     const status = String(subscription?.status || "").toLowerCase();
     const plan = String(subscription?.plan || "").toLowerCase();
-    const hasWorkspaceAccess = ["active", "trialing", "trial"].includes(status) && plan !== "free";
+    const hasWorkspaceAccess = qaProPreview || (["active", "trialing", "trial"].includes(status) && plan !== "free");
 
     if (!hasWorkspaceAccess) {
       redirectToHairIntelHome("subscription");
@@ -55,6 +88,10 @@ async function startHIApp() {
     const initialScreen = safeEntryScreens.has(requestedScreen) ? requestedScreen : "welcome";
     HIApp.go(initialScreen);
     console.log(`[HIApp] Protected ${initialScreen} screen rendered`);
+
+    if (qaProPreview) {
+      setTimeout(() => hiToast("Internal Pro QA preview is active. No subscription charge was created.", "success", 5000), 450);
+    }
   } catch (error) {
     console.error("[HIApp] Protected init failed:", error?.message || error, error?.stack);
     redirectToHairIntelHome("auth");
