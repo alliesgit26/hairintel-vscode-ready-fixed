@@ -213,15 +213,20 @@ public class PlayBillingPlugin extends Plugin implements PurchasesUpdatedListene
     @PluginMethod
     public void purchase(PluginCall call) {
         String productId = call.getString("productId", "");
+        String accountId = call.getString("accountId", "");
         if (!PRODUCT_STARTER.equals(productId) && !PRODUCT_PRO.equals(productId) && !PRODUCT_STUDIO.equals(productId)) {
             call.reject("Unknown HairIntel subscription product.");
             return;
         }
+        if (accountId != null && !accountId.isEmpty() && !accountId.matches("^[A-Za-z0-9_-]{1,64}$")) {
+            call.reject("Invalid HairIntel purchase account identifier.");
+            return;
+        }
 
-        ensureReady(() -> queryAndLaunchPurchase(call, productId), call);
+        ensureReady(() -> queryAndLaunchPurchase(call, productId, accountId), call);
     }
 
-    private void queryAndLaunchPurchase(PluginCall call, String productId) {
+    private void queryAndLaunchPurchase(PluginCall call, String productId, String accountId) {
         List<QueryProductDetailsParams.Product> products = new ArrayList<>();
         products.add(QueryProductDetailsParams.Product.newBuilder()
             .setProductId(productId)
@@ -260,12 +265,14 @@ public class PlayBillingPlugin extends Plugin implements PurchasesUpdatedListene
                 List<BillingFlowParams.ProductDetailsParams> productParamsList = new ArrayList<>();
                 productParamsList.add(productParams);
 
-                BillingFlowParams flowParams = BillingFlowParams.newBuilder()
-                    .setProductDetailsParamsList(productParamsList)
-                    .build();
+                BillingFlowParams.Builder flowBuilder = BillingFlowParams.newBuilder()
+                    .setProductDetailsParamsList(productParamsList);
+                if (accountId != null && !accountId.isEmpty()) {
+                    flowBuilder.setObfuscatedAccountId(accountId);
+                }
 
                 pendingPurchaseCall = call;
-                BillingResult launchResult = billingClient.launchBillingFlow(getActivity(), flowParams);
+                BillingResult launchResult = billingClient.launchBillingFlow(getActivity(), flowBuilder.build());
                 if (launchResult.getResponseCode() != BillingClient.BillingResponseCode.OK) {
                     pendingPurchaseCall = null;
                     call.reject("Google Play purchase could not start: " + launchResult.getDebugMessage());
