@@ -3,15 +3,17 @@ window.ENV = {
   SUPABASE_ANON_KEY: ''
 };
 
-// Billing, pricing-display, account-lifecycle, and recovery adapters load before
-// the auth/subscription gate. Native-only adapters remain inert in web browsers.
+// Billing, pricing-display, account-lifecycle, recovery, and signup-message
+// adapters load before the auth/subscription gate. Native-only adapters remain
+// inert in web browsers.
 (function loadHairIntelPlatformAdapters() {
   const sources = [
     'js/play-billing.js',
     'js/play-entitlement-sync.js',
     'js/pricing-display-fallback.js',
     'js/account-deletion.js',
-    'js/password-recovery.js'
+    'js/password-recovery.js',
+    'js/signup-message-fix.js'
   ];
   if (document.readyState === 'loading') {
     sources.forEach(src => document.write('<script src="' + src + '"><\\/script>'));
