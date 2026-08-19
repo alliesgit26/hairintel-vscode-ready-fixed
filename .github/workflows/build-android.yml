@@ -45,6 +45,8 @@ jobs:
 
       - name: Build release bundle
         env:
+          HAIRINTEL_VERSION_CODE: ${{ github.run_number }}
+          HAIRINTEL_VERSION_NAME: 1.0.${{ github.run_number }}
           HAIRINTEL_UPLOAD_STORE_FILE: ${{ secrets.HAIRINTEL_UPLOAD_KEYSTORE_BASE64 != '' && 'hairintel-upload.jks' || '' }}
           HAIRINTEL_UPLOAD_STORE_PASSWORD: ${{ secrets.HAIRINTEL_UPLOAD_STORE_PASSWORD }}
           HAIRINTEL_UPLOAD_KEY_ALIAS: ${{ secrets.HAIRINTEL_UPLOAD_KEY_ALIAS }}
