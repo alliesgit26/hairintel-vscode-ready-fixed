@@ -21,7 +21,7 @@
 
   function allowedHost() {
     const host = String(window.location.hostname || '').toLowerCase();
-    return host.endsWith('.vercel.app') && host !== 'hairintel-ai.vercel.app' && !host.includes('git-main-');
+    return host === 'hairintel-ai.vercel.app' || host.endsWith('.vercel.app') || host === 'localhost' || host === '127.0.0.1';
   }
 
   async function sha256(value) {
