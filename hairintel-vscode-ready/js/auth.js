@@ -99,7 +99,7 @@ HAIRI.signOut = async function () {
   if (!client) throw new Error('Supabase is not configured yet.');
   const { error } = await client.auth.signOut();
   if (error) throw error;
-  HI.setSub({ plan: 'free', status: 'inactive', updatedAt: new Date().toISOString() });
+  HI.setSub({ plan: 'free', status: 'inactive', billingProvider: null, updatedAt: new Date().toISOString() });
   HIApp.go('welcome');
 };
 
@@ -113,7 +113,11 @@ HAIRI.refreshSubscription = async function (email) {
       HI.setSub({
         plan: data.plan || 'free',
         status: data.status || 'inactive',
+        billingProvider: data.billingProvider || null,
+        latestEventType: data.latestEventType || null,
         stripeCustomerId: data.stripeCustomerId || null,
+        stripeSubscriptionId: data.stripeSubscriptionId || null,
+        currentPeriodEnd: data.currentPeriodEnd || null,
         updatedAt: new Date().toISOString()
       });
     }
@@ -133,7 +137,9 @@ HAIRI.applyCheckoutSession = async function (sessionId) {
   HI.setSub({
     plan: data.plan || 'free',
     status: data.status || (data.active ? 'active' : 'inactive'),
+    billingProvider: 'stripe',
     stripeCustomerId: data.stripeCustomerId || null,
+    stripeSubscriptionId: data.stripeSubscriptionId || null,
     updatedAt: new Date().toISOString()
   });
 
