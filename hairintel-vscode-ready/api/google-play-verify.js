@@ -19,6 +19,10 @@ function base64url(value) {
     .replace(/\//g, '_');
 }
 
+function accountHash(userId) {
+  return crypto.createHash('sha256').update(String(userId)).digest('base64url');
+}
+
 function readServiceAccount() {
   const raw = process.env.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON || '';
   if (raw) {
@@ -91,7 +95,7 @@ async function getAuthenticatedUser(req) {
   if (!supabase) throw new Error('Supabase admin is not configured.');
 
   const { data, error } = await supabase.auth.getUser(match[1]);
-  if (error || !data?.user?.email) return null;
+  if (error || !data?.user?.id || !data?.user?.email) return null;
   return data.user;
 }
 
@@ -154,6 +158,12 @@ export default async function handler(req, res) {
 
     const accessToken = await getGoogleAccessToken();
     const subscription = await fetchSubscription(accessToken, purchaseToken);
+    const purchaseAccountId = String(subscription?.externalAccountIdentifiers?.obfuscatedExternalAccountId || '');
+    const expectedAccountId = accountHash(user.id);
+    if (!purchaseAccountId || purchaseAccountId !== expectedAccountId) {
+      return res.status(403).json({ error: 'This Google Play purchase is not associated with the signed-in HairIntel account.' });
+    }
+
     const lineItems = Array.isArray(subscription.lineItems) ? subscription.lineItems : [];
     const purchasedLine = lineItems.find(line => PRODUCT_TO_PLAN[line?.productId]);
     if (!purchasedLine) {
@@ -175,7 +185,9 @@ export default async function handler(req, res) {
       googleState === 'SUBSCRIPTION_STATE_IN_GRACE_PERIOD' ||
       (googleState === 'SUBSCRIPTION_STATE_CANCELED' && futureExpiry);
 
-    const status = entitled ? 'active' : 'inactive';
+    const status = entitled ? 'active' : googleState
+      .replace(/^SUBSCRIPTION_STATE_/, '')
+      .toLowerCase();
 
     await upsertSubscriptionRecord({
       email: user.email,
