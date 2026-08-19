@@ -19,6 +19,10 @@
     return `${String(window.ENV.SUPABASE_URL || '').replace(/\/$/, '')}${path}`;
   }
 
+  function recoveryReturnUrl() {
+    return 'https://hairintel-ai.vercel.app/';
+  }
+
   function addStyles() {
     if (document.getElementById(RECOVERY_STYLE_ID)) return;
     const style = document.createElement('style');
@@ -126,7 +130,8 @@
     if (!normalized || !normalized.includes('@')) throw new Error('Enter the email address for your HairIntel account first.');
     await loadConfig();
 
-    const response = await fetch(authUrl('/auth/v1/recover'), {
+    const redirectTo = encodeURIComponent(recoveryReturnUrl());
+    const response = await fetch(authUrl(`/auth/v1/recover?redirect_to=${redirectTo}`), {
       method: 'POST',
       headers: {
         apikey: window.ENV.SUPABASE_ANON_KEY,
