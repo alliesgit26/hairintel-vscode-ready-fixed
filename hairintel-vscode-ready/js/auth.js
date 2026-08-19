@@ -329,11 +329,43 @@ function installQaShellStateFix() {
   document.head.appendChild(style);
 }
 
+function installQaFormCompatibility() {
+  if (!isQaPreviewHost()) return;
+  if (document.getElementById('hairintel-qa-form-compat')) return;
+
+  const style = document.createElement('style');
+  style.id = 'hairintel-qa-form-compat';
+  style.textContent = `
+    #hi-auth-modal #hi-create-account{display:none!important}
+    @media (max-width:720px){
+      #hi-auth-modal .hi-auth-actions{display:grid!important;grid-template-columns:1fr!important;width:100%!important;gap:10px!important}
+      #hi-auth-modal .hi-auth-actions button{width:100%!important;max-width:none!important;margin:0!important}
+      #hi-auth-modal #hi-save-profile{display:block!important;order:-1!important}
+    }
+  `;
+  document.head.appendChild(style);
+
+  const patch = () => {
+    document.querySelectorAll('form').forEach((form) => { form.noValidate = true; });
+    document.querySelectorAll('input[type="email"]').forEach((input) => {
+      input.type = 'text';
+      input.inputMode = 'email';
+      input.removeAttribute('pattern');
+      input.setAttribute('autocomplete', 'username');
+    });
+  };
+
+  patch();
+  const observer = new MutationObserver(patch);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+}
+
 function loadHairIntelBrandPolish() {
   installQaShellStateFix();
+  installQaFormCompatibility();
   if (document.querySelector('script[data-hairintel-brand-polish]')) return;
   const script = document.createElement('script');
-  script.src = 'js/brand-polish.js?v=20260819-brand2';
+  script.src = 'js/brand-polish.js?v=20260819-brand3';
   script.dataset.hairintelBrandPolish = '1';
   document.head.appendChild(script);
 }
