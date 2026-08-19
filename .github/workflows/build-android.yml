@@ -10,21 +10,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
       - uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
-      - run: npm install
-      - run: npm install -D typescript
-      - run: rm -rf android || true
-      - run: npm run android:prepare
-      - run: npx cap add android
-      - run: cd android && chmod +x gradlew && ./gradlew bundleRelease
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install Android 16 SDK
+        run: yes | sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prepare Capacitor assets
+        run: npm run android:prepare
+
+      - name: Sync existing Android project
+        run: npx cap sync android
+
+      - name: Build release bundle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew bundleRelease --stacktrace
+
       - uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: app-release.aab
+          name: hairintel-release-aab
           path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
