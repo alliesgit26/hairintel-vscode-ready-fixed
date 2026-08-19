@@ -15,11 +15,18 @@ window.ENV = {
     'js/password-recovery.js',
     'js/signup-message-fix.js'
   ];
+
   if (document.readyState === 'loading') {
-    sources.forEach(src => document.write('<script src="' + src + '"><\\/script>'));
+    // During initial HTML parsing, document.write keeps these adapters
+    // synchronous and ordered. Split the closing tag so this loader cannot
+    // accidentally emit a literal <\/script> into the page.
+    sources.forEach((src) => {
+      document.write('<script src="' + src + '"></' + 'script>');
+    });
     return;
   }
-  sources.forEach(src => {
+
+  sources.forEach((src) => {
     const script = document.createElement('script');
     script.src = src;
     script.async = false;
