@@ -48,6 +48,14 @@
     return data?.session || null;
   }
 
+  async function obfuscatedAccountId(userId) {
+    if (!userId || !window.crypto?.subtle) return '';
+    const bytes = new TextEncoder().encode(String(userId));
+    const digest = await window.crypto.subtle.digest('SHA-256', bytes);
+    const raw = String.fromCharCode(...new Uint8Array(digest));
+    return btoa(raw).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+  }
+
   async function getProducts(force = false) {
     const plugin = getPlugin();
     if (!plugin) return [];
@@ -139,7 +147,8 @@
       throw new Error('Sign in to HairIntel before purchasing a plan.');
     }
 
-    const purchaseResult = await plugin.purchase({ productId });
+    const accountId = await obfuscatedAccountId(session.user.id);
+    const purchaseResult = await plugin.purchase({ productId, accountId });
     if (purchaseResult?.cancelled) return { cancelled: true };
     if (Number(purchaseResult?.purchaseState) !== 1) {
       alert('Google Play is still processing this purchase. HairIntel will unlock after payment is confirmed.');
@@ -156,14 +165,18 @@
     return verified;
   }
 
-  async function restorePurchases() {
+  async function getOwnedPurchases() {
     const plugin = getPlugin();
-    if (!plugin) throw new Error('Google Play Billing is not available.');
+    if (!plugin) return [];
+    const result = await plugin.restorePurchases();
+    return Array.isArray(result?.purchases) ? result.purchases : [];
+  }
+
+  async function restorePurchases() {
     const session = await getSession();
     if (!session?.user?.email) throw new Error('Sign in to HairIntel before restoring purchases.');
 
-    const result = await plugin.restorePurchases();
-    const purchases = Array.isArray(result?.purchases) ? result.purchases : [];
+    const purchases = await getOwnedPurchases();
     const owned = purchases.filter(p => Number(p.purchaseState) === 1 && PRODUCT_TO_PLAN[p.productId]);
     if (!owned.length) {
       alert('No active HairIntel subscription was found on this Google Play account.');
@@ -193,15 +206,6 @@
       catch { return null; }
     })();
     await plugin.manageSubscriptions({ productId: sub?.googlePlayProductId || PRODUCT_IDS.pro });
-  }
-
-  function signedInLocally() {
-    try {
-      const profile = JSON.parse(localStorage.getItem('hairintel_profile_v1') || 'null');
-      return Boolean(profile?.email);
-    } catch {
-      return false;
-    }
   }
 
   async function resumePendingPurchase() {
@@ -286,6 +290,7 @@
   window.HairIntelPlayBilling = {
     isNativeAndroid,
     getProducts,
+    getOwnedPurchases,
     paintPlayPricing,
     purchase,
     restorePurchases,
