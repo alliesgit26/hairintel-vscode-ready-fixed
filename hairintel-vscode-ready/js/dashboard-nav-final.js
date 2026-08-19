@@ -36,6 +36,23 @@
     box.__timer = setTimeout(() => { box.style.display = 'none'; }, 2800);
   }
 
+  function isQaHost() {
+    const host = String(window.location.hostname || '').toLowerCase();
+    return host.endsWith('.vercel.app') && host !== 'hairintel-ai.vercel.app' && !host.includes('git-main-');
+  }
+
+  function isQaSession() {
+    const profile = readJson('hairintel_profile_v1', {});
+    const email = String(localStorage.getItem('hairintel_customer_email') || profile?.email || '').toLowerCase();
+    return isQaHost() && (email.endsWith('@hairintel.preview') || localStorage.getItem('hairintel_qa_pro_preview') === '1');
+  }
+
+  function withQa(url) {
+    if (!isQaSession()) return url;
+    if (/[?&]qa=pro(?:&|$)/.test(url)) return url;
+    return `${url}${url.includes('?') ? '&' : '?'}qa=pro`;
+  }
+
   function latestConsultation() {
     const consults = readJson('hi_consultations', []);
     if (!Array.isArray(consults) || !consults.length) return null;
@@ -95,9 +112,18 @@
   }
 
   function openBuilder(screen) {
-    if (screen === 'clients') return goTo('hairintel/index.html?screen=clients');
-    if (screen === 'ai') return goTo('hairintel/index.html?screen=client-info&flow=ai');
-    return goTo('hairintel/index.html?screen=client-info&from=dashboard&start=1');
+    if (screen === 'clients') return goTo(withQa('hairintel/index.html?screen=clients'));
+    if (screen === 'ai') return goTo(withQa('hairintel/index.html?screen=client-info&flow=ai'));
+    return goTo(withQa('hairintel/index.html?screen=client-info&from=dashboard&start=1'));
+  }
+
+  function openSavedConsultation(consult = latestConsultation()) {
+    if (!consult?.id) {
+      toast('No saved consultation was found yet.');
+      openBuilder('clients');
+      return;
+    }
+    goTo(withQa(`hairintel/index.html?screen=summary&consultId=${encodeURIComponent(consult.id)}&from=dashboard`));
   }
 
   function scrollToId(id) {
@@ -193,7 +219,16 @@
 
     if (id === 'consultations' || id === 'consultationWorkspace') {
       event.preventDefault();
-      openBuilder();
+      const text = String(link.textContent || '').trim().toLowerCase();
+      if (link.closest('#recent-consultation') && latestConsultation()) {
+        openSavedConsultation();
+      } else if (text.includes('view consultations')) {
+        openBuilder('clients');
+      } else if (text.includes('view consultation')) {
+        openSavedConsultation();
+      } else {
+        openBuilder();
+      }
       return true;
     }
 
@@ -205,6 +240,36 @@
     }
     return false;
   }
+
+  function installResponsiveFix() {
+    if (document.getElementById('hairintel-dashboard-responsive-runtime')) return;
+    const style = document.createElement('style');
+    style.id = 'hairintel-dashboard-responsive-runtime';
+    style.textContent = `
+      @media(max-width:870px){
+        .plum-v2,.plum-v2 .pv2-shell,.plum-v2 .pv2-main{width:100%!important;max-width:100vw!important;margin:0!important;}
+        .plum-v2 .pv2-shell{padding-left:0!important;}
+        .plum-v2 .pv2-main{min-width:0!important;overflow-x:hidden!important;}
+        .plum-v2 .pv2-rail{transform:translateX(-100%)!important;width:min(84vw,300px)!important;}
+        .plum-v2.pv2-mobile-open .pv2-rail{transform:translateX(0)!important;}
+        .plum-v2 .pv2-hero,.plum-v2 .pv2-content{width:100%!important;max-width:100%!important;margin-left:auto!important;margin-right:auto!important;}
+        .plum-v2 .pv2-hero{grid-template-columns:1fr!important;padding-left:16px!important;padding-right:16px!important;}
+        .plum-v2 .pv2-copy{min-height:0!important;padding-right:0!important;}
+        .plum-v2 .pv2-hero-photo{width:100%!important;min-width:0!important;}
+        .plum-v2 .pv2-content{padding-left:16px!important;padding-right:16px!important;}
+        .plum-v2 .pv2-grid{grid-template-columns:1fr!important;}
+        .plum-v2 .pv2-method{grid-template-columns:1fr!important;}
+      }
+      @media(max-width:560px){
+        .plum-v2 .pv2-topbar{width:100%!important;max-width:100vw!important;}
+        .plum-v2 .pv2-content{padding-left:12px!important;padding-right:12px!important;}
+        .plum-v2 .pv2-card,.plum-v2 .pv2-wide,.plum-v2 .pv2-side{width:100%!important;max-width:100%!important;}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  installResponsiveFix();
 
   document.addEventListener('click', function (event) {
     const target = event.target.closest('button, a');
@@ -231,14 +296,24 @@
       return;
     }
 
-    if (action === 'consultations') {
-      // Preserve specific client/AI destinations on real links.
-      if (target.tagName === 'A') {
-        const href = String(target.getAttribute('href') || '');
-        if (href && !href.startsWith('#')) return;
-      }
+    if (action === 'view-consultation') {
       event.preventDefault();
-      openBuilder(text.includes('client') ? 'clients' : (text.includes('ai') ? 'ai' : undefined));
+      openSavedConsultation();
+      return;
+    }
+
+    if (action === 'consultations') {
+      event.preventDefault();
+      const href = String(target.getAttribute('href') || '');
+      if (text.includes('view consultations') || text.includes('clients & consultations')) {
+        openBuilder('clients');
+      } else if (text.includes('view consultation') || (target.closest('#recent-consultation') && latestConsultation())) {
+        openSavedConsultation();
+      } else if (text.includes('ai') || href.includes('flow=ai')) {
+        openBuilder('ai');
+      } else {
+        openBuilder();
+      }
       return;
     }
 
@@ -285,7 +360,6 @@
     if (action === 'closemodal') {
       event.preventDefault();
       closeModals();
-      return;
     }
   }, false);
 })();
