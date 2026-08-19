@@ -169,7 +169,21 @@ HAIRI.startCheckout = async function (plan) {
   window.location.href = data.url;
 };
 
+function loadHairIntelBrandPolish() {
+  if (document.querySelector('script[data-hairintel-brand-polish]')) return;
+  const script = document.createElement('script');
+  script.src = 'js/brand-polish.js?v=20260819-brand';
+  script.dataset.hairintelBrandPolish = '1';
+  document.head.appendChild(script);
+}
+
 // Preview-only QA login. This branch is never merged into production.
 if (document.readyState === 'loading' && String(window.location.hostname || '').endsWith('.vercel.app') && window.location.hostname !== 'hairintel-ai.vercel.app') {
-  document.write('<script src="js/qa-auth-preview.js"></scr' + 'ipt>');
+  document.write('<script src="js/qa-auth-preview.js?v=20260819-allie"></scr' + 'ipt>');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadHairIntelBrandPolish);
+} else {
+  loadHairIntelBrandPolish();
 }
