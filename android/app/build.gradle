@@ -5,6 +5,8 @@ def uploadStorePassword = System.getenv('HAIRINTEL_UPLOAD_STORE_PASSWORD')
 def uploadKeyAlias = System.getenv('HAIRINTEL_UPLOAD_KEY_ALIAS')
 def uploadKeyPassword = System.getenv('HAIRINTEL_UPLOAD_KEY_PASSWORD')
 def hasUploadSigning = uploadStoreFile && uploadStorePassword && uploadKeyAlias && uploadKeyPassword
+def hairIntelVersionCode = (System.getenv('HAIRINTEL_VERSION_CODE') ?: '1').toInteger()
+def hairIntelVersionName = System.getenv('HAIRINTEL_VERSION_NAME') ?: '1.0.0'
 
 android {
     namespace "com.hairintel.ai"
@@ -14,8 +16,8 @@ android {
         applicationId "com.hairintel.ai"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode hairIntelVersionCode
+        versionName hairIntelVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
