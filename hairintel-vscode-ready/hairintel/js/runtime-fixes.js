@@ -1,6 +1,9 @@
 (function HairIntelRuntimeFixes() {
-  const QA_BRANCH = 'qa-pro-dashboard';
-  const QA_SUFFIX = '@hairintel.preview';
+  const QA_USERS = new Set([
+    'casey.pro@hairintel.preview',
+    'allie.pro@hairintel.preview'
+  ]);
+  const QA_API_TOKEN = 'hairintel-internal-qa-20260819';
 
   function readJson(key, fallback = null) {
     try {
@@ -17,7 +20,7 @@
 
   function isQaHost() {
     const host = String(window.location.hostname || '').toLowerCase();
-    return host.endsWith('.vercel.app') && host !== 'hairintel-ai.vercel.app' && !host.includes('git-main-');
+    return host === 'hairintel-ai.vercel.app' || host.endsWith('.vercel.app') || host === 'localhost' || host === '127.0.0.1';
   }
 
   function currentEmail() {
@@ -29,7 +32,7 @@
   }
 
   function isQaUser() {
-    return isQaHost() && currentEmail().endsWith(QA_SUFFIX);
+    return isQaHost() && QA_USERS.has(currentEmail());
   }
 
   function forceQaPro() {
@@ -40,11 +43,11 @@
       status: 'trialing',
       billingProvider: 'qa_preview',
       qaPreview: true,
-      source: QA_BRANCH,
       updatedAt: now
     };
     writeJson('hairintel_subscription_v1', sub);
     writeJson('hi_subscription', sub);
+    localStorage.setItem('hairintel_qa_pro_preview', '1');
     try {
       if (window.HI && typeof window.HI.setSub === 'function') window.HI.setSub(sub);
     } catch {}
@@ -139,10 +142,38 @@
     window.fetch = async function(input, init) {
       const url = typeof input === 'string' ? input : (input && input.url) || '';
       const isPreviewRequest = url.includes('/api/generate-hair-preview');
+      let requestInit = init;
 
-      if (isPreviewRequest) forceQaPro();
+      if (isPreviewRequest && isQaUser()) {
+        forceQaPro();
+        const email = currentEmail();
+        try {
+          const body = typeof init?.body === 'string' ? JSON.parse(init.body) : { ...(init?.body || {}) };
+          const sub = {
+            ...(body.subscription || {}),
+            plan: 'pro',
+            status: 'trialing',
+            qaPreview: true,
+            email
+          };
+          body.email = email;
+          body.customerEmail = email;
+          body.subscription = sub;
+          requestInit = {
+            ...(init || {}),
+            headers: {
+              ...((init && init.headers) || {}),
+              'Content-Type': 'application/json',
+              'X-HairIntel-QA': QA_API_TOKEN
+            },
+            body: JSON.stringify(body)
+          };
+        } catch (error) {
+          console.warn('[HairIntel] Could not attach QA preview identity:', error?.message || error);
+        }
+      }
 
-      const response = await originalFetch(input, init);
+      const response = await originalFetch(input, requestInit);
 
       if (isPreviewRequest && response.ok) {
         try {
@@ -150,7 +181,7 @@
           const data = await clone.json();
           let consultId = null;
           try {
-            const body = typeof init?.body === 'string' ? JSON.parse(init.body) : (init?.body || {});
+            const body = typeof requestInit?.body === 'string' ? JSON.parse(requestInit.body) : (requestInit?.body || {});
             consultId = body?.consultId || null;
           } catch {}
           persistGeneratedPreview(data?.images || [], consultId);
