@@ -168,3 +168,8 @@ HAIRI.startCheckout = async function (plan) {
   if (!res.ok) throw new Error(data.error || 'Checkout failed');
   window.location.href = data.url;
 };
+
+// Preview-only QA login. This branch is never merged into production.
+if (document.readyState === 'loading' && String(window.location.hostname || '').endsWith('.vercel.app') && window.location.hostname !== 'hairintel-ai.vercel.app') {
+  document.write('<script src="js/qa-auth-preview.js"><\\/script>');
+}
