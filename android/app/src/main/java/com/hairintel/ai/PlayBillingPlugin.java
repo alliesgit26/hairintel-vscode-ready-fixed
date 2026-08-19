@@ -1,5 +1,8 @@
 package com.hairintel.ai;
 
+import android.content.Intent;
+import android.net.Uri;
+
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
@@ -293,6 +296,23 @@ public class PlayBillingPlugin extends Plugin implements PurchasesUpdatedListene
                 }
             });
         }, call);
+    }
+
+    @PluginMethod
+    public void manageSubscriptions(PluginCall call) {
+        String productId = call.getString("productId", "");
+        String url = "https://play.google.com/store/account/subscriptions?package=com.hairintel.ai";
+        if (PRODUCT_STARTER.equals(productId) || PRODUCT_PRO.equals(productId) || PRODUCT_STUDIO.equals(productId)) {
+            url += "&sku=" + Uri.encode(productId);
+        }
+
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            getActivity().startActivity(intent);
+            call.resolve();
+        } catch (Exception error) {
+            call.reject("Could not open Google Play subscription management.");
+        }
     }
 
     private JSObject purchaseToJS(Purchase purchase) {
