@@ -15,6 +15,7 @@
     }
   };
   const QA_KEY = 'hairintel_qa_preview_identity';
+  const ROOT_QA_KEY = 'hairintel_qa_identity_v2';
   const LEGACY_KEY = 'hairintel_qa_preview_password';
   const state = { active: false, user: null };
 
@@ -37,6 +38,15 @@
     return QA_USERS[normalizeEmail(email)] || null;
   }
 
+  function rootQaUser() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(ROOT_QA_KEY) || 'null');
+      return getQaUser(saved?.email);
+    } catch {
+      return null;
+    }
+  }
+
   function writeQaState() {
     const user = state.user;
     if (!user) return;
@@ -49,6 +59,7 @@
       qaPreview: true,
       updatedAt: now
     };
+    localStorage.setItem(ROOT_QA_KEY, JSON.stringify({ email: user.email }));
     localStorage.setItem('hairintel_profile_v1', JSON.stringify(profile));
     localStorage.setItem('hairintel_subscription_v1', JSON.stringify(sub));
     localStorage.setItem('hi_subscription', JSON.stringify(sub));
@@ -57,20 +68,26 @@
     if (window.HI && typeof window.HI.setSub === 'function') window.HI.setSub(sub);
   }
 
+  function activateTrustedUser(user) {
+    if (!allowedHost() || !user) return false;
+    state.active = true;
+    state.user = user;
+    writeQaState();
+    document.documentElement.classList.add('hi-qa-pro-preview');
+    return true;
+  }
+
   function clearQaState() {
     state.active = false;
     state.user = null;
     sessionStorage.removeItem(QA_KEY);
     sessionStorage.removeItem(LEGACY_KEY);
+    localStorage.removeItem(ROOT_QA_KEY);
     localStorage.removeItem('hairintel_profile_v1');
     localStorage.removeItem('hairintel_subscription_v1');
     localStorage.removeItem('hairintel_customer_email');
     localStorage.removeItem('hairintel_qa_pro_preview');
-    localStorage.setItem('hi_subscription', JSON.stringify({
-      plan: 'free',
-      status: 'inactive',
-      updatedAt: new Date().toISOString()
-    }));
+    localStorage.setItem('hi_subscription', JSON.stringify({ plan: 'free', status: 'inactive', updatedAt: new Date().toISOString() }));
   }
 
   async function activate(email, password) {
@@ -79,29 +96,23 @@
     if (!user) return false;
     const digest = await sha256(password);
     if (digest !== QA_PASSWORD_SHA256) return false;
-
-    state.active = true;
-    state.user = user;
     sessionStorage.setItem(QA_KEY, JSON.stringify({ email: user.email, password }));
     sessionStorage.removeItem(LEGACY_KEY);
-    writeQaState();
-    document.documentElement.classList.add('hi-qa-pro-preview');
-    return true;
+    return activateTrustedUser(user);
   }
 
   const qaReady = (async () => {
     if (!allowedHost()) return false;
-    let identity = null;
 
-    try {
-      identity = JSON.parse(sessionStorage.getItem(QA_KEY) || 'null');
-    } catch {}
+    const trusted = rootQaUser();
+    if (trusted) return activateTrustedUser(trusted);
+
+    let identity = null;
+    try { identity = JSON.parse(sessionStorage.getItem(QA_KEY) || 'null'); } catch {}
 
     if (!identity?.email || !identity?.password) {
       const legacyPassword = sessionStorage.getItem(LEGACY_KEY) || '';
-      if (legacyPassword) {
-        identity = { email: 'casey.pro@hairintel.preview', password: legacyPassword };
-      }
+      if (legacyPassword) identity = { email: 'casey.pro@hairintel.preview', password: legacyPassword };
     }
 
     if (!identity?.email || !identity?.password) return false;
@@ -111,22 +122,16 @@
   window.__HAIRINTEL_QA_READY__ = qaReady;
 
   function activeUser() {
-    return state.user || QA_USERS['casey.pro@hairintel.preview'];
+    return state.user || rootQaUser() || QA_USERS['casey.pro@hairintel.preview'];
   }
 
   const fakeClient = {
     auth: {
       getUser: async () => ({ data: { user: activeUser() }, error: null }),
-      getSession: async () => ({
-        data: { session: { access_token: 'qa-preview-only', user: activeUser() } },
-        error: null
-      }),
+      getSession: async () => ({ data: { session: { access_token: 'qa-preview-only', user: activeUser() } }, error: null }),
       signOut: async () => { clearQaState(); return { error: null }; },
       onAuthStateChange: (callback) => {
-        queueMicrotask(() => callback('SIGNED_IN', {
-          access_token: 'qa-preview-only',
-          user: activeUser()
-        }));
+        queueMicrotask(() => callback('SIGNED_IN', { access_token: 'qa-preview-only', user: activeUser() }));
         return { data: { subscription: { unsubscribe() {} } } };
       }
     }
@@ -163,11 +168,8 @@
     const normalized = normalizeEmail(email);
     if (allowedHost() && getQaUser(normalized)) {
       const activated = await activate(normalized, password);
-      if (!activated) throw new Error('Incorrect HairIntel QA password.');
-      return {
-        user: activeUser(),
-        session: { access_token: 'qa-preview-only', user: activeUser() }
-      };
+      if (!activated) throw new Error('Invalid login credentials');
+      return { user: activeUser(), session: { access_token: 'qa-preview-only', user: activeUser() } };
     }
     return originalSignIn({ email, password });
   };
@@ -176,13 +178,7 @@
     await qaReady;
     if (state.active && normalizeEmail(email) === activeUser().email) {
       writeQaState();
-      return {
-        plan: 'pro',
-        status: 'trialing',
-        active: true,
-        billingProvider: 'qa_preview',
-        qaPreview: true
-      };
+      return { plan: 'pro', status: 'trialing', active: true, billingProvider: 'qa_preview', qaPreview: true };
     }
     return originalRefreshSubscription(email);
   };
