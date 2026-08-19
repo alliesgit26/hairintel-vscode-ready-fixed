@@ -9,7 +9,7 @@ function redirectToHairIntelHome(reason) {
 
 function isHairIntelInternalQaHost() {
   const host = String(window.location.hostname || "").toLowerCase();
-  return host.endsWith(".vercel.app") && host !== "hairintel-ai.vercel.app" && !host.includes("git-main-");
+  return host === "hairintel-ai.vercel.app" || host.endsWith(".vercel.app") || host === "localhost" || host === "127.0.0.1";
 }
 
 function isHairIntelProQaPreview() {
@@ -23,7 +23,8 @@ function isHairIntelProQaPreview() {
   return (
     params.get("qa") === "pro" ||
     localStorage.getItem("hairintel_qa_pro_preview") === "1" ||
-    email.endsWith("@hairintel.preview")
+    email === "casey.pro@hairintel.preview" ||
+    email === "allie.pro@hairintel.preview"
   );
 }
 
