@@ -1,8 +1,15 @@
 apply plugin: 'com.android.application'
 
+def uploadStoreFile = System.getenv('HAIRINTEL_UPLOAD_STORE_FILE')
+def uploadStorePassword = System.getenv('HAIRINTEL_UPLOAD_STORE_PASSWORD')
+def uploadKeyAlias = System.getenv('HAIRINTEL_UPLOAD_KEY_ALIAS')
+def uploadKeyPassword = System.getenv('HAIRINTEL_UPLOAD_KEY_PASSWORD')
+def hasUploadSigning = uploadStoreFile && uploadStorePassword && uploadKeyAlias && uploadKeyPassword
+
 android {
     namespace "com.hairintel.ai"
     compileSdk rootProject.ext.compileSdkVersion
+
     defaultConfig {
         applicationId "com.hairintel.ai"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -14,10 +21,25 @@ android {
              ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
+    signingConfigs {
+        release {
+            if (hasUploadSigning) {
+                storeFile file(uploadStoreFile)
+                storePassword uploadStorePassword
+                keyAlias uploadKeyAlias
+                keyPassword uploadKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (hasUploadSigning) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
