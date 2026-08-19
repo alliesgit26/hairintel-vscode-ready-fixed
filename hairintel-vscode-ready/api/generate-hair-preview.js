@@ -33,12 +33,24 @@ export default async function handler(req, res) {
     const allowedStatuses = ["active", "trialing"];
     const normalizeEmail = (value) => String(value || "").trim().toLowerCase();
     const normalizeCustomerId = (value) => String(value || "").trim();
+    const requestEmail = normalizeEmail(
+      body.email || body.customerEmail || body.customer_email || sub.email || sub.customer_email
+    );
+
+    // QA access is allowed only on Vercel Preview deployments for the dedicated
+    // qa-pro-dashboard branch and only for synthetic @hairintel.preview users.
+    // Production still requires a verified paid entitlement from Supabase.
+    const internalQaPreview =
+      String(process.env.VERCEL_ENV || "").toLowerCase() === "preview" &&
+      String(process.env.VERCEL_GIT_COMMIT_REF || "") === "qa-pro-dashboard" &&
+      Boolean(sub.qaPreview) &&
+      requestEmail.endsWith("@hairintel.preview");
 
     // Server-side subscription verification via Supabase is the billing authority.
     let effectiveSub = null;
     try {
       const supabase = getSupabaseAdmin();
-      const email = normalizeEmail(body.email || body.customerEmail || body.customer_email || sub.email || sub.customer_email);
+      const email = requestEmail;
       const stripeCustomerId = normalizeCustomerId(
         body.stripeCustomerId ||
         body.stripe_customer_id ||
@@ -73,8 +85,10 @@ export default async function handler(req, res) {
     const activeStatus = String(effectiveSub?.status || "inactive").toLowerCase();
     const hasPreviewAccess = allowedPlans.includes(activePlan) && allowedStatuses.includes(activeStatus);
 
-    // Test bypass (development only). Production billing authority remains Supabase/Stripe.
-    const bypass = String(process.env.ALLOW_AI_PREVIEW_TEST_BYPASS || "").toLowerCase() === 'true';
+    // Optional explicit development bypass retained for local/test use. The internal
+    // QA preview above is branch-scoped and cannot activate on Production.
+    const configuredBypass = String(process.env.ALLOW_AI_PREVIEW_TEST_BYPASS || "").toLowerCase() === 'true';
+    const bypass = internalQaPreview || configuredBypass;
 
     if (!hasPreviewAccess && !bypass) {
       return send(403, { error: "AI previews require an active Pro or Studio subscription." });
@@ -184,7 +198,7 @@ export default async function handler(req, res) {
       });
     }
 
-    return send(200, { images });
+    return send(200, { images, qaPreview: internalQaPreview });
   } catch (err) {
     console.error("[generate-hair-preview] fatal:", err);
     return send(500, {
