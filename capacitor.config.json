@@ -1,7 +1,7 @@
 {
   "appId": "com.hairintel.ai",
   "appName": "HairIntel AI",
-  "webDir": "www",
+  "webDir": "public",
   "server": {
     "url": "https://hairintel-ai.vercel.app",
     "cleartext": false
