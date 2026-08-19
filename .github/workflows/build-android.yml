@@ -35,11 +35,32 @@ jobs:
       - name: Sync existing Android project
         run: npx cap sync android
 
+      - name: Prepare private Play upload key
+        if: ${{ secrets.HAIRINTEL_UPLOAD_KEYSTORE_BASE64 != '' }}
+        env:
+          HAIRINTEL_UPLOAD_KEYSTORE_BASE64: ${{ secrets.HAIRINTEL_UPLOAD_KEYSTORE_BASE64 }}
+        run: |
+          printf '%s' "$HAIRINTEL_UPLOAD_KEYSTORE_BASE64" | base64 --decode > android/app/hairintel-upload.jks
+          chmod 600 android/app/hairintel-upload.jks
+
       - name: Build release bundle
+        env:
+          HAIRINTEL_UPLOAD_STORE_FILE: ${{ secrets.HAIRINTEL_UPLOAD_KEYSTORE_BASE64 != '' && 'hairintel-upload.jks' || '' }}
+          HAIRINTEL_UPLOAD_STORE_PASSWORD: ${{ secrets.HAIRINTEL_UPLOAD_STORE_PASSWORD }}
+          HAIRINTEL_UPLOAD_KEY_ALIAS: ${{ secrets.HAIRINTEL_UPLOAD_KEY_ALIAS }}
+          HAIRINTEL_UPLOAD_KEY_PASSWORD: ${{ secrets.HAIRINTEL_UPLOAD_KEY_PASSWORD }}
         run: |
           cd android
           chmod +x gradlew
           ./gradlew bundleRelease --stacktrace
+
+      - name: Verify signed Play bundle
+        if: ${{ secrets.HAIRINTEL_UPLOAD_KEYSTORE_BASE64 != '' }}
+        run: jarsigner -verify -strict -certs android/app/build/outputs/bundle/release/app-release.aab
+
+      - name: Remove upload key from runner
+        if: always()
+        run: rm -f android/app/hairintel-upload.jks
 
       - uses: actions/upload-artifact@v4
         if: success()
