@@ -4,10 +4,14 @@ window.ENV = {
 };
 
 // Billing and account-lifecycle adapters must be present before the auth gate.
-// The billing adapter is inert in normal web browsers and activates only in
-// the native Android Capacitor shell.
+// The billing adapters are inert in normal web browsers and activate only in
+// the native Android Capacitor shell where appropriate.
 (function loadHairIntelPlatformAdapters() {
-  const sources = ['js/play-billing.js', 'js/account-deletion.js'];
+  const sources = [
+    'js/play-billing.js',
+    'js/play-entitlement-sync.js',
+    'js/account-deletion.js'
+  ];
   if (document.readyState === 'loading') {
     sources.forEach(src => document.write('<script src="' + src + '"><\\/script>'));
     return;
