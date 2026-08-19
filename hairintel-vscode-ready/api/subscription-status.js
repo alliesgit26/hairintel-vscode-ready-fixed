@@ -10,12 +10,12 @@ export default async function handler(req, res) {
 
   const supabase = getSupabaseAdmin();
   if (!supabase) {
-    return res.status(200).json({ plan: 'free', status: 'inactive', active: false, configured: false });
+    return res.status(200).json({ plan: 'free', status: 'inactive', active: false, configured: false, billingProvider: null });
   }
 
   const { data, error } = await supabase
     .from('subscriptions')
-    .select('plan,status,stripe_customer_id,stripe_subscription_id,current_period_end,updated_at')
+    .select('plan,status,stripe_customer_id,stripe_subscription_id,current_period_end,latest_event_type,updated_at')
     .eq('customer_email', email)
     .order('updated_at', { ascending: false })
     .limit(1)
@@ -23,16 +23,23 @@ export default async function handler(req, res) {
 
   if (error) {
     console.warn('[subscription-status] Supabase error:', error.message);
-    return res.status(200).json({ plan: 'free', status: 'inactive', active: false, configured: true, warning: error.message });
+    return res.status(200).json({ plan: 'free', status: 'inactive', active: false, configured: true, billingProvider: null, warning: error.message });
   }
 
   const plan = normalizePlan(data?.plan || 'free');
   const status = data?.status || 'inactive';
+  const active = isActiveStripeStatus(status);
+  const latestEventType = String(data?.latest_event_type || '');
+  const billingProvider = latestEventType.startsWith('google_play:')
+    ? 'google_play'
+    : (data?.stripe_subscription_id || data?.stripe_customer_id ? 'stripe' : null);
 
   return res.status(200).json({
-    plan: isActiveStripeStatus(status) ? plan : 'free',
+    plan: active ? plan : 'free',
     status,
-    active: isActiveStripeStatus(status),
+    active,
+    billingProvider,
+    latestEventType: latestEventType || null,
     stripeCustomerId: data?.stripe_customer_id || null,
     stripeSubscriptionId: data?.stripe_subscription_id || null,
     currentPeriodEnd: data?.current_period_end || null,
