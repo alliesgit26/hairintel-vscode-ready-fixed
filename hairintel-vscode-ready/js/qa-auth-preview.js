@@ -1,6 +1,6 @@
 (function installHairIntelQaPreview() {
   const QA_EMAIL = 'casey.pro@hairintel.preview';
-  const QA_PASSWORD_SHA256 = 'd716abbfa6f42388407a6e48e1e1ebaedfa3ecd5a25d2b906476f96901498ecf';
+  const QA_PASSWORD_SHA256 = '11955a4da149a921640a1f22f1cf3b8196e3918fab6b17536863188ced512801';
   const QA_USER = {
     id: 'qa-pro-preview-user',
     email: QA_EMAIL,
